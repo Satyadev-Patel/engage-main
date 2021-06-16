@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "PROD=true node server.js",
-    "postinstall": "cd ./client && npm",
+    "postinstall": "cd ./client && npm install",
     "dev": "nodemon server.js"
   },
   "keywords": [],
