@@ -9,8 +9,7 @@ import Peer from "simple-peer";
 import io from "socket.io-client";
 import "./../App.css";
 
-const socket = io.connect("http://localhost:5000");
-
+const socket = io.connect("http://localhost:5000",{transports : ['websocket']});
 const Meeting = () => {
   const [me, setMe] = useState("");
   const [stream, setStream] = useState();
@@ -38,7 +37,6 @@ const Meeting = () => {
       });
 
     socket.on("me", (id) => {
-      console.log(`${id}`)
       setMe(id);
     });
 

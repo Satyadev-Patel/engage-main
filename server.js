@@ -12,9 +12,8 @@ const io = require("socket.io")(server,{
     }
 })
 app.use(cors());
-io.use(cors());
-
 io.on("connection", (socket) => {
+    
     socket.emit("me",socket.id)
 
     socket.on("disconnect", () => {
@@ -30,12 +29,12 @@ io.on("connection", (socket) => {
     })
 })
 
-if(process.env.PROD){
+/*if(process.env.PROD){
     app.use(express.static(path.join(__dirname,'./client/build')));
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname,'./client/build/index.html'));
     });
-}
+}*/
 
-const port = process.env.PORT || 5000;
+const port = 5000;
 server.listen(port, () => console.log(`server is running on port ${port}`))
