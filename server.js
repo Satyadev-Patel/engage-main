@@ -12,6 +12,7 @@ const io = require("socket.io")(server,{
     }
 })
 app.use(cors());
+io.use(cors());
 
 io.on("connection", (socket) => {
     socket.emit("me",socket.id)
