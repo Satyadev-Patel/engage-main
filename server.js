@@ -29,12 +29,14 @@ io.on("connection", (socket) => {
     })
 })
 
-/*if(process.env.PROD){
+if(process.env.PROD){
     app.use(express.static(path.join(__dirname,'./client/build')));
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname,'./client/build/index.html'));
     });
-}*/
+}
+
+
 
 const port = 5000;
 server.listen(port, () => console.log(`server is running on port ${port}`))
