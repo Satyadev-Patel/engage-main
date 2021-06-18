@@ -9,7 +9,7 @@ import Peer from "simple-peer";
 import io from "socket.io-client";
 import "./../App.css";
 
-const socket = io.connect("http://localhost:5000",{transports : ['websocket']});
+const socket = io.connect("https://polar-journey-62609.herokuapp.com:5000",{transports : ['websocket']});
 const Meeting = () => {
   const [me, setMe] = useState("");
   const [stream, setStream] = useState();
