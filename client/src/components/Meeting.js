@@ -37,6 +37,7 @@ const Meeting = () => {
       });
 
     socket.on("me", (id) => {
+      console.log(`${id}`);
       setMe(id);
     });
 
