@@ -1,15 +1,17 @@
 require("dotenv").config();
 const express = require("express")
 const http = require("http");
+const https = require("https")
 const path = require("path");
 const app = express()
 const cors = require("cors")
-const server = http.createServer(app)
+const server = https.createServer(app)
 const io = require("socket.io")(server,{
     cors: {
         origin: "https://polar-journey-62609.herokuapp.com:3000",
         methods: ["GET","POST"]
-    }
+    },
+    transports: ['websocket']
 })
 app.use(cors());
 io.on("connection", (socket) => {
