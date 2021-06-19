@@ -7,13 +7,12 @@ const cors = require("cors")
 const server = http.createServer(app)
 const io = require("socket.io")(server,{
     cors: {
-        origin: "https://polar-journey-62609.herokuapp.com:3000",
+        origin: "ws://polar-journey-62609.herokuapp.com:3000",
         methods: ["GET","POST"]
     },
     transports: ['websocket']
 })
 app.use(cors());
-console.log("Success!");
 io.on("connection", (socket) => {
     console.log(`${socket.id}`);
     console.log("Success");
