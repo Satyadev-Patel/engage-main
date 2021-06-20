@@ -1,42 +1,49 @@
-require("dotenv").config();
-const express = require("express")
+require("dotenv").config()
+
+const express = require("express");
 const http = require("http");
 const path = require("path");
-const app = express()
-const cors = require("cors")
-const server = http.createServer(app)
-const io = require("socket.io")(server,{
-    cors: {
-        origin: "ws://polar-journey-62609.herokuapp.com:3000",
-        methods: ["GET","POST"]
-    },
-    transports: ['websocket']
-})
-app.use(cors());
-io.on("connection", (socket) => {
-    console.log(`${socket.id}`);
-    console.log("Success");
-    socket.emit("me",socket.id)
+const app = express();
+const server = http.createServer(app);
+const socket = require("socket.io");
+const io = socket(server);
 
-    socket.on("disconnect", () => {
-        socket.broadcast.emit("callEnded")
-    })
+const rooms = {};
 
-    socket.on("callUser", (data) => {
-        io.to(data.userToCall).emit("callUser",{signal: data.signalData,from: data.from, name:data.name})
-    })
+io.on("connection", socket => {
+    console.log("Success")
+    socket.on("join room", roomID => {
+        if (rooms[roomID]) {
+            rooms[roomID].push(socket.id);
+        } else {
+            rooms[roomID] = [socket.id];
+        }
+        const otherUser = rooms[roomID].find(id => id !== socket.id);
+        if (otherUser) {
+            socket.emit("other user", otherUser);
+            socket.to(otherUser).emit("user joined", socket.id);
+        }
+    });
 
-    socket.on("answerCall", (data) =>{
-        io.to(data.to).emit("callAccepted",data.signal)
-    })
-})
+    socket.on("offer", payload => {
+        io.to(payload.target).emit("offer", payload);
+    });
 
-if(process.env.NODE_ENV == "production"){
-    app.use(express.static(path.join(__dirname,'./client/build')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname,'./client/build/index.html'));
+    socket.on("answer", payload => {
+        io.to(payload.target).emit("answer", payload);
+    });
+
+    socket.on("ice-candidate", incoming => {
+        io.to(incoming.target).emit("ice-candidate", incoming.candidate);
+    });
+});
+
+if( process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'));
+    app.get('*', (req,res) => {
+        res.sendFile(path.resolve(__dirname,'client','build','index.html'));
     });
 }
 
-const port = process.env.PORT || 5000;
-server.listen(port, () => console.log(`server is running on port ${port}`))
+const port = process.env.PORT || 8000
+server.listen(port, () => console.log(`server is running on port ${port}`));
