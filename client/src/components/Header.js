@@ -4,6 +4,7 @@ import { AppBar, IconButton, Toolbar, Collapse } from '@material-ui/core';
 import SortIcon from '@material-ui/icons/Sort';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import Grow from '@material-ui/core/Grow';
 import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,20 +41,33 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   title: {
+    paddingBottom:"0 px",
     color: '#fff',
-    fontSize: '4.5rem',
+    fontSize: '4rem',
   },
   goDown: {
     color: '#fff',
     fontSize: '4rem',
   },
+  logout:{
+    color: "inherit",
+    fontFamily: 'Poppins',
+    background: "#333",
+    variant:"outlined",
+    fontSize: "1rem"
+  }
 }));
-export default function Header() {
+export default function Header(props) {
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const classes = useStyles();
   const [checked, setChecked] = useState(false);
   const [expand,setExpand] = useState(false);
   const onExpand = () => {
       setExpand(!expand)
+  }
+  const Logout = () => {
+    window.sessionStorage.clear();
+    props.Authenticate();
   }
   useEffect(() => {
     setChecked(true);
@@ -65,9 +79,9 @@ export default function Header() {
           <h1 className={classes.appbarTitle}>
               Microsoft Teams
           </h1>
-          <IconButton>
-            <SortIcon className={classes.icon} />
-          </IconButton>
+          <Button className = {classes.logout} onClick = {Logout}>
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
 
@@ -78,15 +92,38 @@ export default function Header() {
       >
         <div className={classes.container}>
           <h1 className={classes.title}>
-            Welcome to Teams,
+            Welcome to Teams, {user["email"]}
           </h1>
+            {expand ? 
+              <Grow
+                in={checked}
+                {...(checked ? { timeout: 1000 } : {})}
+              >
+              <Button href = "/meeting" variant ="contained" color = "primary" align = "center">
+                Join or create a meeting
+              </Button>
+              </Grow> 
+              :
+              <IconButton>
+              <Grow
+                in={checked}
+                {...(checked ? { timeout: 1000 } : {})}
+              >
+              <ExpandMoreIcon className = {classes.goDown} onClick ={onExpand} />
+              </Grow>
+              </IconButton>}
+            <br/>
             <IconButton>
-              {expand ? <ExpandLessIcon className = {classes.goDown} onClick ={onExpand} />
-              : '' }
-              {!expand ? <ExpandMoreIcon className = {classes.goDown} onClick ={onExpand} /> : ''}
-              {expand ? <Button href = "/meeting" variant ="contained" color = "primary" align = "center">
-                    Join or create a meeting
-                </Button> : ''}
+              {!expand ? 
+              '' 
+              : 
+              <Grow
+                in={checked}
+                style={{ transformOrigin: '0 0 0' }}
+                {...(checked ? { timeout: 1000 } : {})}
+              >
+              <ExpandLessIcon className = {classes.goDown} onClick ={onExpand} />
+              </Grow>}
             </IconButton>
         </div>
       </Collapse>

@@ -1,42 +1,32 @@
-require("dotenv").config()
+const express = require("express")
+const http = require("http")
+const app = express()
+const server = http.createServer(app)
+const cors = require("cors")
 
-const express = require("express");
-const http = require("http");
-const path = require("path");
-const app = express();
-const server = http.createServer(app);
-const socket = require("socket.io");
-const io = socket(server);
+app.use(cors());
 
-const rooms = {};
+const io = require("socket.io")(server,{
+    cors: {
+        methods: ["GET","POST"]
+    }
+})
 
-io.on("connection", socket => {
-    console.log("Success")
-    socket.on("join room", roomID => {
-        if (rooms[roomID]) {
-            rooms[roomID].push(socket.id);
-        } else {
-            rooms[roomID] = [socket.id];
-        }
-        const otherUser = rooms[roomID].find(id => id !== socket.id);
-        if (otherUser) {
-            socket.emit("other user", otherUser);
-            socket.to(otherUser).emit("user joined", socket.id);
-        }
-    });
+io.on("connection", (socket) => {
+    socket.emit("me",socket.id)
 
-    socket.on("offer", payload => {
-        io.to(payload.target).emit("offer", payload);
-    });
+    socket.on("disconnect", () => {
+        socket.broadcast.emit("callEnded")
+    })
 
-    socket.on("answer", payload => {
-        io.to(payload.target).emit("answer", payload);
-    });
+    socket.on("callUser", (data) => {
+        io.to(data.userToCall).emit("callUser",{signal: data.signalData,from: data.from, name:data.name})
+    })
 
-    socket.on("ice-candidate", incoming => {
-        io.to(incoming.target).emit("ice-candidate", incoming.candidate);
-    });
-});
+    socket.on("answerCall", (data) =>{
+        io.to(data.to).emit("callAccepted",data.signal)
+    })
+})
 
 if( process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));
@@ -45,5 +35,5 @@ if( process.env.NODE_ENV === 'production'){
     });
 }
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 5000
 server.listen(port, () => console.log(`server is running on port ${port}`));
