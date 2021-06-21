@@ -54,18 +54,6 @@ const Meeting = () => {
     const peer = new Peer({
       initiator: true,
       trickle: false,
-      config: {
-        iceServers: [{   
-            urls: "stun:numb.viagenie.ca"
-        }, 
-        {   
-            username:"unknownmaster3030@gmail.com",   
-            credential:"guru3003",   
-            urls: [                  
-                `turn:numb.viagenie.ca:443?transport=tcp`,        
-            ]
-        }],
-      },
       stream: stream,
     });
     peer.on("signal", (data) => {
@@ -92,18 +80,6 @@ const Meeting = () => {
     const peer = new Peer({
       initiator: false,
       trickle: false,
-      config: {
-        iceServers: [{   
-            urls: "stun:numb.viagenie.ca"
-        }, 
-        {   
-            username:"unknownmaster3030@gmail.com",   
-            credential:"guru3003",   
-            urls: [                  
-                `turn:numb.viagenie.ca:443?transport=tcp`,        
-            ]
-        }],
-      },
       stream: stream,
     });
     peer.on("signal", (data) => {
