@@ -8,8 +8,8 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
 import io from "socket.io-client";
 import "./../App.css";
-
-const socket = io.connect("https://polar-journey-62609.herokuapp.com:5000/");
+//const socket = io("http://localhost:5000/");
+const socket = io("https://polar-journey-62609.herokuapp.com/");
 
 const Meeting = () => {
   const [me, setMe] = useState("");

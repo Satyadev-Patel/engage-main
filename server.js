@@ -9,7 +9,7 @@ app.use(cors());
 
 const io = require("socket.io")(server,{
     cors: {
-        origin: "https://polar-journey-62609.herokuapp.com/",
+        origin: "*",
         methods: ["GET","POST"]
     }
 })
