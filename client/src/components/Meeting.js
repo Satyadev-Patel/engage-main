@@ -9,7 +9,7 @@ import Peer from "simple-peer";
 import io from "socket.io-client";
 import "./../App.css";
 
-const socket = io.connect("http://localhost:5000/");
+const socket = io.connect("https://polar-journey-62609.herokuapp.com:5000/");
 
 const Meeting = () => {
   const [me, setMe] = useState("");
@@ -54,6 +54,18 @@ const Meeting = () => {
     const peer = new Peer({
       initiator: true,
       trickle: false,
+      config: {
+        iceServers: [{   
+            urls: "stun:numb.viagenie.ca"
+        }, 
+        {   
+            username:"unknownmaster3030@gmail.com",   
+            credential:"guru3003",   
+            urls: [                  
+                `turn:numb.viagenie.ca:443?transport=tcp`,        
+            ]
+        }],
+      },
       stream: stream,
     });
     peer.on("signal", (data) => {
@@ -80,6 +92,18 @@ const Meeting = () => {
     const peer = new Peer({
       initiator: false,
       trickle: false,
+      config: {
+        iceServers: [{   
+            urls: "stun:numb.viagenie.ca"
+        }, 
+        {   
+            username:"unknownmaster3030@gmail.com",   
+            credential:"guru3003",   
+            urls: [                  
+                `turn:numb.viagenie.ca:443?transport=tcp`,        
+            ]
+        }],
+      },
       stream: stream,
     });
     peer.on("signal", (data) => {
