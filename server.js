@@ -6,6 +6,7 @@ const cors = require("cors")
 const passport = require("passport");
 const dotnev = require("dotenv");
 const connectDB = require("./config/db.js");
+const path = require("path");
 const bodyParser = require("body-parser");
 dotnev.config({ path: "./config/config.env" });
 app.use(cors());
@@ -39,19 +40,6 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 connectDB();
-
-if( process.env.NODE_ENV === 'production'){
-    app.use(express.static('client/build'));
-    app.get('*', (req,res) => {
-        res.sendFile(path.join(__dirname,'client/build/index.html'));
-    });
-}
-app.get("/hello",(req,res)=>{
-    res.send("Success");
-})
-const port = process.env.PORT || 5000
-server.listen(port, () => console.log(`server is running on port ${port}`));
-
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
@@ -69,3 +57,15 @@ app.get("/", (req, res) => {
     res.send("Hello");
 });
 app.use("/users", require("./routes/user"));
+if( process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'));
+    app.get('*', (req,res) => {
+        res.sendFile(path.join(__dirname,'client/build/index.html'));
+    });
+}
+app.get("/hello",(req,res)=>{
+    res.send("Success");
+})
+const port = process.env.PORT || 5000
+server.listen(port, () => console.log(`server is running on port ${port}`));
+
