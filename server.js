@@ -1,10 +1,13 @@
 const express = require("express")
-const path = require("path");
 const http = require("http")
 const app = express()
 const server = http.createServer(app)
 const cors = require("cors")
-
+const passport = require("passport");
+const dotnev = require("dotenv");
+const connectDB = require("./config/db.js");
+const bodyParser = require("body-parser");
+dotnev.config({ path: "./config/config.env" });
 app.use(cors());
 
 const io = require("socket.io")(server,{
@@ -30,6 +33,13 @@ io.on("connection", (socket) => {
     })
 })
 
+require("./config/passport")(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+connectDB();
+
 if( process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));
     app.get('*', (req,res) => {
@@ -41,3 +51,21 @@ app.get("/hello",(req,res)=>{
 })
 const port = process.env.PORT || 5000
 server.listen(port, () => console.log(`server is running on port ${port}`));
+
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "OPTIONS, GET, PUT, POST, DELETE, PATCH"
+    );
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type Authorization");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
+app.get("/", (req, res) => {
+    res.send("Hello");
+});
+app.use("/users", require("./routes/user"));

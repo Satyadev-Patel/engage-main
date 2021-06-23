@@ -7,11 +7,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
 import io from "socket.io-client";
-import "./../App.css";
-//const socket = io("http://localhost:5000/");
+import { makeStyles, Grid } from "@material-ui/core";
+import { useStyles } from "./styles";
+
+
+//const socket = io.connect("http://localhost:5000");
 const socket = io("https://polar-journey-62609.herokuapp.com/");
 
 const Meeting = () => {
+  const classes = useStyles();
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const [muteVid,setMuteVid] = useState(false)
+  const [muteMic,setMuteMic] = useState(false)
   const [me, setMe] = useState("");
   const [stream, setStream] = useState();
   const [receivingCall, setReceivingCall] = useState(false);
@@ -20,7 +27,7 @@ const Meeting = () => {
   const [callAccepted, setCallAccepted] = useState(false);
   const [idToCall, setIdToCall] = useState("");
   const [callEnded, setCallEnded] = useState(false);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(user["firstName"]);
 
   const myVideo = useRef();
   const userVideo = useRef();
@@ -98,11 +105,19 @@ const Meeting = () => {
     connectionRef.current.destroy();
   };
 
+  const muteVideo = () => {
+    stream.getVideoTracks().forEach(track => track.enabled = !track.enabled);
+    setMuteVid(!muteVid);
+  }
+
+  const muteAudio = () => {
+    setMuteMic(!muteMic);
+    stream.getAudioTracks().forEach(track => track.enabled = !track.enabled);
+  }
   
   return (
-    <div>
-      <div className="container">
-        <div className="video-container">
+    <Grid className={classes.root}>
+        <div className={classes.videoContainer}>
           <div className="video">
             {stream && (
               <video
@@ -110,7 +125,7 @@ const Meeting = () => {
                 muted
                 ref={myVideo}
                 autoPlay
-                style={{ width: "300px" }}
+                style={{ width: "450px" }}
               />
             )}
           </div>
@@ -120,16 +135,19 @@ const Meeting = () => {
                 playsInline
                 ref={userVideo}
                 autoPlay
-                style={{ width: "300px" }}
+                style={{ width: "450px" }}
               />
             ) : null}
           </div>
         </div>
-        <div className="myId">
+        <div className={classes.myId}>
           <TextField
             id="filled-basic"
             label="Name"
             variant="filled"
+            InputProps={{
+              className: classes.txtfield
+            }}
             value={name}
             onChange={(e) => setName(e.target.value)}
             style={{ marginBottom: "20px" }}
@@ -148,14 +166,27 @@ const Meeting = () => {
             id="filled-basic"
             label="ID to call"
             variant="filled"
+            InputProps={{
+              className: classes.txtfield
+            }}
             value={idToCall}
             onChange={(e) => setIdToCall(e.target.value)}
+            style={{ marginBottom: "20px" }}
           />
-          <div className="call-button">
+          <Button variant="contained" color="secondary" onClick={muteVideo} style={{ marginBottom: "10px" }}>
+                {!muteVid ? "Mute Video" : "Unmute"}
+          </Button>
+          <Button variant="contained" color="secondary" onClick={muteAudio}>
+                {!muteMic ? "Mute Audio" : "Unmute"}
+          </Button>
+          <div className={classes.callButton}>
             {callAccepted && !callEnded ? (
+              <div>
               <Button variant="contained" color="secondary" onClick={leaveCall}>
                 End Call
               </Button>
+              
+            </div>
             ) : (
               <IconButton
                 color="primary"
@@ -165,7 +196,7 @@ const Meeting = () => {
                 <PhoneIcon fontSize="large" />
               </IconButton>
             )}
-            {idToCall}
+            
           </div>
         </div>
         <div>
@@ -178,8 +209,7 @@ const Meeting = () => {
             </div>
           ) : null}
         </div>
-      </div>
-    </div>
+    </Grid>
   );
 };
 

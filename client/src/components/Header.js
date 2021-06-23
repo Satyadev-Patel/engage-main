@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, IconButton, Toolbar, Collapse } from '@material-ui/core';
 import SortIcon from '@material-ui/icons/Sort';
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '0 auto',
   },
   appbarTitle: {
-    flexGrow: '1',
+    flexGrow: '4',
     color:'#fff'
   },
   icon: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   title: {
-    paddingBottom:"0 px",
+    paddingBottom:"40px",
     color: '#fff',
     fontSize: '4rem',
   },
@@ -55,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
     background: "#333",
     variant:"outlined",
     fontSize: "1rem"
+  },
+  grid:{
+    paddingBottom:"0px"
   }
 }));
 export default function Header(props) {
@@ -85,48 +89,28 @@ export default function Header(props) {
         </Toolbar>
       </AppBar>
 
-      <Collapse
+      <Grow
         in={checked}
         {...(checked ? { timeout: 2000 } : {})}
-        collapsedHeight={0}
       >
         <div className={classes.container}>
           <h1 className={classes.title}>
-            Welcome to Teams, {user["email"]}
+            Welcome to Teams, {user["firstName"]}
           </h1>
-            {expand ? 
-              <Grow
-                in={checked}
-                {...(checked ? { timeout: 1000 } : {})}
-              >
+            <Grid container className={classes.grid}>
+            <Grid item xs={6}>
               <Button href = "/meeting" variant ="contained" color = "primary" align = "center">
                 Join or create a meeting
               </Button>
-              </Grow> 
-              :
-              <IconButton>
-              <Grow
-                in={checked}
-                {...(checked ? { timeout: 1000 } : {})}
-              >
-              <ExpandMoreIcon className = {classes.goDown} onClick ={onExpand} />
-              </Grow>
-              </IconButton>}
-            <br/>
-            <IconButton>
-              {!expand ? 
-              '' 
-              : 
-              <Grow
-                in={checked}
-                style={{ transformOrigin: '0 0 0' }}
-                {...(checked ? { timeout: 1000 } : {})}
-              >
-              <ExpandLessIcon className = {classes.goDown} onClick ={onExpand} />
-              </Grow>}
-            </IconButton>
+            </Grid>
+            <Grid item xs={6}>
+              <Button href = "/calendar" variant ="contained" color = "primary" align = "center">
+              Week's Calendar
+              </Button>
+            </Grid>
+            </Grid>
         </div>
-      </Collapse>
+      </Grow>
     </div>
   );
 }
