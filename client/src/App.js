@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom
 import { useState } from "react"
 import Login from "./components/Login"
 import Meeting from "./components/Meeting/Meeting"
-import Header from "./components/Header"
+import Header from "./components/Header/Header"
 import { CssBaseline } from "@material-ui/core"
 import SignUp from "./components/Register"
 import Calendar from "./components/Calendar/Calendar"

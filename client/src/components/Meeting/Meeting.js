@@ -11,8 +11,8 @@ import { makeStyles, Grid } from "@material-ui/core";
 import { useStyles } from "./styles";
 
 
-//const socket = io.connect("http://localhost:5000");
-const socket = io("https://polar-journey-62609.herokuapp.com/");
+const socket = io.connect("http://localhost:5000");
+//const socket = io("https://polar-journey-62609.herokuapp.com/");
 
 const Meeting = () => {
   const classes = useStyles();
@@ -125,7 +125,10 @@ const Meeting = () => {
                 muted
                 ref={myVideo}
                 autoPlay
-                style={{ width: "450px" }}
+                style={{ borderRadius: "5px",
+                  padding: "2px",
+                  width: "450px",
+                  border: "1px solid #fff"}}
               />
             )}
           </div>
@@ -135,27 +138,34 @@ const Meeting = () => {
                 playsInline
                 ref={userVideo}
                 autoPlay
-                style={{ width: "450px" }}
+                style={{ borderRadius: "5px",
+                  padding: "2px",
+                  width: "450px",
+                  border: "1px solid #fff"}}
               />
             ) : null}
           </div>
         </div>
         <div className={classes.myId}>
           <TextField
-            id="filled-basic"
+            id="outlined-basic"
             label="Name"
-            variant="filled"
+            variant="outlined"
+            className={classes.outfield}
             InputProps={{
+              className: classes.txtfield
+            }}
+            InputLabelProps={{
               className: classes.txtfield
             }}
             value={name}
             onChange={(e) => setName(e.target.value)}
             style={{ marginBottom: "20px" }}
           />
-          <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
+          <CopyToClipboard text={me} style={{ marginBottom: "20px", fontFamily:"Poppins" }}>
             <Button
               variant="contained"
-              color="primary"
+              color="white"
               startIcon={<AssignmentIcon fontSize="large" />}
             >
               Copy ID
@@ -163,20 +173,24 @@ const Meeting = () => {
           </CopyToClipboard>
 
           <TextField
-            id="filled-basic"
+            id="outlined-basic"
             label="ID to call"
-            variant="filled"
+            variant="outlined"
+            className={classes.outfield}
             InputProps={{
+              className: classes.txtfield
+            }}
+            InputLabelProps={{
               className: classes.txtfield
             }}
             value={idToCall}
             onChange={(e) => setIdToCall(e.target.value)}
             style={{ marginBottom: "20px" }}
           />
-          <Button variant="contained" color="secondary" onClick={muteVideo} style={{ marginBottom: "10px" }}>
-                {!muteVid ? "Mute Video" : "Unmute"}
+          <Button variant="contained" color="secondary" onClick={muteVideo} style={{ marginBottom: "10px", fontFamily:"Poppins" }}>
+                {!muteVid ? "Disable Video" : "Enable Video"}
           </Button>
-          <Button variant="contained" color="secondary" onClick={muteAudio}>
+          <Button variant="contained" color="secondary" onClick={muteAudio} style={{ fontFamily:"Poppins" }}>
                 {!muteMic ? "Mute Audio" : "Unmute"}
           </Button>
           <div className={classes.callButton}>
@@ -189,22 +203,27 @@ const Meeting = () => {
             </div>
             ) : (
               <IconButton
-                color="primary"
                 aria-label="call"
+                color="primary"
                 onClick={() => callUser(idToCall)}
               >
                 <PhoneIcon fontSize="large" />
               </IconButton>
             )}
-            
+             
           </div>
         </div>
+        <br/>
         <div>
           {receivingCall && !callAccepted ? (
-            <div className="caller">
+            <div className={classes.caller}>
               <h1>{name} is calling...</h1>
-              <Button variant="contained" color="primary" onClick={answerCall}>
+              <Button variant="contained" color="white" onClick={answerCall} style={{ marginBottom: "10px", fontFamily:"Poppins" }}>
                 Answer
+              </Button>
+              <br/>
+              <Button variant="contained" color="white">
+                Reject
               </Button>
             </div>
           ) : null}

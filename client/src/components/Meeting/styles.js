@@ -7,10 +7,10 @@ export const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
       height: '100vh',
       fontFamily: 'Poppins',
-      backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/3.jpg'})`,
+      backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/2.jpg'})`,
       minHeight:'100vh',
       backgroundRepeat: "no-repeat",
-      backgroundSize: "cover"
+      backgroundSize: "cover" 
     },
     container: {
       textAlign: 'center',
@@ -31,7 +31,7 @@ export const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
       alignContent: "center",
       marginLeft: "10rem",
-      height:"20rem"
+      height:"20rem",
     },
     callButton: {
       textAlign: "center",
@@ -42,7 +42,30 @@ export const useStyles = makeStyles((theme) => ({
       color: "#fff"
     },
     txtfield:{
-      color:"#fff"
+      color:"#fff!important",
+      fontFamily:"Poppins"
+    },
+    outfield:{
+      '& label.Mui-focused': {
+        color: 'white',
+      },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: 'white',
+      },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: 'white',
+        },
+        '&:hover fieldset': {
+          borderColor: 'white',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: 'white',
+        },
+      },
+      '& label.Mui-disabled': {
+        color: 'red',
+      },
     }
     
   }));
