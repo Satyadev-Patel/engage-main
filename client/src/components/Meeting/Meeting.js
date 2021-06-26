@@ -11,8 +11,8 @@ import { makeStyles, Grid } from "@material-ui/core";
 import { useStyles } from "./styles";
 
 
-const socket = io.connect("http://localhost:5000");
-//const socket = io("https://polar-journey-62609.herokuapp.com/");
+//const socket = io.connect("http://localhost:5000");
+const socket = io("https://polar-journey-62609.herokuapp.com/");
 
 const Meeting = () => {
   const classes = useStyles();
