@@ -12,9 +12,8 @@ export const useStyles = makeStyles((theme) => ({
       backgroundSize: "cover"
     },
     container:{
-      width:"600px",
+      width:"800px",
       height:"300px",
-      marginRight:"300px"
     },
     appbar: {
         background: 'none',
@@ -32,6 +31,7 @@ export const useStyles = makeStyles((theme) => ({
       paddingBottom:"10px"
     },
     btn:{
+      marginTop:"20px",
       alignItems:"right",
       fontFamily:"Poppins"
     },
@@ -42,18 +42,23 @@ export const useStyles = makeStyles((theme) => ({
     task: {
       alignItems:"right",
       background: "#f4f4f4",
-      margin: "5px",
+      width:"100px",
+      margin: "0px",
       padding: "10px 100px",
-      'h3':{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between"
-      },
+    },
+    head:{
+      marginBottom:"0px",
+      marginRight:"0px",
+      padding:"0px",
+      marginTop:"0px"
     },
     taskBtn:{
-      marginLeft:"100px",
       alignItems:"right",
-      fontFamily:"Poppins"
+      marginLeft:"50px",
+      fontFamily:"Poppins",
+      'h3':{
+        marginTop:"0px"
+      }
     },
     txtfield:{
       color:"#000!important",

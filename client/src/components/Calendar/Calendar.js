@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useStyles } from './styles'
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import axios from "axios"
 import { Button,Grid } from '@material-ui/core';
 import { AppBar, Container, TextField } from '@material-ui/core';
 import { Toolbar } from '@material-ui/core';
-import Task from '../Task';
+import Task from './Task';
 import Day from './Day';
 
 const Calendar = () => {
@@ -35,22 +35,73 @@ const Calendar = () => {
         else{
             setOpen(true);
             setDay(newDay);
+            const requestObj = {email:user["email"], day:day};
+            axios
+                .post("http://localhost:5000/event/events", requestObj)
+                .then(function (response) {
+                    if (response["data"]["msg"] === "success") {
+                        let events = response["data"]["event"];
+                        if(events != null){
+                            events.map((event) => {
+                                delete event._id;
+                                delete event.email;
+                                delete event.createdAt;
+                                delete event.updatedAt;
+                                delete event.__v;
+                            });
+                            events = events.filter((event)=> event.day === newDay);
+                            events.map((event) => {
+                                delete event.day;
+                            });
+                            setTasks(events);
+                        }
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    window.alert("Invalid Credenital!!");
+                });
         }
         setShowTask(false);
     }
     const onSubmit = () => {
-        if(tasks.length == 0){
-            setTasks([values]);
-        }
-        else setTasks([...tasks,values]);
+        setTasks([...tasks,values]);
+        const { meetName,meetTime } = values;
+        const email = user["email"];
+        console.log(email);
+        axios
+            .post("http://localhost:5000/event/add", {
+                email,
+                meetName,
+                meetTime,
+                day,
+            })
+            .then(function (response) {
+                console.log("Success");
+            })
+            .catch(function (error) {
+            console.log(error);
+            });
     }
     const onTaskClick = () => {
         setShowTask(!showTask);
     }
     const onTaskDelete = (name) => {
         setTasks(tasks.filter(
-            (task) => task.meetName !== name
+            (task) => task.meetTime !== name
         ))
+        const requestObj = {meetTime: name, day: day, email: user["email"]};
+        axios
+            .post("http://localhost:5000/event/delete", requestObj)
+            .then(function (response) {
+                if (response["data"]["msg"] === "success") {
+                    console.log("Success");
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                window.alert("Invalid Credenital!!");
+            });
     }
 
     return (
@@ -58,7 +109,7 @@ const Calendar = () => {
             <AppBar className={classes.appbar} elevation={0}>
                 <Toolbar className={classes.appbarWrapper}>
                 <h1 className={classes.appbarTitle}>
-                    Calendar
+                    {user["firstName"]}'s Meetings
                 </h1>
                 </Toolbar>
             </AppBar>
@@ -76,21 +127,20 @@ const Calendar = () => {
                 {open && 
                 <div>
                 <h1>{day}</h1>
-                {tasks.map((task) => (
+                {tasks.length > 0 ? tasks.map((task) => (
                     <Task task={task} classes={classes} onDelete={onTaskDelete}/>
-                ))}
+                )): <h3>You have no meetings on this day.<br/></h3>}
                 <Button
                     variant = "contained"
                     onClick={onTaskClick}
                     className={classes.btn}
                 >
-                    {!showTask ? "Add task" : "Close"}
+                    {!showTask ? <h3 className={classes.head}>Add Meeting</h3> : <h3 className={classes.head}>Close</h3>}
                 </Button>
                 </div>
                 }
-                
-            </Container>
-            <Container>
+                </Container>
+            <Container className={classes.addContainer}>
             {showTask && 
                     <form className={classes.form} noValidate>
                         <TextField 
