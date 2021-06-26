@@ -54,6 +54,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use("/users", require("./routes/user"));
+app.use("/event", require("./routes/event"));
 if( process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));
     app.get('*', (req,res) => {

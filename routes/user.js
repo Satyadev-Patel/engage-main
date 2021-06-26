@@ -10,7 +10,7 @@ router.post("/register", (req, res, next) => {
   if (!req.is("application/json")) {
     return next(new errors.InvalidContentError("Expects 'application/json'"));
   }
-
+ 
   try {
     const data = req.body;
     User.findOne({ email: data["email"] }).then((user) => {
