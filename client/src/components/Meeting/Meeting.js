@@ -8,7 +8,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
 import axios from "axios"
 import io from "socket.io-client";
-import { makeStyles, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { useStyles } from "./styles";
 
 
@@ -201,7 +201,6 @@ const Meeting = () => {
             InputLabelProps={{
               className: classes.txtfield
             }}
-            value={user["firstName"]}
             onChange={(e) => setName(e.target.value)}
             style={{ marginBottom: "20px" }}
           />
