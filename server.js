@@ -12,7 +12,7 @@ dotnev.config({ path: "./config/config.env" });
 app.use(cors());
 
 const io = require("socket.io")(server,{
-    cors: {
+    cors: { 
         origin: "*",
         methods: ["GET","POST"]
     }
@@ -20,7 +20,7 @@ const io = require("socket.io")(server,{
 
 io.on("connection", (socket) => {
     socket.emit("me",socket.id)
-
+   // window.sessionStorage.setItem("callId",socket.id);
     socket.on("disconnect", () => {
         socket.broadcast.emit("callEnded")
     })
@@ -53,6 +53,7 @@ app.use((req, res, next) => {
     );
     next();
 });
+
 app.use("/users", require("./routes/user"));
 app.use("/event", require("./routes/event"));
 if( process.env.NODE_ENV === 'production'){

@@ -37,7 +37,7 @@ const Calendar = () => {
             setDay(newDay);
             const requestObj = {email:user["email"], day:day};
             axios
-                .post("https://polar-journey-62609.herokuapp.com/event/events", requestObj)
+                .post("http://localhost:5000/event/events", requestObj)
                 .then(function (response) {
                     if (response["data"]["msg"] === "success") {
                         let events = response["data"]["event"];
@@ -70,7 +70,7 @@ const Calendar = () => {
         const email = user["email"];
         console.log(email);
         axios
-            .post("https://polar-journey-62609.herokuapp.com/event/add", {
+            .post("http://localhost:5000/event/add", {
                 email,
                 meetName,
                 meetTime,
@@ -92,7 +92,7 @@ const Calendar = () => {
         ))
         const requestObj = {meetTime: name, day: day, email: user["email"]};
         axios
-            .post("https://polar-journey-62609.herokuapp.com/event/delete", requestObj)
+            .post("http://localhost:5000/event/delete", requestObj)
             .then(function (response) {
                 if (response["data"]["msg"] === "success") {
                     console.log("Success");
@@ -126,10 +126,10 @@ const Calendar = () => {
             <Container className={classes.container}>
                 {open && 
                 <div>
-                <h1>{day}</h1>
+                <h1 style={{color:"#2196f3"}}>{day}</h1>
                 {tasks.length > 0 ? tasks.map((task) => (
                     <Task task={task} classes={classes} onDelete={onTaskDelete}/>
-                )): <h3>You have no meetings on this day.<br/></h3>}
+                )): <h3 style={{color:"#fff"}}>You have no meetings on this day.<br/></h3>}
                 <Button
                     variant = "contained"
                     onClick={onTaskClick}

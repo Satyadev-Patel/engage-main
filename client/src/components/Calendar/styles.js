@@ -8,12 +8,14 @@ export const useStyles = makeStyles((theme) => ({
       height: '100vh',
       fontFamily: 'Poppins',
       minHeight:'100vh',
+      backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/2.jpg'})`,
       backgroundRepeat: "no-repeat",
       backgroundSize: "cover"
     },
     container:{
       width:"800px",
       height:"300px",
+      marginRight:"100px"
     },
     appbar: {
         background: 'none',
@@ -24,7 +26,7 @@ export const useStyles = makeStyles((theme) => ({
       },
       appbarTitle: {
         flexGrow: '4',
-        color:'#000',
+        color:'#fff',
         fontSize: "4rem"
       },
     form:{
@@ -41,7 +43,6 @@ export const useStyles = makeStyles((theme) => ({
     },
     task: {
       alignItems:"right",
-      background: "#f4f4f4",
       width:"100px",
       margin: "0px",
       padding: "10px 100px",
@@ -61,26 +62,26 @@ export const useStyles = makeStyles((theme) => ({
       }
     },
     txtfield:{
-      color:"#000!important",
+      color:"#fff!important",
       fontFamily:"Poppins"
     },
     outfield:{
       marginBottom:"10px",
       '& label.Mui-focused': {
-        color: 'black',
+        color: 'white',
       },
       '& .MuiInput-underline:after': {
-        borderBottomColor: 'black',
+        borderBottomColor: 'white',
       },
       '& .MuiOutlinedInput-root': {
         '& fieldset': {
-          borderColor: 'black',
+          borderColor: 'white',
         },
         '&:hover fieldset': {
-          borderColor: 'black',
+          borderColor: 'white',
         },
         '&.Mui-focused fieldset': {
-          borderColor: 'black',
+          borderColor: 'white',
         },
       },
       '& label.Mui-disabled': {

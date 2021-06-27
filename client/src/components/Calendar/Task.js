@@ -7,12 +7,12 @@ const Task = (props) => {
         <div>
             <Grid container spacing = {2}>
                 <Grid item xs = {6} className={classes.task}>
-                    <h3 className={classes.head}>{props.task.meetName}<br/>
+                    <h3 className={classes.head} style={{color:"#fff"}}>{props.task.meetName}<br/>
                     {props.task.meetTime}</h3>
                 </Grid>
                 <Grid item xs = {6} className = {classes.task}>
-                    <Button className={classes.taskBtn} onClick={()=>props.onDelete(props.task.meetTime)}>
-                        <h3 className={classes.head}>Done</h3>
+                    <Button variant = "contained" className={classes.taskBtn} onClick={()=>props.onDelete(props.task.meetTime)}>
+                        <h3 className={classes.head} style={{color:"#000"}}>Done</h3>
                     </Button>
                 </Grid>
             </Grid>

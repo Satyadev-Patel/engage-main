@@ -6,13 +6,14 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
+import axios from "axios"
 import io from "socket.io-client";
 import { makeStyles, Grid } from "@material-ui/core";
 import { useStyles } from "./styles";
 
 
-//const socket = io.connect("http://localhost:5000");
-const socket = io("https://polar-journey-62609.herokuapp.com/");
+const socket = io.connect("http://localhost:5000");
+//const socket = io("https://polar-journey-62609.herokuapp.com/");
 
 const Meeting = () => {
   const classes = useStyles();
@@ -28,11 +29,11 @@ const Meeting = () => {
   const [idToCall, setIdToCall] = useState("");
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState(user["firstName"]);
+  const [inviteEmail,setInviteEmail] = useState("");
 
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
-
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({
@@ -115,6 +116,21 @@ const Meeting = () => {
     stream.getAudioTracks().forEach(track => track.enabled = !track.enabled);
   }
   
+  const sendMail = () => {
+    const requestObj = {text:me, email: inviteEmail, name:user["firstName"]};
+    axios
+        .post("http://localhost:5000/users/send_mail", requestObj)
+        .then(function (response) {
+            if (response["data"]["msg"] === "success") {
+                console.log("Success");
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+            window.alert("Invalid Credenital!!");
+        });
+  }
+
   return (
     <Grid className={classes.root}>
         <div className={classes.videoContainer}>
@@ -130,6 +146,33 @@ const Meeting = () => {
                   width: "450px",
                   border: "1px solid #fff"}}
               />
+            )}
+            {(!callAccepted || callEnded) && (
+              <div>
+              <TextField
+                id="outlined-basic"
+                label="Email"
+                type="email"
+                variant="outlined"
+                className={classes.outfield}
+                InputProps={{
+                  className: classes.txtfield
+                }}
+                InputLabelProps={{
+                  className: classes.txtfield
+                }}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                style={{ marginTop: "20px", width:"450px" }}
+              />
+              <Button
+                variant="contained"
+                color="white"
+                className={classes.btn}
+                onClick = {sendMail}
+              >
+                Send an Invite
+              </Button>
+              </div>
             )}
           </div>
           <div className="video">
@@ -158,7 +201,7 @@ const Meeting = () => {
             InputLabelProps={{
               className: classes.txtfield
             }}
-            value={name}
+            value={user["firstName"]}
             onChange={(e) => setName(e.target.value)}
             style={{ marginBottom: "20px" }}
           />
