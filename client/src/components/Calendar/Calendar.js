@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStyles } from './styles'
 import List from '@material-ui/core/List';
 import axios from "axios"
-import { Button,Grid } from '@material-ui/core';
+import { Button, Grow,Slide } from '@material-ui/core';
 import { AppBar, Container, TextField } from '@material-ui/core';
 import { Toolbar } from '@material-ui/core';
 import Task from './Task';
@@ -15,11 +15,46 @@ const Calendar = () => {
         meetTime: "",
     };
     const [open, setOpen] = useState(false);
+    const [checked, setChecked] = useState(false);
     const [values,setValue] = useState(InitialValues);
     const [tasks,setTasks] = useState([]);
     const [showTask,setShowTask] = useState(false);
     const [day,setDay] = useState('');
     const user = JSON.parse(window.sessionStorage.getItem("user"));
+    const eventData = {Monday:[],Tuesday:[],Wednesday:[],Thursday:[],Friday:[]};
+    const [allEvents,setAllEvents] = useState(eventData);
+    useEffect(() => {
+        setChecked(true);
+        const requestObj = {email:user["email"]};
+        axios
+            .post("http://localhost:5000/event/events", requestObj)
+            .then(function (response) {
+                if (response["data"]["msg"] === "success") {
+                    let events = response["data"]["event"];
+                    if(events != null){
+                        events.map((event) => {
+                            delete event._id;
+                            delete event.email;
+                            delete event.createdAt;
+                            delete event.updatedAt;
+                            delete event.__v;
+                        });
+                        events.forEach(function (value) {
+                            const obj = {meetName:value.meetName,meetTime:value.meetTime};
+                            eventData[value.day].push(obj);
+                        });
+                        events.map((event) => {
+                            delete event.day;
+                        });
+                        setAllEvents(eventData);
+                    }
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                window.alert("Invalid Credenital!!");
+            });
+    }, [])
     const handleChange = (e) => {
         const { id, value } = e.target;
         setValue({
@@ -28,47 +63,23 @@ const Calendar = () => {
         });
     };
     const onCalendarClick = (newDay) => {
-        if(newDay == day){
+        if(newDay === day){
             setOpen(!open);
             setDay('');
         }
         else{
             setOpen(true);
             setDay(newDay);
-            const requestObj = {email:user["email"], day:day};
-            axios
-                .post("http://localhost:5000/event/events", requestObj)
-                .then(function (response) {
-                    if (response["data"]["msg"] === "success") {
-                        let events = response["data"]["event"];
-                        if(events != null){
-                            events.map((event) => {
-                                delete event._id;
-                                delete event.email;
-                                delete event.createdAt;
-                                delete event.updatedAt;
-                                delete event.__v;
-                            });
-                            events = events.filter((event)=> event.day === newDay);
-                            events.map((event) => {
-                                delete event.day;
-                            });
-                            setTasks(events);
-                        }
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    window.alert("Invalid Credenital!!");
-                });
+            console.log(allEvents);
+            setTasks(allEvents[newDay]);
         }
         setShowTask(false);
     }
     const onSubmit = () => {
         setTasks([...tasks,values]);
         const { meetName,meetTime } = values;
+        const obj = {meetName:meetName,meetTime:meetTime};
         const email = user["email"];
-        console.log(email);
         axios
             .post("http://localhost:5000/event/add", {
                 email,
@@ -82,6 +93,8 @@ const Calendar = () => {
             .catch(function (error) {
             console.log(error);
             });
+        allEvents[day].push(obj);
+        setAllEvents(allEvents);
     }
     const onTaskClick = () => {
         setShowTask(!showTask);
@@ -102,6 +115,8 @@ const Calendar = () => {
                 console.log(error);
                 window.alert("Invalid Credenital!!");
             });
+        allEvents[day] = allEvents[day].filter((task) => task.meetTime !== name);
+        setAllEvents(allEvents);
     }
 
     return (
@@ -114,6 +129,7 @@ const Calendar = () => {
                 </Toolbar>
             </AppBar>
             <Container>
+            <Slide direction="right" in={checked} {...(checked ? { timeout: 1000 } : {})} mountOnEnter unmountOnExit>
             <List >
                 <Day day={day} onCalendarClick={onCalendarClick} name="Monday"/>
                 <Day day={day} onCalendarClick={onCalendarClick} name="Tuesday"/>
@@ -121,7 +137,7 @@ const Calendar = () => {
                 <Day day={day} onCalendarClick={onCalendarClick} name="Thursday"/>
                 <Day day={day} onCalendarClick={onCalendarClick} name="Friday"/>
             </List>
-            
+            </Slide>
             </Container>
             <Container className={classes.container}>
                 {open && 
