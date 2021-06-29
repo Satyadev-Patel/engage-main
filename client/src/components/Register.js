@@ -131,7 +131,7 @@ export default function SignUp(props) {
       console.log(values);
       const { firstName, lastName, email, password, mobile } = values;
       axios
-        .post("http://localhost:5000/register", {
+        .post("https://polar-journey-62609.herokuapp.com/users/register", {
           firstName,
           lastName,
           email,

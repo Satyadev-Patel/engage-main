@@ -1,12 +1,13 @@
 
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom"
 import { useState } from "react"
-import Login from "./components/Login"
+import Login from "./components/Login/Login"
 import Meeting from "./components/Meeting/Meeting"
 import Header from "./components/Header/Header"
 import { CssBaseline } from "@material-ui/core"
 import SignUp from "./components/Register"
 import Calendar from "./components/Calendar/Calendar"
+import Home from "./components/Home/Home"
 
 function App() {
   const [Auth, setAuth] = useState(
@@ -22,7 +23,7 @@ function App() {
       <Router>
         <Switch>
 
-          <Route exact path = '/'>
+        <Route exact path = '/'>
             {Auth === "Yes" ? <Header Auth = {Auth} Authenticate={Authenticate}/> 
             : <Redirect to = "/login"/>}
           </Route>
@@ -34,13 +35,17 @@ function App() {
             {Auth === "Yes" ? <Calendar Auth = {Auth} Authenticate={Authenticate}/>
             : <Redirect to = "/login"/>}
           </Route>
-          <Route exact path = '/meeting'>
-            {Auth === "Yes" ? <Meeting Auth = {Auth} Authenticate={Authenticate}/>
-            : <Redirect to = "/login"/>}
+          <Route exact path = '/meeting/:roomID'>
+            {Auth === "Yes" ? <Route exact path = "/meeting/:roomID" Auth = {Auth} Authenticate={Authenticate} component={Meeting}/>
+            : <Redirect to = "/login" />}
           </Route>
           <Route exact path = "/register">
             {Auth === "Yes" ? <Redirect to = "/"/> 
             : <SignUp Auth = {Auth} Authenticate={Authenticate} />}
+          </Route>
+          <Route exact path = '/home'>
+            {Auth === "Yes" ? <Route exact path = "/home" Auth = {Auth} Authenticate={Authenticate} component={Home}/>
+            : <Redirect to = "/login"/>}
           </Route>
         </Switch>
       </ Router>

@@ -7,16 +7,17 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
+import { Container } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { useStyles } from "./styles";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography style={{color:"#fff",fontFamily:"Poppins"}} variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="#">
         Microsoft Teams
@@ -26,40 +27,6 @@ function Copyright() {
     </Typography>
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    fontFamily: 'Poppins',
-    minHeight:'100vh',
-    backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/2.jpg'})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover"
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  glogin:{
-    paddingRight:"10 px"
-  }
-}));
 
 export default function Login(props) {
   const classes = useStyles();
@@ -81,7 +48,7 @@ export default function Login(props) {
   const onSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/users/login", values)
+      .post("https://polar-journey-62609.herokuapp.com/users/login", values)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           window.sessionStorage.setItem("isAuthenticate", "Yes");
@@ -101,20 +68,22 @@ export default function Login(props) {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
+      <Grid item xs={12} sm={8} md={5} elevation={6} square>
+        <Container style={{alignItems:"center"}}>
+          <h1 style={{color:"#fff", alignItems:"center", fontSize:"3rem"}}>Sign In</h1>
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
-              required
               fullWidth
+              required
+              className={classes.outfield}
+              InputProps={{
+                className: classes.txtfield
+              }}
+              InputLabelProps={{
+                  className: classes.txtfield
+              }}
               id="email"
               label="Email Address"
               name="email"
@@ -126,6 +95,13 @@ export default function Login(props) {
               margin="normal"
               required
               fullWidth
+              className={classes.outfield}
+              InputProps={{
+                className: classes.txtfield
+              }}
+              InputLabelProps={{
+                  className: classes.txtfield
+              }}
               name="password"
               label="Password"
               type="password"
@@ -134,27 +110,28 @@ export default function Login(props) {
               onChange={handleChange}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" style={{color:"#fff"}} />}
               label="Remember me"
-            />
+              style ={{color:"#fff", fontFamily:"Poppins"}}
+            /><br/>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
+              className={classes.formBtn}
               onClick={onSubmit}
             >
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link style={{color:"#fff",fontFamily:"Poppins"}} href="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/register" variant="body2">
+                <Link style={{color:"#fff",fontFamily:"Poppins"}} href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -163,7 +140,7 @@ export default function Login(props) {
               <Copyright />
             </Box>
           </form>
-        </div>
+        </Container>
       </Grid>
     </Grid>
   );

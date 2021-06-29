@@ -27,7 +27,7 @@ const Calendar = () => {
         setChecked(true);
         const requestObj = {email:user["email"]};
         axios
-            .post("http://localhost:5000/event/events", requestObj)
+            .post("https://polar-journey-62609.herokuapp.com/event/events", requestObj)
             .then(function (response) {
                 if (response["data"]["msg"] === "success") {
                     let events = response["data"]["event"];
@@ -81,7 +81,7 @@ const Calendar = () => {
         const obj = {meetName:meetName,meetTime:meetTime};
         const email = user["email"];
         axios
-            .post("http://localhost:5000/event/add", {
+            .post("https://polar-journey-62609.herokuapp.com/event/add", {
                 email,
                 meetName,
                 meetTime,
@@ -105,7 +105,7 @@ const Calendar = () => {
         ))
         const requestObj = {meetTime: name, day: day, email: user["email"]};
         axios
-            .post("http://localhost:5000/event/delete", requestObj)
+            .post("https://polar-journey-62609.herokuapp.com/event/delete", requestObj)
             .then(function (response) {
                 if (response["data"]["msg"] === "success") {
                     console.log("Success");

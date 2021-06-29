@@ -27,7 +27,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     videoContainer:{
       display: "grid",
-      gridTemplateColumns: "1fr 1fr",
+      gridTemplateColumns: "2fr 2fr",
       justifyContent: "center",
       alignContent: "center",
       marginLeft: "10rem",

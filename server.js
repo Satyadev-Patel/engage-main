@@ -18,20 +18,49 @@ const io = require("socket.io")(server,{
     }
 })
 
+const users = {};
+
+const socketToRoom = {};
 io.on("connection", (socket) => {
-    socket.emit("me",socket.id)
-    
-    socket.on("disconnect", () => {
-        socket.broadcast.emit("callEnded")
-    })
+    socket.on("join room", userDetail => {
+        roomID=userDetail.room;
+        const info={
+            socketID:socket.id,
+            name:userDetail.name,
+        }
+        if (users[roomID]) {
+            const length = users[roomID].length;
+            if (length === 4) {
+                socket.emit("room full");
+                return;
+            }
+            users[roomID].push(info);
+        } else {
+            users[roomID] = [info];
+        }
+        socketToRoom[socket.id] = roomID;
+        const usersInThisRoom = users[roomID].filter((X) => X.socketID !== socket.id);
+        socket.emit("all users", usersInThisRoom);
+    });
 
-    socket.on("callUser", (data) => {
-        io.to(data.userToCall).emit("callUser",{signal: data.signalData,from: data.from, name:data.name})
-    })
+    socket.on("sending signal", payload => {
+        io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID, name:payload.name, GID: payload.GID });
+    });
 
-    socket.on("answerCall", (data) =>{
-        io.to(data.to).emit("callAccepted",data.signal)
-    })
+    socket.on("returning signal", payload => {
+        io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
+    });
+
+    socket.on('disconnect', () => {
+        //console.log("Called....");
+        const roomID = socketToRoom[socket.id];
+        let room = users[roomID];
+        if (room) {
+            room = room.filter((row) => row.socketID !== socket.id);
+            users[roomID] = room;
+        }
+        socket.broadcast.emit('user left',socket.id);
+    });
 })
 
 require("./config/passport")(passport);

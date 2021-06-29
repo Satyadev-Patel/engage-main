@@ -31,7 +31,7 @@ export default function Header(props) {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <ListItemLink href="/meeting">
+        <ListItemLink href="/home">
           <h3>Join or Create a Meeting</h3>
         </ListItemLink>
         <ListItemLink href="/calendar">
