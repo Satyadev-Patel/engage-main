@@ -1,5 +1,10 @@
 import { makeStyles } from '@material-ui/styles';
-
+{/* <Button variant="contained" color="primary" onClick={muteAudio} className={classes.btn}>
+                   {!muteMic ? "Mute" : "Unmute"}
+        </Button><br/>
+        <Button variant="contained" color="primary" onClick={muteVideo} className={classes.btn}>
+                   {!muteVid ? "Disable Video" : "Enable Video"}
+        </Button><br/> */}
 export const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -35,6 +40,8 @@ export const useStyles = makeStyles((theme) => ({
     },
     btn:{
       marginTop:"10px",
+      marginBottom:"10px",
+      marginLeft:"10px",
       alignItems:"right",
       fontFamily:"Poppins"
     },

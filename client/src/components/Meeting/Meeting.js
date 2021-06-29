@@ -20,8 +20,8 @@ const Video = (props) => {
   return (
       <Grid item>
           <video
-          playsInline muted ref={ref} autoPlay style={{ borderRadius: "5px",padding: "2px",width: "300px",border: "1px solid #fff"}}/>
-          <Typography style={{color : "#fff"}}>{props.peer.name}</Typography>
+          playsInline ref={ref} autoPlay style={{ borderRadius: "5px",padding: "2px",width: "300px",border: "1px solid #fff"}}/>
+          <Typography style={{color : "#fff",fontFamily:"Poppins"}}>{props.peer.name}</Typography>
       </Grid>
       
   );
@@ -37,6 +37,7 @@ const Meeting = (props) => {
   const [peers, setPeers] = useState([]);
   const socketRef = useRef();
   const peersRef = useRef([]);
+  const [stream, setStream] = useState();
   const roomID = props.match.params.roomID;;
   const userDetail={
     room:roomID,
@@ -55,6 +56,7 @@ console.log(userDetail);
     socketRef.current = io.connect("https://polar-journey-62609.herokuapp.com/");
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
         userVideo.current.srcObject = stream;
+        setStream(stream);
         socketRef.current.emit("join room", userDetail);
         socketRef.current.on("all users", users => {
             const peers = [];
@@ -147,20 +149,37 @@ console.log(userDetail);
         setAudio(true);
     }
   }
+  const muteVideo = () => {
+    stream.getVideoTracks().forEach(track => track.enabled = !track.enabled);
+    setMuteVid(!muteVid);
+  }
+
+  const muteAudio = () => {
+    setMuteMic(!muteMic);
+    stream.getAudioTracks().forEach(track => track.enabled = !track.enabled);
+  }
   return (
     <div className={classes.root}>
-        <Button variant="contained" color="primary" onClick={HandleAudio}>
+        <List>
+        <Button variant="contained" color="primary" onClick={HandleAudio} className={classes.btn}>
                    {isAudio?"Leave Stream":"Join Stream"}
         </Button>
+        {isAudio && <><Button variant="contained" color="primary" onClick={muteAudio} className={classes.btn}>
+                   {!muteMic ? "Mute" : "Unmute"}
+        </Button><br/>
+        <Button variant="contained" color="primary" onClick={muteVideo} className={classes.btn}>
+                   {!muteVid ? "Disable Video" : "Enable Video"}
+        </Button><br/></>}
+        </List>
         <Container className={classes.videoContainer}>
                 {isAudio?
                     <>
-                        <video
-                            playsInline 
-                            muted 
+                        <Grid item><video
+                            playsInline
                             ref={userVideo} 
                             autoPlay 
                             style={{ borderRadius: "5px",padding: "2px",width: "300px",border: "1px solid #fff"}}/>
+                            <Typography style={{color : "#fff", fontFamily:"Poppins"}}>You</Typography></Grid>
                             
                         {peersRef.current.map((peer, index) => {
                             return (
