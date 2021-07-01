@@ -39,7 +39,7 @@ export default function Login(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setValue({
+    setValue({ 
       ...values,
       [name]: value,
     });

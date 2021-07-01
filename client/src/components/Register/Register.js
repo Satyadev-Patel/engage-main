@@ -9,56 +9,22 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { useStyles } from "./styles";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography variant="body2" color="textSecondary" align="center" style ={{fontFamily:"Poppins", color:"#fff", marginTop:"20px"}}>
       {"Copyright © "}
       <Link color="inherit" href="#">
-        My Website
+        Microsoft Teams
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        fontFamily: 'Poppins',
-        minHeight:'100vh',
-        backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/2.jpg'})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover"
-      },
-      paper: {
-        margin: theme.spacing(8, 4),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      },
-      avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: "theme.palette.secondary.main",
-      },
-      form: {
-        width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-      },
-      submit: {
-        margin: theme.spacing(3, 0, 2),
-      },
-  txtfield:{
-    color: "#fff"
-  }
-}));
 
 export default function SignUp(props) {
   const classes = useStyles();
@@ -160,20 +126,22 @@ export default function SignUp(props) {
   };
 
   return (
+    <div className={classes.root}>
     <Container component="main" maxWidth="xs" backgroundColor="#fff">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
+        <h1 style={{color:"#fff", alignItems:"center", fontSize:"3rem"}}>Sign Up</h1>
         <form className={classes.form} noValidate>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
               <TextField
-                className={classes.txtfield}
+                className={classes.outfield}
+                InputProps={{
+                  className: classes.txtfield
+                }}
+                InputLabelProps={{
+                    className: classes.txtfield
+                }}
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
@@ -192,6 +160,13 @@ export default function SignUp(props) {
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
+                className={classes.outfield}
+                InputProps={{
+                  className: classes.txtfield
+                }}
+                InputLabelProps={{
+                    className: classes.txtfield
+                }}
                 required
                 fullWidth
                 id="lastName"
@@ -208,6 +183,13 @@ export default function SignUp(props) {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
+                className={classes.outfield}
+                InputProps={{
+                  className: classes.txtfield
+                }}
+                InputLabelProps={{
+                    className: classes.txtfield
+                }}
                 required
                 fullWidth
                 id="email"
@@ -224,6 +206,13 @@ export default function SignUp(props) {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
+                className={classes.outfield}
+                InputProps={{
+                  className: classes.txtfield
+                }}
+                InputLabelProps={{
+                    className: classes.txtfield
+                }}
                 required
                 fullWidth
                 name="password"
@@ -245,6 +234,13 @@ export default function SignUp(props) {
                 fullWidth
                 name="cnfpassword"
                 label="Confirm Password"
+                className={classes.outfield}
+                InputProps={{
+                  className: classes.txtfield
+                }}
+                InputLabelProps={{
+                    className: classes.txtfield
+                }}
                 type="password"
                 id="cnfpassword"
                 autoComplete="current-password"
@@ -260,6 +256,13 @@ export default function SignUp(props) {
                 variant="outlined"
                 required
                 fullWidth
+                className={classes.outfield}
+                InputProps={{
+                  className: classes.txtfield
+                }}
+                InputLabelProps={{
+                    className: classes.txtfield
+                }}
                 name="mobile"
                 label="Mobile"
                 type="number"
@@ -272,25 +275,19 @@ export default function SignUp(props) {
                 })}
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid>
           </Grid>
           <Button
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            className={classes.formBtn}
             onClick={onSubmit}
           >
             Sign Up
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link href="/login" variant="body2" style ={{fontFamily:"Poppins", color:"#fff",marginBottom:"10px"}}>
                 Already have an account? Sign in
               </Link>
             </Grid>
@@ -299,5 +296,6 @@ export default function SignUp(props) {
       </div>
         <Copyright />
     </Container>
+    </div>
   );
 }

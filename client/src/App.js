@@ -5,7 +5,7 @@ import Login from "./components/Login/Login"
 import Meeting from "./components/Meeting/Meeting"
 import Header from "./components/Header/Header"
 import { CssBaseline } from "@material-ui/core"
-import SignUp from "./components/Register"
+import SignUp from "./components/Register/Register"
 import Calendar from "./components/Calendar/Calendar"
 import Home from "./components/Home/Home"
 
