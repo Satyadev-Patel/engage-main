@@ -57,7 +57,6 @@ router.post("/send_mail", (req, res, next) => {
       text: `You have been invited to ${data["name"]}'s room.\n Room id : ${data["text"]}\n 
             App link: http://localhost:3000/`
     }, function (err, res, full) {
-      console.log(err,res,full);
       if (err) return console.log('* [example 1.1] send() callback returned: err:', err);
       console.log('* [example 1.1] send() callback returned: res:', res);
     }); 

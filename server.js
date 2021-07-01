@@ -21,7 +21,9 @@ const io = require("socket.io")(server,{
 const users = {};
 
 const socketToRoom = {};
+
 io.on("connection", (socket) => {
+    console.log(users);
     socket.on("join room", userDetail => {
         roomID=userDetail.room;
         const info={
@@ -82,7 +84,20 @@ app.use((req, res, next) => {
     );
     next();
 });
-
+app.post("/find_id",(req,res,next)=>{
+    if (!req.is("application/json")) {
+        return next(new errors.InvalidContentError("Expects 'application/json'"));
+    }
+    try {
+    const data = req.body;
+        if(users[data["roomID"]]){
+            res.send(201);
+        }
+        else res.send("ID not found");
+    } catch (err) {
+        res.render("error/500");
+    }
+})
 app.use("/users", require("./routes/user"));
 app.use("/event", require("./routes/event"));
 if( process.env.NODE_ENV === 'production'){
