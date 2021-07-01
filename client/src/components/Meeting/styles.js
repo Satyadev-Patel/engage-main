@@ -40,7 +40,7 @@ export const useStyles = makeStyles((theme) => ({
       gridTemplateColumns: "2fr 2fr",
       justifyContent: "center",
       alignContent: "center",
-      marginLeft: "10rem",
+      marginLeft: "100px",
       height:"20rem", 
     },
     gridList:{
@@ -52,7 +52,7 @@ export const useStyles = makeStyles((theme) => ({
       marginTop:"10px",
       marginBottom:"10px",
       marginLeft:"10px",
-      width:"100%",
+      width:"50%",
       alignItems:"right",
       fontFamily:"Poppins"
     },

@@ -20,7 +20,7 @@ const Video = (props) => {
   return (
       <Grid item>
           <video
-          playsInline ref={ref} autoPlay style={{ borderRadius: "5px",padding: "2px",width: "300px",border: "1px solid #fff"}}/>
+          playsInline ref={ref} autoPlay style={{ borderRadius: "5px",padding: "2px",width: "300px",border: "1px solid #fff",transform:"rotateY(180deg)"}}/>
           <Typography style={{color : "#fff",fontFamily:"Poppins"}}>{props.peer.name}</Typography>
       </Grid>
       
@@ -177,13 +177,38 @@ const Meeting = (props) => {
         {isAudio && 
         <Button variant="contained" style={{backgroundColor:"#FF2E2E", color:"white"}} onClick={HandleAudio} className={classes.btn}>
             <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>Leave Stream</h3>  
-        </Button>}
+        </Button>}<br/>
         {isAudio && <><Button variant="contained" color="primary" onClick={muteAudio} className={classes.btn}>
                    <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>{!muteMic ? "Mute" : "Unmute"}</h3>
         </Button><br/>
         <Button variant="contained" color="primary" onClick={muteVideo} className={classes.btn}>
                     <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>{!muteVid ? "Disable Video" : "Enable Video"}</h3>
-        </Button><br/></>}
+        </Button><br/>
+        {isAudio &&(<>
+            <TextField
+                id="outlined-basic"
+                label="Email"
+                type="email"
+                variant="outlined"
+                className={classes.outfield}
+                InputProps={{
+                    className: classes.txtfield
+                }}
+                InputLabelProps={{
+                    className: classes.txtfield
+                }}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                style={{ marginTop: "20px",marginLeft:"10px", width:"300px" }}
+            /><br/>
+            <Button
+                variant="contained"
+                color="white"
+                className={classes.btn}
+                style={{width:"50%"}}
+                onClick = {sendMail}
+                >
+                <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>Send an Invite</h3>
+            </Button></>)}<br/></>}
         </List>
         <Container className={classes.videoContainer}>
                 {isAudio?
@@ -193,7 +218,7 @@ const Meeting = (props) => {
                             playsInline
                             ref={userVideo} 
                             autoPlay 
-                            style={{ borderRadius: "5px",padding: "2px",width: "300px",border: "1px solid #fff"}}/>
+                            style={{ borderRadius: "5px",padding: "2px",width: "300px",border: "1px solid #fff", transform:"rotateY(180deg)"}}/>
                             <Typography style={{color : "#fff", fontFamily:"Poppins"}}>You</Typography></Grid>
                             
                         {peersRef.current.map((peer, index) => {
@@ -210,32 +235,8 @@ const Meeting = (props) => {
                     </Button> 
                 </div>                
                 }
-        </Container><br/>
-        {isAudio &&(<Container style={{marginLeft:"100px"}}>
-            <TextField
-                id="outlined-basic"
-                label="Email"
-                type="email"
-                variant="outlined"
-                className={classes.outfield}
-                InputProps={{
-                    className: classes.txtfield
-                }}
-                InputLabelProps={{
-                    className: classes.txtfield
-                }}
-                onChange={(e) => setInviteEmail(e.target.value)}
-                style={{ marginTop: "20px", width:"300px" }}
-            /><br/>
-            <Button
-                variant="contained"
-                color="white"
-                className={classes.btn}
-                style={{width:"50%"}}
-                onClick = {sendMail}
-                >
-                <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>Send an Invite</h3>
-            </Button></Container>)}
+        </Container>
+        
    </Grid>
 );
 };
