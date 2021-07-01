@@ -5,8 +5,8 @@ import { Container, Grid } from "@material-ui/core";
 import { useStyles } from "./styles";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import{ Card, List, ListItem,Typography, Divider, ListItemText} from '@material-ui/core';
-import { v1 as uuid } from "uuid";
+import{ Card, List, ListItem,Typography, TextField, ListItemText} from '@material-ui/core';
+import axios from "axios";
 
 const Video = (props) => {
   const ref = useRef();
@@ -38,22 +38,36 @@ const Meeting = (props) => {
   const socketRef = useRef();
   const peersRef = useRef([]);
   const [stream, setStream] = useState();
-  const roomID = props.match.params.roomID;;
+  const [inviteEmail,setInviteEmail] = useState("");
+  const roomID = props.match.params.roomID;
   const userDetail={
     room:roomID,
     name:user["firstName"],
-}
-console.log(userDetail);
+  }
   useEffect(()=>{
     window.onbeforeunload =()=>{
        if(socketRef.current){
            socketRef.current.close();
        } 
        setPeers([]);
+       
     }
   })
+  const sendMail = () => {
+    const requestObj = {text:roomID, email: inviteEmail, name:user["firstName"]};
+    axios
+        .post("http://localhost:5000/users/send_mail", requestObj)
+        .then(function (response) {
+            console.log(response["data"]["msg"]);
+        })
+        .catch(function (error) {
+            console.log(error);
+            window.alert("Invalid Credenital!!");
+        });
+  }
+
   const wantsToJoin=()=>{
-    socketRef.current = io.connect("https://polar-journey-62609.herokuapp.com/");
+    socketRef.current = io.connect("http://localhost:5000/");
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
         userVideo.current.srcObject = stream;
         setStream(stream);
@@ -91,7 +105,6 @@ console.log(userDetail);
         });
 
         socketRef.current.on("user left",id=>{
-            console.log("Called...");
             const peerObj=peersRef.current.find(p=>p.peerID===id);
             if(peerObj){
                 peerObj.peer.destroy();
@@ -159,22 +172,24 @@ console.log(userDetail);
     stream.getAudioTracks().forEach(track => track.enabled = !track.enabled);
   }
   return (
-    <div className={classes.root}>
-        <List>
-        <Button variant="contained" color="primary" onClick={HandleAudio} className={classes.btn}>
-                   {isAudio?"Leave Stream":"Join Stream"}
-        </Button>
+    <Grid className={classes.root}>
+        <List style ={{width:"40%"}}>
+        {isAudio && 
+        <Button variant="contained" style={{backgroundColor:"#FF2E2E", color:"white"}} onClick={HandleAudio} className={classes.btn}>
+            <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>Leave Stream</h3>  
+        </Button>}
         {isAudio && <><Button variant="contained" color="primary" onClick={muteAudio} className={classes.btn}>
-                   {!muteMic ? "Mute" : "Unmute"}
+                   <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>{!muteMic ? "Mute" : "Unmute"}</h3>
         </Button><br/>
         <Button variant="contained" color="primary" onClick={muteVideo} className={classes.btn}>
-                   {!muteVid ? "Disable Video" : "Enable Video"}
+                    <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>{!muteVid ? "Disable Video" : "Enable Video"}</h3>
         </Button><br/></>}
         </List>
         <Container className={classes.videoContainer}>
                 {isAudio?
-                    <>
-                        <Grid item><video
+                
+                    <><Grid item>
+                        <video
                             playsInline
                             ref={userVideo} 
                             autoPlay 
@@ -187,10 +202,41 @@ console.log(userDetail);
                             );
                         })}
                     </>
-                :null}
-       </Container>
-
-   </div>
+                :<div>
+                    
+                <h1 className={classes.title}>Welcome, {user["firstName"]}</h1>
+                <Button variant="contained" color="primary" onClick={HandleAudio} className={classes.btn} style={{width:"40%"}}>
+                        <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>Join Stream</h3>  
+                    </Button> 
+                </div>                
+                }
+        </Container><br/>
+        {isAudio &&(<Container style={{marginLeft:"100px"}}>
+            <TextField
+                id="outlined-basic"
+                label="Email"
+                type="email"
+                variant="outlined"
+                className={classes.outfield}
+                InputProps={{
+                    className: classes.txtfield
+                }}
+                InputLabelProps={{
+                    className: classes.txtfield
+                }}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                style={{ marginTop: "20px", width:"300px" }}
+            /><br/>
+            <Button
+                variant="contained"
+                color="white"
+                className={classes.btn}
+                style={{width:"50%"}}
+                onClick = {sendMail}
+                >
+                <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>Send an Invite</h3>
+            </Button></Container>)}
+   </Grid>
 );
 };
 

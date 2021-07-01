@@ -2,6 +2,7 @@ import Button from "@material-ui/core/Button"
 import { TextField,Grid,Container } from "@material-ui/core";
 import { useState } from "react";
 import { useStyles } from "./styles";
+import axios from "axios";
 import {v1 as uuid} from "uuid";
 const Home = (props) => {
     const classes = useStyles();
@@ -13,7 +14,21 @@ const Home = (props) => {
         props.history.push(`/meeting/${idd}`);
     }
     const join = () => {
-        props.history.push(`/meeting/${id}`);
+        const values = {roomID:id};
+        axios
+            .post("http://localhost:5000/find_id", values)
+            .then(function (response) {
+                if(response["data"] == "ID not found"){
+                    window.alert(response["data"]);
+                }
+                else{
+                    props.history.push(`/meeting/${id}`);
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                window.alert("Invalid Credenital!!");
+            });
     }
     return (
         <div className={classes.root}>

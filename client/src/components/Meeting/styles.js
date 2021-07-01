@@ -17,6 +17,11 @@ export const useStyles = makeStyles((theme) => ({
       backgroundRepeat: "no-repeat",
       backgroundSize: "cover" 
     },
+    title: {
+      paddingBottom:"40px",
+      color: '#fff',
+      fontSize: '4rem',
+    },
     container: {
       textAlign: 'center',
       gridTemplateColumns: "7fr 3fr",
@@ -38,10 +43,16 @@ export const useStyles = makeStyles((theme) => ({
       marginLeft: "10rem",
       height:"20rem", 
     },
+    gridList:{
+      width:"900px",
+      height:"300px",
+      marginLeft:"100px"
+    },
     btn:{
       marginTop:"10px",
       marginBottom:"10px",
       marginLeft:"10px",
+      width:"100%",
       alignItems:"right",
       fontFamily:"Poppins"
     },
