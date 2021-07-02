@@ -19,11 +19,33 @@ const io = require("socket.io")(server,{
 })
 
 const users = {};
-
+const chat_users = {};
+const chat_socketToRoom = {};
 const socketToRoom = {};
 
 io.on("connection", (socket) => {
-    console.log(users);
+    socket.on('join chat room',userDetail=>{
+        roomNo=userDetail.room;
+        const info={
+            name:userDetail.name,
+            socketID:socket.id,
+        }
+        
+        if(chat_users[roomNo]){
+            chat_users[roomNo].push(info);
+        }
+        else{
+            chat_users[roomNo]=[info];
+        }
+        chat_socketToRoom[socket.id]=roomNo;
+    });
+
+    socket.on('send msg',(data)=>{
+        chat_users[chat_socketToRoom[socket.id]].forEach(element => {
+            io.to(element.socketID).emit('recevied msg',data);
+        });
+      //  io.emit('recevied msg',data);
+    })
     socket.on("join room", userDetail => {
         roomID=userDetail.room;
         const info={

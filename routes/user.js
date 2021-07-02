@@ -11,11 +11,6 @@ const send = require('gmail-send')({
   user: credentials.user,
   pass: credentials.pass,  
 });
-const sendMail = () => {
-  console.log("Success");
-  
-}
-
 
 router.post("/register", (req, res, next) => {
   if (!req.is("application/json")) {
@@ -71,7 +66,6 @@ router.post("/send_mail", (req, res, next) => {
 });
 
 router.post("/login", passport.authenticate("local"), (req, res, next) => {
-  console.log("You made it!!");
   const obj = {
     msg: "success",
     user: req.user,

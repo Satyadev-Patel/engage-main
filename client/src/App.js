@@ -8,6 +8,7 @@ import { CssBaseline } from "@material-ui/core"
 import SignUp from "./components/Register/Register"
 import Calendar from "./components/Calendar/Calendar"
 import Home from "./components/Home/Home"
+import Chat from "./components/Chat/Chat"
 
 function App() {
   const [Auth, setAuth] = useState(
@@ -45,6 +46,10 @@ function App() {
           </Route>
           <Route exact path = '/home'>
             {Auth === "Yes" ? <Route exact path = "/home" Auth = {Auth} Authenticate={Authenticate} component={Home}/>
+            : <Redirect to = "/login"/>}
+          </Route>
+          <Route exact path = '/chat'>
+            {Auth === "Yes" ? <Route exact path = "/chat" Auth = {Auth} Authenticate={Authenticate} component={Chat}/>
             : <Redirect to = "/login"/>}
           </Route>
         </Switch>

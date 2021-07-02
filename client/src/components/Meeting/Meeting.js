@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import{ Card, List, ListItem,Typography, TextField, ListItemText} from '@material-ui/core';
 import axios from "axios";
+import Chat from "../Chat/Chat";
 
 const Video = (props) => {
   const ref = useRef();
@@ -31,10 +32,12 @@ const Meeting = (props) => {
   const classes = useStyles();
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const userVideo = useRef();
+  const [joinChat,setJoinChat] = useState(false);
   const [muteVid,setMuteVid] = useState(false)
   const [muteMic,setMuteMic] = useState(false)
   const [isAudio,setAudio]=useState(false);
   const [peers, setPeers] = useState([]);
+  const [fullRoom,setFullRoom] = useState(false);
   const socketRef = useRef();
   const peersRef = useRef([]);
   const [stream, setStream] = useState();
@@ -119,6 +122,9 @@ const Meeting = (props) => {
             peersRef.current=peers;
             setPeers(remaining);
         })
+        socketRef.current.on("room full",()=>{
+            setFullRoom(true);
+        })
 
     })
   }
@@ -151,6 +157,11 @@ const Meeting = (props) => {
 
     return peer;
   }
+  const joinchat = () => {
+    socketRef.current = io.connect("http://localhost:5000/");
+    socketRef.current.emit("join chat room",userDetail);
+    setJoinChat(true);
+  }
   const HandleAudio=()=>{
     //Wants To Leave
     if(isAudio){
@@ -173,6 +184,7 @@ const Meeting = (props) => {
   }
   return (
     <Grid className={classes.root}>
+        {fullRoom ? <h1 style={{color:"#fff"}}>Room is full</h1> :<>
         <List style ={{width:"40%"}}>
         {isAudio && 
         <Button variant="contained" style={{backgroundColor:"#FF2E2E", color:"white"}} onClick={HandleAudio} className={classes.btn}>
@@ -236,7 +248,13 @@ const Meeting = (props) => {
                 </div>                
                 }
         </Container>
-        
+        { <Container>
+            {(joinChat && isAudio) && <Chat room={roomID}/> }
+            {!joinChat && isAudio && <Button variant="contained" color="primary" onClick={joinchat} className={classes.btn} style={{width:"40%"}}>
+                        <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>Join Chat</h3>  
+                    </Button> }
+        </Container> }
+        </>}
    </Grid>
 );
 };
