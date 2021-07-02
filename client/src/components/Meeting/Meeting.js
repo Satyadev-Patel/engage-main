@@ -229,7 +229,8 @@ const Meeting = (props) => {
                         <video
                             playsInline
                             ref={userVideo} 
-                            autoPlay 
+                            autoPlay
+                            muted
                             style={{ borderRadius: "5px",padding: "2px",width: "300px",border: "1px solid #fff", transform:"rotateY(180deg)"}}/>
                             <Typography style={{color : "#fff", fontFamily:"Poppins"}}>You</Typography></Grid>
                             

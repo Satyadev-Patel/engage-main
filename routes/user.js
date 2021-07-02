@@ -50,7 +50,7 @@ router.post("/send_mail", (req, res, next) => {
       to: data["email"],
       subject:"Room Invitation",
       text: `You have been invited to ${data["name"]}'s room.\n Room id : ${data["text"]}\n 
-            App link: http://localhost:3000/`
+            App link: https://polar-journey-62609.herokuapp.com/`
     }, function (err, res, full) {
       if (err) return console.log('send() callback returned: err:', err);
       console.log('send() callback returned: res:', res);
