@@ -59,7 +59,7 @@ const Meeting = (props) => {
   const sendMail = () => {
     const requestObj = {text:roomID, email: inviteEmail, name:user["firstName"]};
     axios
-        .post("http://localhost:5000/users/send_mail", requestObj)
+        .post("https://polar-journey-62609.herokuapp.com/users/send_mail", requestObj)
         .then(function (response) {
             console.log(response["data"]["msg"]);
         })
@@ -70,7 +70,7 @@ const Meeting = (props) => {
   }
 
   const wantsToJoin=()=>{
-    socketRef.current = io.connect("http://localhost:5000/");
+    socketRef.current = io.connect("https://polar-journey-62609.herokuapp.com/");
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
         userVideo.current.srcObject = stream;
         setStream(stream);
@@ -158,7 +158,7 @@ const Meeting = (props) => {
     return peer;
   }
   const joinchat = () => {
-    socketRef.current = io.connect("http://localhost:5000/");
+    socketRef.current = io.connect("https://polar-journey-62609.herokuapp.com/");
     socketRef.current.emit("join chat room",userDetail);
     setJoinChat(true);
   }

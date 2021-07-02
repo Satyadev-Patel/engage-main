@@ -18,7 +18,7 @@ const Chat = (props) => {
     useEffect(() => {
        
 
-        socketRef.current=io.connect("http://localhost:5000/");
+        socketRef.current=io.connect("https://polar-journey-62609.herokuapp.com/");
         socketRef.current.emit("join chat room",userDetail);
 
         socketRef.current.on('recevied msg',(data)=>{

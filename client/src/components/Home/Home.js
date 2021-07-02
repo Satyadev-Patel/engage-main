@@ -16,7 +16,7 @@ const Home = (props) => {
     const join = () => {
         const values = {roomID:id};
         axios
-            .post("http://localhost:5000/find_id", values)
+            .post("https://polar-journey-62609.herokuapp.com/find_id", values)
             .then(function (response) {
                 if(response["data"] == "ID not found"){
                     window.alert(response["data"]);
