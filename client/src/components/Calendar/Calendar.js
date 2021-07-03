@@ -27,7 +27,7 @@ const Calendar = () => {
         setChecked(true);
         const requestObj = {email:user["email"]};
         axios
-            .post("https://polar-journey-62609.herokuapp.com/event/events", requestObj)
+            .post("http://localhost:5000/event/events", requestObj)
             .then(function (response) {
                 if (response["data"]["msg"] === "success") {
                     let events = response["data"]["event"];
@@ -81,7 +81,7 @@ const Calendar = () => {
         const obj = {meetName:meetName,meetTime:meetTime};
         const email = user["email"];
         axios
-            .post("https://polar-journey-62609.herokuapp.com/event/add", {
+            .post("http://localhost:5000/event/add", {
                 email,
                 meetName,
                 meetTime,
@@ -105,7 +105,7 @@ const Calendar = () => {
         ))
         const requestObj = {meetTime: name, day: day, email: user["email"]};
         axios
-            .post("https://polar-journey-62609.herokuapp.com/event/delete", requestObj)
+            .post("http://localhost:5000/event/delete", requestObj)
             .then(function (response) {
                 if (response["data"]["msg"] === "success") {
                     console.log("Success");
@@ -139,8 +139,9 @@ const Calendar = () => {
             </List>
             </Slide>
             </Container>
+            
             <Container className={classes.container}>
-                {open && 
+                {open &&
                 <div>
                 <h1 style={{color:"#2196f3"}}>{day}</h1>
                 {tasks.length > 0 ? tasks.map((task) => (
@@ -155,7 +156,11 @@ const Calendar = () => {
                 </Button>
                 </div>
                 }
-                </Container>
+                
+            </Container>
+            {!open && 
+                <div style={{alignItems:"center"}}><h1 style={{color:"white",width:"700px"}}>Please select a day to view your meetings</h1></div>
+            }
             <Container className={classes.addContainer}>
             {showTask && 
                     <form className={classes.form} noValidate>
