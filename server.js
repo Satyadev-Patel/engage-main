@@ -24,27 +24,10 @@ const chat_socketToRoom = {};
 const socketToRoom = {};
 
 io.on("connection", (socket) => {
-    socket.on('join chat room',userDetail=>{
-        roomNo=userDetail.room;
-        const info={
-            name:userDetail.name,
-            socketID:socket.id,
-        }
-        
-        if(chat_users[roomNo]){
-            chat_users[roomNo].push(info);
-        }
-        else{
-            chat_users[roomNo]=[info];
-        }
-        chat_socketToRoom[socket.id]=roomNo;
-    });
-
     socket.on('send msg',(data)=>{
         chat_users[chat_socketToRoom[socket.id]].forEach(element => {
             io.to(element.socketID).emit('recevied msg',data);
         });
-      //  io.emit('recevied msg',data);
     })
     socket.on("join room", userDetail => {
         roomID=userDetail.room;
@@ -63,6 +46,13 @@ io.on("connection", (socket) => {
             users[roomID] = [info];
         }
         socketToRoom[socket.id] = roomID;
+        if(chat_users[roomID]){
+            chat_users[roomID].push(info);
+        }
+        else{
+            chat_users[roomID]=[info];
+        }
+        chat_socketToRoom[socket.id]=roomID;
         const usersInThisRoom = users[roomID].filter((X) => X.socketID !== socket.id);
         socket.emit("all users", usersInThisRoom);
     });
@@ -76,12 +66,17 @@ io.on("connection", (socket) => {
     });
 
     socket.on('disconnect', () => {
-        //console.log("Called....");
         const roomID = socketToRoom[socket.id];
         let room = users[roomID];
         if (room) {
             room = room.filter((row) => row.socketID !== socket.id);
             users[roomID] = room;
+        }
+        const roomID2 = chat_socketToRoom[socket.id];
+        room = chat_users[roomID2];
+        if (room) {
+            room = room.filter((row) => row.socketID !== socket.id);
+            chat_users[roomID2] = room;
         }
         socket.broadcast.emit('user left',socket.id);
     });

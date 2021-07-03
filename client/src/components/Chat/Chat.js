@@ -2,52 +2,46 @@ import React from 'react'
 import Message from './Message';
 import { useState,useEffect,useRef } from 'react';
 import { useStyles } from './style'
-import { Button,TextField,List,ListItem } from '@material-ui/core';
+import { Button,TextField,List,ListItem,Container } from '@material-ui/core';
 import io from "socket.io-client";
 const Chat = (props) => {
     const classes = useStyles();
-    const [message,setMessage] = useState("");
-    const [output,setOutput] = useState([]);
-    const socketRef = useRef();
     const user = JSON.parse(window.sessionStorage.getItem("user"));
-    const userDetail={
-        room:props.roomID,
-        name:user["firstName"]
-    }
-
+    const [output,setOutput] = useState([]);
+    const [message,setMessage] = useState("");
     useEffect(() => {
-       
-
-        socketRef.current=io.connect("https://polar-journey-62609.herokuapp.com/");
-        socketRef.current.emit("join chat room",userDetail);
-
-        socketRef.current.on('recevied msg',(data)=>{
+        props.socketRef.current.on('recevied msg',(data)=>{
             setOutput((msgs)=>[...msgs,data]);
         });
 
     },[]);
-
+    const userDetail={
+        room:props.room,
+        name:user["firstName"],
+    }
     const onSend = () => {
         const obj={
             handle:userDetail.name,
             message:message,
-            room:props.roomID
+            room:userDetail.room
         }
-        socketRef.current.emit('send msg',obj);
+        props.socketRef.current.emit('send msg',obj);
+        setMessage('');
     }
-
     return (
         <div style={{color:"#fff"}}>
             <h2>Chat</h2>
-            <List className={classes.chatWindow}>
-                    {
-                        output.length > 0 ? (
-                            <ListItem><Message texts={output} /></ListItem>
-                        ): (
-                            "No messages"
-                        )                        
-                    }
-            </List>
+            <Container style={{ borderRadius: "5px",border: "1px solid #fff"}}>
+                <div className={classes.chatWindow} style={{marginTop:"15px",marginBottom:"15px",maxWidth:"inherit"}}>
+                        {
+                            output.length > 0 ? (
+                                <Message texts={output} />
+                            ): (
+                                "No messages"
+                            )                        
+                        }
+                </div>
+            </Container>
             <TextField
                 id="outlined-basic"
                 label="Message"
@@ -60,6 +54,7 @@ const Chat = (props) => {
                 InputLabelProps={{
                     className: classes.txtfield
                 }}
+                value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 style={{ marginTop: "30px", width:"300px" }}
             /><br/>

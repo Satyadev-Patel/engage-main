@@ -37,6 +37,7 @@ const Meeting = (props) => {
   const [muteMic,setMuteMic] = useState(false)
   const [isAudio,setAudio]=useState(false);
   const [peers, setPeers] = useState([]);
+  const [output,setOutput] = useState([]);
   const [fullRoom,setFullRoom] = useState(false);
   const socketRef = useRef();
   const peersRef = useRef([]);
@@ -59,7 +60,7 @@ const Meeting = (props) => {
   const sendMail = () => {
     const requestObj = {text:roomID, email: inviteEmail, name:user["firstName"]};
     axios
-        .post("https://polar-journey-62609.herokuapp.com/users/send_mail", requestObj)
+        .post("http://localhost:5000/users/send_mail", requestObj)
         .then(function (response) {
             console.log(response["data"]["msg"]);
         })
@@ -68,9 +69,21 @@ const Meeting = (props) => {
             window.alert("Invalid Credenital!!");
         });
   }
-
+  const onSend = (message) => {
+    if(!socketRef.current)socketRef.current = io.connect("http://localhost:5000/");
+    const obj={
+        handle:userDetail.name,
+        message:message,
+        room:userDetail.room
+    }
+    socketRef.current.emit('send msg',obj);
+    socketRef.current.on('recevied msg',(data)=>{
+        console.log(data);
+        setOutput((msgs)=>[...msgs,data]);
+    });
+  }
   const wantsToJoin=()=>{
-    socketRef.current = io.connect("https://polar-journey-62609.herokuapp.com/");
+    socketRef.current = io.connect("http://localhost:5000/");
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
         userVideo.current.srcObject = stream;
         setStream(stream);
@@ -98,7 +111,6 @@ const Meeting = (props) => {
                 name:payload.name,
                 GID:payload.GID
             })
-
             setPeers(users => [...users, peer]);
         });
 
@@ -158,8 +170,8 @@ const Meeting = (props) => {
     return peer;
   }
   const joinchat = () => {
-    socketRef.current = io.connect("https://polar-journey-62609.herokuapp.com/");
-    socketRef.current.emit("join chat room",userDetail);
+    socketRef.current = io.connect("http://localhost:5000/");
+    
     setJoinChat(true);
   }
   const HandleAudio=()=>{
@@ -250,10 +262,7 @@ const Meeting = (props) => {
                 }
         </Container>
         { <Container>
-            {(joinChat && isAudio) && <Chat room={roomID}/> }
-            {!joinChat && isAudio && <Button variant="contained" color="primary" onClick={joinchat} className={classes.btn} style={{width:"40%"}}>
-                        <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>Join Chat</h3>  
-                    </Button> }
+            {(isAudio) && <Chat room={roomID} onSend={onSend} output={output} socketRef={socketRef}/> }
         </Container> }
         </>}
    </Grid>

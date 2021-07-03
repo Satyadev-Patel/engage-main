@@ -10,9 +10,13 @@ export const useStyles = makeStyles((theme) => ({
       backgroundRepeat: "no-repeat",
       backgroundSize: "cover"
     },
+    feedback:{
+      color: "#aaa",
+      padding: "14px 0px",
+      margin: "0 20px"
+    },
     chatWindow:{
-        height: "400px",
-        widht:"100px",
+        height: "300px",
         overflow:"auto"
     },    
     output:{
