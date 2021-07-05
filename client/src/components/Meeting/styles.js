@@ -22,6 +22,10 @@ export const useStyles = makeStyles((theme) => ({
       color: '#fff',
       fontSize: '4rem',
     },
+    head:{
+      marginBottom:"0px", 
+      marginTop:"0px"
+    },
     container: {
       textAlign: 'center',
       gridTemplateColumns: "7fr 3fr",

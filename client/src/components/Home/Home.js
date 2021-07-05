@@ -7,22 +7,36 @@ import {v1 as uuid} from "uuid";
 const Home = (props) => {
     const classes = useStyles();
     const [id, setId] = useState(""); 
+    const user = JSON.parse(window.sessionStorage.getItem("user"));
     const [name, setName] = useState(""); 
     function create() {
+        const values = {room:name,email:user["email"]};
         let idd = uuid();
-        idd = name + idd;
-        props.history.push(`/meeting/${idd}`);
+        axios
+            .post("http://localhost:5000/users/find_id", values)
+            .then(function (response) {
+                if(response["data"]["msg"] == "fail"){
+                    window.alert("You already have an active meeting with this name. Please access it through 'Your Meetings' Tab");
+                }
+                else{
+                    props.history.push(`/meeting/${idd}/${name}`);
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                window.alert("Invalid Credenital!!");
+            });
     }
     const join = () => {
         const values = {roomID:id};
         axios
             .post("http://localhost:5000/find_id", values)
             .then(function (response) {
-                if(response["data"] == "ID not found"){
-                    window.alert(response["data"]);
+                if(response["data"]["msg"] == "fail"){
+                    window.alert("Id not found");
                 }
                 else{
-                    props.history.push(`/meeting/${id}`);
+                    props.history.push(`/meeting/${id}/${response["data"]["name"]}`);
                 }
             })
             .catch(function (error) {

@@ -1,6 +1,8 @@
 const express = require("express")
 const http = require("http")
-const app = express()
+const app = express();
+const Chat = require("./Models/Chat");
+const Meetings = require("./Models/Meetings")
 const server = http.createServer(app)
 const cors = require("cors")
 const passport = require("passport");
@@ -19,15 +21,44 @@ const io = require("socket.io")(server,{
 })
 
 const users = {};
+const roomToName = {};
 const chat_users = {};
 const chat_socketToRoom = {};
 const socketToRoom = {};
 
+
 io.on("connection", (socket) => {
     socket.on('send msg',(data)=>{
+        const obj = {
+            meetID:data["room"],
+            message:data["message"],
+            handle:data["handle"]
+        }
+        Chat.create(obj);
         chat_users[chat_socketToRoom[socket.id]].forEach(element => {
             io.to(element.socketID).emit('recevied msg',data);
         });
+    })
+    socket.on("join chat room", userDetail => {
+        roomID=userDetail.room;
+        const info={
+            socketID:socket.id,
+            name:userDetail.name,
+        }
+        if(chat_users[roomID]){
+            chat_users[roomID].push(info);
+        }
+        else{
+            chat_users[roomID]=[info];
+        }
+        chat_socketToRoom[socket.id]=roomID;
+        roomToName[roomID] = userDetail.roomName;
+
+        Meetings.find({email:userDetail.email,meetID:userDetail.room}).then((meeting)=>{
+            if(meeting.length == 0){
+                Meetings.create({email:userDetail.email,meetName:userDetail.roomName,meetID:userDetail.room})
+            }
+        })
     })
     socket.on("join room", userDetail => {
         roomID=userDetail.room;
@@ -45,14 +76,13 @@ io.on("connection", (socket) => {
         } else {
             users[roomID] = [info];
         }
+        Meetings.find({email:userDetail.email,meetID:userDetail.room}).then((meeting)=>{
+            if(meeting.length == 0){
+                Meetings.create({email:userDetail.email,meetName:userDetail.roomName,meetID:userDetail.room})
+            }
+        })
         socketToRoom[socket.id] = roomID;
-        if(chat_users[roomID]){
-            chat_users[roomID].push(info);
-        }
-        else{
-            chat_users[roomID]=[info];
-        }
-        chat_socketToRoom[socket.id]=roomID;
+        roomToName[roomID] = userDetail.roomName;
         const usersInThisRoom = users[roomID].filter((X) => X.socketID !== socket.id);
         socket.emit("all users", usersInThisRoom);
     });
@@ -107,15 +137,26 @@ app.post("/find_id",(req,res,next)=>{
     }
     try {
     const data = req.body;
-        if(users[data["roomID"]]){
-            res.send(201);
+        if(users[data["roomID"]] || chat_users[data["roomID"]]){
+            const obj = {
+                msg: "success",
+                name: roomToName[data["roomID"]],
+            };
+            res.send(obj);
         }
-        else res.send("ID not found");
+        else {
+            const obj = {
+                msg: "fail",
+                name: "null",
+            };
+            res.send(obj);
+        }
     } catch (err) {
         res.render("error/500");
     }
 })
 app.use("/users", require("./routes/user"));
+app.use("/chats", require("./routes/chats"));
 app.use("/event", require("./routes/event"));
 if( process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));

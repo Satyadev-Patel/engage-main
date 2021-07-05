@@ -9,6 +9,7 @@ import SignUp from "./components/Register/Register"
 import Calendar from "./components/Calendar/Calendar"
 import Home from "./components/Home/Home"
 import Chat from "./components/Chat/Chat"
+import YourMeet from "./components/YourMeet/YourMeet"
 
 function App() {
   const [Auth, setAuth] = useState(
@@ -36,8 +37,8 @@ function App() {
             {Auth === "Yes" ? <Calendar Auth = {Auth} Authenticate={Authenticate}/>
             : <Redirect to = "/login"/>}
           </Route>
-          <Route exact path = '/meeting/:roomID'>
-            {Auth === "Yes" ? <Route exact path = "/meeting/:roomID" Auth = {Auth} Authenticate={Authenticate} component={Meeting}/>
+          <Route exact path = '/meeting/:roomID/:roomName'>
+            {Auth === "Yes" ? <Route exact path = "/meeting/:roomID/:roomName" Auth = {Auth} Authenticate={Authenticate} component={Meeting}/>
             : <Redirect to = "/login" />}
           </Route>
           <Route exact path = "/register">
@@ -46,6 +47,10 @@ function App() {
           </Route>
           <Route exact path = '/home'>
             {Auth === "Yes" ? <Route exact path = "/home" Auth = {Auth} Authenticate={Authenticate} component={Home}/>
+            : <Redirect to = "/login"/>}
+          </Route>
+          <Route exact path = '/yourmeet'>
+            {Auth === "Yes" ? <Route exact path = "/yourmeet" Auth = {Auth} Authenticate={Authenticate} component={YourMeet}/>
             : <Redirect to = "/login"/>}
           </Route>
           <Route exact path = '/chat'>
