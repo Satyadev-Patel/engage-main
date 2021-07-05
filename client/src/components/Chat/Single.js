@@ -2,9 +2,9 @@ import React from 'react'
 
 const Single = (props) => {
     return (
-        <div style={{color:"#fff", marginBottom:"10px", display:"inline",maxWidth:"100px"}}>
+        <div style={{color:"#fff", marginBottom:"10px"}}>
             <h3 style ={{marginBottom:"0px", marginTop:"0px",marginLeft:"0px"}}>{props.user}</h3>
-            <div style={{marginBottom:"10px",width:"250px"}}>{props.chat}</div>
+            <p style={{marginBottom:"10px",marginTop:"0px",wordBreak:"break-word"}}>{props.chat}</p>
         </div>
     )
 }
