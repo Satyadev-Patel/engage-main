@@ -1,6 +1,7 @@
   
 const express = require("express");
 const User = require("../Models/Users");
+const Meeting = require("../Models/Meetings")
 const errors = require("restify-errors");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
@@ -61,6 +62,55 @@ router.post("/send_mail", (req, res, next) => {
     res.send(obj);
     next();
   } catch (err) {
+    res.render("error/500");
+  }
+});
+
+router.post("/meetings", (req,res,next) => {
+  if (!req.is("application/json")) {
+    return next(new errors.InvalidContentError("Expects 'application/json'"));
+  }
+  try {
+    const data = req.body;
+    Meeting.find({ email: data["email"]}).then((meeting) => {
+        const obj = {
+            msg: "success",
+            meetings: meeting,
+        };
+        res.send(obj);
+        next();
+    });
+  }catch (err) {
+    res.render("error/500");
+  }
+});
+
+router.post("/find_id", (req,res,next) => {
+  if (!req.is("application/json")) {
+    return next(new errors.InvalidContentError("Expects 'application/json'"));
+  }
+  try {
+    const data = req.body;
+   // console.log(data);
+    Meeting.find({ email: data["email"], meetName:data["room"]}).then((meeting) => {
+      if(meeting.length > 0){
+        const obj = {
+          msg: "fail",
+          meetings: meeting,
+        };
+        res.send(obj);
+        next();
+      }
+      else{
+        const obj = {
+            msg: "success",
+            meetings: meeting,
+        };
+        res.send(obj);
+        next();
+      }
+    });
+  }catch (err) {
     res.render("error/500");
   }
 });

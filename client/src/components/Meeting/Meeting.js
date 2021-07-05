@@ -40,11 +40,15 @@ const Meeting = (props) => {
   const [output,setOutput] = useState([]);
   const [fullRoom,setFullRoom] = useState(false);
   const socketRef = useRef();
+  const chatsocketRef = useRef();
   const peersRef = useRef([]);
   const [stream, setStream] = useState();
   const [inviteEmail,setInviteEmail] = useState("");
   const roomID = props.match.params.roomID;
+  const roomName = props.match.params.roomName;
   const userDetail={
+    roomName:roomName,
+    email:user["email"],
     room:roomID,
     name:user["firstName"],
   }
@@ -54,7 +58,7 @@ const Meeting = (props) => {
            socketRef.current.close();
        } 
        setPeers([]);
-       
+       setJoinChat(false);
     }
   })
   const sendMail = () => {
@@ -170,9 +174,9 @@ const Meeting = (props) => {
     return peer;
   }
   const joinchat = () => {
-    socketRef.current = io.connect("http://localhost:5000/");
-    
+    chatsocketRef.current = io.connect("http://localhost:5000/");
     setJoinChat(true);
+    chatsocketRef.current.emit("join chat room",userDetail);
   }
   const HandleAudio=()=>{
     //Wants To Leave
@@ -200,13 +204,13 @@ const Meeting = (props) => {
         <List style ={{width:"40%"}}>
         {isAudio && 
         <Button variant="contained" style={{backgroundColor:"#FF2E2E", color:"white"}} onClick={HandleAudio} className={classes.btn}>
-            <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>Leave Stream</h3>  
+            <h3 className={classes.head}>Leave Stream</h3>  
         </Button>}<br/>
         {isAudio && <><Button variant="contained" color="primary" onClick={muteAudio} className={classes.btn}>
-                   <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>{!muteMic ? "Mute" : "Unmute"}</h3>
+                   <h3 className={classes.head}>{!muteMic ? "Mute" : "Unmute"}</h3>
         </Button><br/>
         <Button variant="contained" color="primary" onClick={muteVideo} className={classes.btn}>
-                    <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>{!muteVid ? "Disable Video" : "Enable Video"}</h3>
+                    <h3 className={classes.head}>{!muteVid ? "Disable Video" : "Enable Video"}</h3>
         </Button><br/>
         {isAudio &&(<>
             <TextField
@@ -262,7 +266,11 @@ const Meeting = (props) => {
                 }
         </Container>
         { <Container>
-            {(isAudio) && <Chat room={roomID} onSend={onSend} output={output} socketRef={socketRef}/> }
+            {joinChat ? <Chat room={roomID} onSend={onSend} output={output} socketRef={chatsocketRef} roomName={roomName}/> :
+                <Button variant="contained" color="primary" onClick={joinchat} className={classes.btn} style={{width:"40%"}}>
+                <h3 style ={{marginBottom:"0px", marginTop:"0px"}}>Join Chat</h3>  
+            </Button> 
+            }
         </Container> }
         </>}
    </Grid>

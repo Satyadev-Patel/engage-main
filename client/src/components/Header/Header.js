@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AppBar, ListItem, Toolbar, SwipeableDrawer,List } from '@material-ui/core';
+import { AppBar, ListItem, Toolbar, SwipeableDrawer,List,Slide } from '@material-ui/core';
 import { useStyles } from './styles';
 import Grow from '@material-ui/core/Grow';
 import { Button } from '@material-ui/core';
@@ -37,6 +37,9 @@ export default function Header(props) {
         <ListItemLink href="/calendar">
           <h3>Your Week's Calendar</h3>
         </ListItemLink>
+        <ListItemLink href="/yourmeet">
+          <h3>Your Meetings</h3>
+        </ListItemLink>
         <ListItem button key="Logout" onClick={Logout}>
           <h3>Logout</h3>
         </ListItem>
@@ -71,16 +74,17 @@ export default function Header(props) {
         </Toolbar>
       </AppBar>
 
-      <Grow
-        in={checked}
-        {...(checked ? { timeout: 3000 } : {})}
-      >
+      
         <div className={classes.container}>
-          <h1 className={classes.title}>
-            Welcome to Teams, {user["firstName"]}
-          </h1>
+          <Slide direction="left" in={checked} {...(checked ? { timeout: 1500 } : {})} mountOnEnter unmountOnExit>
+            <h1 className={classes.title}>
+              Welcome to Teams,<br/> {user["firstName"]}
+            </h1>
+          </Slide>
+          <Slide direction="right" in={checked} {...(checked ? { timeout: 1500 } : {})} mountOnEnter unmountOnExit>
+              <h4 style={{margin:"0px", color:"red"}}>Click Menu for more options</h4>
+          </Slide>
         </div>
-      </Grow>
     </div>
   );
 }
