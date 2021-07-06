@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const timestamp = require("mongoose-timestamp");
 
+// Event Database
+
 const EventSchema = new mongoose.Schema({
   email: {
     type: String,

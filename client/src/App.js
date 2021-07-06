@@ -15,14 +15,17 @@ import Home from "./components/Home/Home";
 import Chat from "./components/Chat/Chat";
 import YourMeet from "./components/YourMeet/YourMeet";
 
-function App() {
+const App = () => {
+  // User authentication parameters.
   const [Auth, setAuth] = useState(
     window.sessionStorage.getItem("isAuthenticate")
   );
   const Authenticate = () => {
     setAuth(window.sessionStorage.getItem("isAuthenticate"));
-    //  window.alert(Auth + "..Hook from App");
   };
+
+  // Routing using react-router-dom
+
   return (
     <div>
       <CssBaseline />
@@ -112,6 +115,6 @@ function App() {
       </Router>
     </div>
   );
-}
+};
 
 export default App;

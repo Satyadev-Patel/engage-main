@@ -27,6 +27,8 @@ const chat_socketToRoom = {};
 const socketToRoom = {};
 
 io.on("connection", (socket) => {
+  // Listener for sending a message to all the users present in the room
+
   socket.on("send msg", (data) => {
     const obj = {
       meetID: data["room"],
@@ -34,6 +36,9 @@ io.on("connection", (socket) => {
       handle: data["handle"],
     };
     Chat.create(obj);
+
+    // Sending the message to all the users
+
     chat_users[chat_socketToRoom[socket.id]].forEach((element) => {
       io.to(element.socketID).emit("recevied msg", data);
     });
@@ -44,13 +49,22 @@ io.on("connection", (socket) => {
       socketID: socket.id,
       name: userDetail.name,
     };
+
+    // storing the info of user's socket in the room he is trying to join
+
     if (chat_users[roomID]) {
       chat_users[roomID].push(info);
     } else {
       chat_users[roomID] = [info];
     }
+
+    // Storing which socket corresponds to which room
+
     chat_socketToRoom[socket.id] = roomID;
     roomToName[roomID] = userDetail.roomName;
+
+    // Once the user joins the room. Storing its info to the database.
+    // This will be used to access user's past meetings
 
     Meetings.find({ email: userDetail.email, meetID: userDetail.room }).then(
       (meeting) => {
@@ -64,6 +78,11 @@ io.on("connection", (socket) => {
       }
     );
   });
+
+  // above event listener was for the case where user just wants to join the chat
+  // but not the video stream
+  // below is for joining the video stream
+
   socket.on("join room", (userDetail) => {
     roomID = userDetail.room;
     const info = {
@@ -115,6 +134,9 @@ io.on("connection", (socket) => {
     });
   });
 
+  // deleting the info of user from the objects that we created
+  // earlier for reference
+
   socket.on("disconnect", () => {
     const roomID = socketToRoom[socket.id];
     let room = users[roomID];
@@ -151,32 +173,13 @@ app.use((req, res, next) => {
   );
   next();
 });
-app.post("/find_id", (req, res, next) => {
-  if (!req.is("application/json")) {
-    return next(new errors.InvalidContentError("Expects 'application/json'"));
-  }
-  try {
-    const data = req.body;
-    if (users[data["roomID"]] || chat_users[data["roomID"]]) {
-      const obj = {
-        msg: "success",
-        name: roomToName[data["roomID"]],
-      };
-      res.send(obj);
-    } else {
-      const obj = {
-        msg: "fail",
-        name: "null",
-      };
-      res.send(obj);
-    }
-  } catch (err) {
-    res.render("error/500");
-  }
-});
+
 app.use("/users", require("./routes/user"));
 app.use("/chats", require("./routes/chats"));
 app.use("/event", require("./routes/event"));
+
+// deployment code
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
   app.get("*", (req, res) => {

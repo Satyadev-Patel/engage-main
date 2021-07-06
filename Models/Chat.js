@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const timestamp = require("mongoose-timestamp");
 
+// Chat Database
+
 const ChatSchema = new mongoose.Schema({
   meetID: {
     type: String,

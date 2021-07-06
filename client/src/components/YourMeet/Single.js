@@ -5,6 +5,9 @@ import axios from "axios";
 
 const Single = (props) => {
   const classes = useStyles();
+
+  // url for redirecting the user to a selected meeting
+
   const url = "/meeting/" + props.meetID + "/" + props.name + "/";
   return (
     <ListItem>

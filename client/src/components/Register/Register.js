@@ -43,6 +43,8 @@ export default function SignUp(props) {
   const [values, setValue] = useState(InitialValues);
   const [errors, setError] = useState({});
 
+  // Function to validate the constraints of user information during registration
+
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ("firstName" in fieldValues) {
@@ -93,6 +95,8 @@ export default function SignUp(props) {
     validate({ [name]: value });
   };
 
+  // API call to register a user
+
   const onSubmit = () => {
     if (validate()) {
       console.log(values);
@@ -117,10 +121,12 @@ export default function SignUp(props) {
           }
         })
         .catch(function (error) {
-          console.log(error);
+          window.alert("Some error occured during registration");
         });
     }
   };
+
+  // UI
 
   return (
     <div className={classes.root}>

@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const timestamp = require("mongoose-timestamp");
 
+// Database to store user's past meetings
+
 const MeetingSchema = new mongoose.Schema({
   meetName: {
     type: String,

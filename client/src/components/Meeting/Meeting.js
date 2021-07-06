@@ -8,6 +8,8 @@ import { List, Typography, TextField } from "@material-ui/core";
 import axios from "axios";
 import Chat from "../Chat/Chat";
 
+//General function for video rendering of USERS in the current room
+
 const Video = (props) => {
   const ref = useRef();
 
@@ -45,7 +47,7 @@ const Meeting = (props) => {
   const [joinChat, setJoinChat] = useState(false);
   const [muteVid, setMuteVid] = useState(false);
   const [muteMic, setMuteMic] = useState(false);
-  const [isAudio, setAudio] = useState(false);
+  const [isJoin, setJoin] = useState(false);
   const [peers, setPeers] = useState([]);
   const [output, setOutput] = useState([]);
   const [fullRoom, setFullRoom] = useState(false);
@@ -54,6 +56,9 @@ const Meeting = (props) => {
   const peersRef = useRef([]);
   const [stream, setStream] = useState();
   const [inviteEmail, setInviteEmail] = useState("");
+
+  // Extracting the parameters from the URL
+
   const roomID = props.match.params.roomID;
   const roomName = props.match.params.roomName;
   const userDetail = {
@@ -71,6 +76,9 @@ const Meeting = (props) => {
       setJoinChat(false);
     };
   });
+
+  // API call for sending an invite link through mail
+
   const sendMail = () => {
     const requestObj = {
       text: roomID,
@@ -87,6 +95,9 @@ const Meeting = (props) => {
         window.alert("Invalid Credenital!!");
       });
   };
+
+  // Sending a text message through WebSocket
+
   const onSend = (message) => {
     if (!socketRef.current)
       socketRef.current = io.connect("http://localhost:5000/");
@@ -95,20 +106,25 @@ const Meeting = (props) => {
       message: message,
       room: userDetail.room,
     };
-    socketRef.current.emit("send msg", obj);
+    socketRef.current.emit("send msg", obj); // Sending the message
     socketRef.current.on("recevied msg", (data) => {
+      // Receiving the message and updating the chat window
       console.log(data);
       setOutput((msgs) => [...msgs, data]);
     });
   };
   const wantsToJoin = () => {
-    socketRef.current = io.connect("http://localhost:5000/");
+    if (!socketRef.current)
+      socketRef.current = io.connect("http://localhost:5000/"); // WebSocket connection
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         userVideo.current.srcObject = stream;
         setStream(stream);
-        socketRef.current.emit("join room", userDetail);
+        socketRef.current.emit("join room", userDetail); // This event will be listened on Server side
+
+        // Creating peer network for the users present in the stream
+
         socketRef.current.on("all users", (users) => {
           const peers = [];
           users.forEach((user) => {
@@ -121,12 +137,13 @@ const Meeting = (props) => {
               peerID: user.socketID,
               peer,
               name: user.name,
-              GID: user.GID,
             });
             peers.push(peer);
           });
           setPeers(peers);
         });
+
+        // Adding a user to the connection
 
         socketRef.current.on("user joined", (payload) => {
           const peer = addPeer(payload.signal, payload.callerID, stream);
@@ -134,7 +151,6 @@ const Meeting = (props) => {
             peerID: payload.callerID,
             peer,
             name: payload.name,
-            GID: payload.GID,
           });
           setPeers((users) => [...users, peer]);
         });
@@ -143,6 +159,8 @@ const Meeting = (props) => {
           const item = peersRef.current.find((p) => p.peerID === payload.id);
           item.peer.signal(payload.signal);
         });
+
+        // Deleting the peer
 
         socketRef.current.on("user left", (id) => {
           const peerObj = peersRef.current.find((p) => p.peerID === id);
@@ -159,12 +177,18 @@ const Meeting = (props) => {
           peersRef.current = peers;
           setPeers(remaining);
         });
+
+        // User won't be able to join after the room reaches its max capacity(i.e 4 in this Case, Could be changed from backend)
+
         socketRef.current.on("room full", () => {
           setFullRoom(true);
         });
       });
   };
-  function createPeer(userToSignal, callerID, stream) {
+
+  // Creating the peer using simple-peer library
+
+  const createPeer = (userToSignal, callerID, stream) => {
     const peer = new Peer({
       initiator: true,
       trickle: false,
@@ -181,8 +205,11 @@ const Meeting = (props) => {
     });
 
     return peer;
-  }
-  function addPeer(incomingSignal, callerID, stream) {
+  };
+
+  // Adding the peer
+
+  const addPeer = (incomingSignal, callerID, stream) => {
     const peer = new Peer({
       initiator: false,
       trickle: false,
@@ -196,7 +223,10 @@ const Meeting = (props) => {
     peer.signal(incomingSignal);
 
     return peer;
-  }
+  };
+
+  // Joining the chat window through WebSocket
+
   const joinchat = () => {
     chatsocketRef.current = io.connect("http://localhost:5000/");
     setJoinChat(true);
@@ -204,15 +234,16 @@ const Meeting = (props) => {
   };
   const HandleAudio = () => {
     //Wants To Leave
-    if (isAudio) {
+    if (isJoin) {
       window.location.reload();
     }
     //Wants to Join
     else {
       wantsToJoin();
-      setAudio(true);
+      setJoin(true);
     }
   };
+
   const muteVideo = () => {
     stream
       .getVideoTracks()
@@ -233,7 +264,7 @@ const Meeting = (props) => {
       ) : (
         <>
           <List style={{ width: "40%" }}>
-            {isAudio && (
+            {isJoin && (
               <Button
                 variant="contained"
                 style={{ backgroundColor: "#FF2E2E", color: "white" }}
@@ -244,7 +275,7 @@ const Meeting = (props) => {
               </Button>
             )}
             <br />
-            {isAudio && (
+            {isJoin && (
               <>
                 <Button
                   variant="contained"
@@ -268,7 +299,7 @@ const Meeting = (props) => {
                   </h3>
                 </Button>
                 <br />
-                {isAudio && (
+                {isJoin && (
                   <>
                     <TextField
                       id="outlined-basic"
@@ -308,7 +339,7 @@ const Meeting = (props) => {
             )}
           </List>
           <Container className={classes.videoContainer}>
-            {isAudio ? (
+            {isJoin ? (
               <>
                 <Grid item>
                   <video
@@ -345,6 +376,8 @@ const Meeting = (props) => {
             )}
           </Container>
           {
+            // User won't be able to access the chat until and unless the join Chat button is clicked
+            // It is completely independent of whether the user is present in video call or not.
             <Container>
               {joinChat ? (
                 <Chat

@@ -11,6 +11,9 @@ const Chat = (props) => {
   const [message, setMessage] = useState("");
   useEffect(() => {
     const requestObj = { roomID: props.room };
+
+    // Loading the previous chat data
+
     axios
       .post("http://localhost:5000/chats/chat_data", requestObj)
       .then(function (response) {
@@ -31,6 +34,8 @@ const Chat = (props) => {
         console.log(error);
         window.alert("Invalid Credenital!!");
       });
+
+    // Receiving message from the user present in room through WebSockets
     props.socketRef.current.on("recevied msg", (data) => {
       setOutput((msgs) => [...msgs, data]);
     });
@@ -46,6 +51,8 @@ const Chat = (props) => {
       room: userDetail.room,
       roomName: props.roomName,
     };
+
+    //Sending the message with the help of WebSocket
     props.socketRef.current.emit("send msg", obj);
     setMessage("");
   };

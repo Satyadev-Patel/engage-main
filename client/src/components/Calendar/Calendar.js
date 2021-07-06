@@ -32,6 +32,9 @@ const Calendar = () => {
   useEffect(() => {
     setChecked(true);
     const requestObj = { email: user["email"] };
+
+    //Extracting the event data for all the days at the start
+
     axios
       .post("http://localhost:5000/event/events", requestObj)
       .then(function (response) {
@@ -71,6 +74,9 @@ const Calendar = () => {
       [id]: value,
     });
   };
+
+  //Toggle Calendar View
+
   const onCalendarClick = (newDay) => {
     if (newDay === day) {
       setOpen(!open);
@@ -83,6 +89,9 @@ const Calendar = () => {
     }
     setShowTask(false);
   };
+
+  //Add new event
+
   const onSubmit = () => {
     setTasks([...tasks, values]);
     const { meetName, meetTime } = values;
@@ -107,6 +116,9 @@ const Calendar = () => {
   const onTaskClick = () => {
     setShowTask(!showTask);
   };
+
+  //Delete event
+
   const onTaskDelete = (name) => {
     setTasks(tasks.filter((task) => task.meetTime !== name));
     const requestObj = { meetTime: name, day: day, email: user["email"] };
@@ -143,6 +155,8 @@ const Calendar = () => {
       </Container>
 
       {open && (
+        // Loading all the events
+
         <Container className={classes.container}>
           <List>
             {tasks.length > 0 ? (

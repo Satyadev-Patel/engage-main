@@ -9,9 +9,14 @@ const Home = (props) => {
   const [id, setId] = useState("");
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const [name, setName] = useState("");
+
+  //Creating a room
+
   function create() {
     const values = { room: name, email: user["email"] };
     let idd = uuid();
+
+    //Checking whether the user is already present in a room with the same name
     axios
       .post("http://localhost:5000/users/find_id", values)
       .then(function (response) {
@@ -28,10 +33,15 @@ const Home = (props) => {
         window.alert("Invalid Credenital!!");
       });
   }
+
+  //Joining a room
+
   const join = () => {
     const values = { roomID: id };
+
+    //Checking whether the ID exists or not
     axios
-      .post("http://localhost:5000/find_id", values)
+      .post("http://localhost:5000/users/find_join_id", values)
       .then(function (response) {
         if (response["data"]["msg"] == "fail") {
           window.alert("Id not found");

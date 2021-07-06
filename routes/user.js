@@ -6,11 +6,13 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const credentials = { user: "dsemo1122@gmail.com", pass: "guru@3003" };
+// for sending email
 const send = require("gmail-send")({
-  //const send = require('../index.js')({
   user: credentials.user,
   pass: credentials.pass,
 });
+
+// for request of registering a user
 
 router.post("/register", (req, res, next) => {
   if (!req.is("application/json")) {
@@ -38,6 +40,8 @@ router.post("/register", (req, res, next) => {
   }
 });
 
+// request to send an email to particular user
+
 router.post("/send_mail", (req, res, next) => {
   if (!req.is("application/json")) {
     return next(new errors.InvalidContentError("Expects 'application/json'"));
@@ -45,7 +49,6 @@ router.post("/send_mail", (req, res, next) => {
 
   try {
     const data = req.body;
-    console.log(data);
     send(
       {
         // Overriding default parameters
@@ -54,7 +57,7 @@ router.post("/send_mail", (req, res, next) => {
         text: `You have been invited to ${data["name"]}'s room.\n Room id : ${data["text"]}\n 
             App link: http://localhost:3000/`,
       },
-      function (err, res, full) {
+      (err, res, full) => {
         if (err) return console.log("send() callback returned: err:", err);
         console.log("send() callback returned: res:", res);
       }
@@ -68,6 +71,8 @@ router.post("/send_mail", (req, res, next) => {
     res.render("error/500");
   }
 });
+
+// Request to extract all the meeting details for a particular user
 
 router.post("/meetings", (req, res, next) => {
   if (!req.is("application/json")) {
@@ -88,13 +93,15 @@ router.post("/meetings", (req, res, next) => {
   }
 });
 
+// Endpoint for request of checking whether a meeting exists or not for a user
+
 router.post("/find_id", (req, res, next) => {
   if (!req.is("application/json")) {
     return next(new errors.InvalidContentError("Expects 'application/json'"));
   }
   try {
     const data = req.body;
-    // console.log(data);
+    // One user can't create multiple meetings with same name
     Meeting.find({ email: data["email"], meetName: data["room"] }).then(
       (meeting) => {
         if (meeting.length > 0) {
@@ -119,6 +126,38 @@ router.post("/find_id", (req, res, next) => {
   }
 });
 
+// Checking whether a roomID exists or not on the server
+
+router.post("/find_join_id", (req, res, next) => {
+  if (!req.is("application/json")) {
+    return next(new errors.InvalidContentError("Expects 'application/json'"));
+  }
+  try {
+    const data = req.body;
+    Meeting.find({ meetID: data["roomID"] }).then((meeting) => {
+      if (meeting.length === 0) {
+        const obj = {
+          msg: "fail",
+          name: "null",
+        };
+        res.send(obj);
+        next();
+      } else {
+        const obj = {
+          msg: "success",
+          name: meeting[0]["meetName"],
+        };
+        res.send(obj);
+        next();
+      }
+    });
+  } catch (err) {
+    res.render("error/500");
+  }
+});
+
+// Delete a meeting from the user's database
+
 router.post("/delete_meet", (req, res, next) => {
   if (!req.is("application/json")) {
     return next(new errors.InvalidContentError("Expects 'application/json'"));
@@ -133,6 +172,8 @@ router.post("/delete_meet", (req, res, next) => {
     res.render("error/500");
   }
 });
+
+// Authenticating the user using passport
 
 router.post("/login", passport.authenticate("local"), (req, res, next) => {
   const obj = {

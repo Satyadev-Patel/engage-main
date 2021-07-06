@@ -3,15 +3,9 @@ import { useStyles } from "./styles";
 import { useEffect, useState } from "react";
 import Single from "./Single";
 import axios from "axios";
-import {
-  AppBar,
-  Toolbar,
-  Container,
-  Grid,
-  List,
-  ListItem,
-} from "@material-ui/core";
-import { set } from "mongoose";
+import { AppBar, Toolbar, Container, List } from "@material-ui/core";
+
+// Load all the past meetings of user
 
 const YourMeet = () => {
   const classes = useStyles();
@@ -21,6 +15,9 @@ const YourMeet = () => {
   const [curMeet, setCurMeet] = useState();
   useEffect(() => {
     const requestObj = { email: user["email"] };
+
+    // API call to load the meetings from database
+
     axios
       .post("http://localhost:5000/users/meetings", requestObj)
       .then(function (response) {
@@ -38,15 +35,20 @@ const YourMeet = () => {
         }
       })
       .catch(function (error) {
-        console.log(error);
-        window.alert("Invalid Credenital!!");
+        window.alert("Some error occured");
       });
   }, []);
+
+  // Delete a meeting
+
   const onDelete = (id) => {
     setAllMeets(allMeets.filter((meet) => meet.meetID !== id));
     const requestObj = { meetID: id, email: user["email"] };
     axios.post("http://localhost:5000/users/delete_meet", requestObj);
   };
+
+  // Display the details of the selected meeting
+
   const onDetails = (id) => {
     if (!open || id !== curMeet.meetID) {
       const meet = allMeets.filter((meet) => meet.meetID === id);
@@ -60,6 +62,9 @@ const YourMeet = () => {
       setOpen(false);
     }
   };
+
+  // UI
+
   return (
     <div className={classes.root}>
       <AppBar className={classes.appbar} elevation={0}>

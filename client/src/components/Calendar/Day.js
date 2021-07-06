@@ -3,6 +3,7 @@ import { Button, ListItem } from "@material-ui/core";
 
 const Day = (props) => {
   return (
+    // Highlighting the selected Day
     <ListItem>
       {props.day === props.name ? (
         <Button

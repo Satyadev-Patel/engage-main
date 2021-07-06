@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const timestamp = require("mongoose-timestamp");
 
+// User info database
+
 const UserSchema = new mongoose.Schema({
   firstName: {
     type: String,

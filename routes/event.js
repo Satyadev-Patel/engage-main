@@ -3,6 +3,8 @@ const Event = require("../Models/Event");
 const errors = require("restify-errors");
 const router = express.Router();
 
+// Endpoint for request of extracting all the events
+
 router.post("/events/", (req, res, next) => {
   if (!req.is("application/json")) {
     return next(new errors.InvalidContentError("Expects 'application/json'"));
@@ -23,6 +25,8 @@ router.post("/events/", (req, res, next) => {
   }
 });
 
+// For request to add an event
+
 router.post("/add/", (req, res, next) => {
   if (!req.is("application/json")) {
     return next(new errors.InvalidContentError("Expects 'application/json'"));
@@ -38,6 +42,8 @@ router.post("/add/", (req, res, next) => {
     res.render("error/500");
   }
 });
+
+// For request to delete an event
 
 router.post("/delete/", (req, res, next) => {
   if (!req.is("application/json")) {

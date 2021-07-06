@@ -10,6 +10,7 @@ import {
 import { useStyles } from "./styles";
 import { Button } from "@material-ui/core";
 
+//Home Page
 export default function Header(props) {
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const classes = useStyles();
