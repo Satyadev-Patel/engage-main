@@ -1,23 +1,25 @@
 import React, { useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
-import Paper from "@material-ui/core/Paper";
 import { Container } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import { useStyles } from "./styles";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
 function Copyright() {
   return (
-    <Typography style={{color:"#fff",fontFamily:"Poppins"}} variant="body2" color="textSecondary" align="center">
+    <Typography
+      style={{ color: "#fff", fontFamily: "Poppins" }}
+      variant="body2"
+      color="textSecondary"
+      align="center"
+    >
       {"Copyright © "}
       <Link color="inherit" href="#">
         Microsoft Teams
@@ -39,7 +41,7 @@ export default function Login(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setValue({ 
+    setValue({
       ...values,
       [name]: value,
     });
@@ -69,8 +71,10 @@ export default function Login(props) {
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={12} sm={8} md={5} elevation={6} square>
-        <Container style={{alignItems:"center"}}>
-          <h1 style={{color:"#fff", alignItems:"center", fontSize:"3rem"}}>Sign In</h1>
+        <Container style={{ alignItems: "center" }}>
+          <h1 style={{ color: "#fff", alignItems: "center", fontSize: "3rem" }}>
+            Sign In
+          </h1>
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
@@ -79,10 +83,10 @@ export default function Login(props) {
               required
               className={classes.outfield}
               InputProps={{
-                className: classes.txtfield
+                className: classes.txtfield,
               }}
               InputLabelProps={{
-                  className: classes.txtfield
+                className: classes.txtfield,
               }}
               id="email"
               label="Email Address"
@@ -97,10 +101,10 @@ export default function Login(props) {
               fullWidth
               className={classes.outfield}
               InputProps={{
-                className: classes.txtfield
+                className: classes.txtfield,
               }}
               InputLabelProps={{
-                  className: classes.txtfield
+                className: classes.txtfield,
               }}
               name="password"
               label="Password"
@@ -110,10 +114,11 @@ export default function Login(props) {
               onChange={handleChange}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" style={{color:"#fff"}} />}
+              control={<Checkbox value="remember" style={{ color: "#fff" }} />}
               label="Remember me"
-              style ={{color:"#fff", fontFamily:"Poppins"}}
-            /><br/>
+              style={{ color: "#fff", fontFamily: "Poppins" }}
+            />
+            <br />
             <Button
               type="submit"
               fullWidth
@@ -126,12 +131,20 @@ export default function Login(props) {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link style={{color:"#fff",fontFamily:"Poppins"}} href="#" variant="body2">
+                <Link
+                  style={{ color: "#fff", fontFamily: "Poppins" }}
+                  href="#"
+                  variant="body2"
+                >
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link style={{color:"#fff",fontFamily:"Poppins"}} href="/register" variant="body2">
+                <Link
+                  style={{ color: "#fff", fontFamily: "Poppins" }}
+                  href="/register"
+                  variant="body2"
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

@@ -1,50 +1,50 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from "@material-ui/styles";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    fontFamily: 'Poppins',
-    minHeight:'100vh',
-    backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/2.jpg'})`,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+    fontFamily: "Poppins",
+    minHeight: "100vh",
+    backgroundImage: `url(${process.env.PUBLIC_URL + "/assets/2.jpg"})`,
     backgroundRepeat: "no-repeat",
-    backgroundSize: "cover"
+    backgroundSize: "cover",
   },
-  glogin:{
-    paddingRight:"10 px"
+  glogin: {
+    paddingRight: "10 px",
   },
-  txtfield:{
-    color:"#fff!important",
-    fontFamily:"Poppins"
+  txtfield: {
+    color: "#fff!important",
+    fontFamily: "Poppins",
   },
-  outfield:{
-    marginBottom:"10px",
-    '& label.Mui-focused': {
-      color: 'white',
+  outfield: {
+    marginBottom: "10px",
+    "& label.Mui-focused": {
+      color: "white",
     },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'white',
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "white",
     },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'white',
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "white",
       },
-      '&:hover fieldset': {
-        borderColor: 'white',
+      "&:hover fieldset": {
+        borderColor: "white",
       },
-      '&.Mui-focused fieldset': {
-        borderColor: 'white',
+      "&.Mui-focused fieldset": {
+        borderColor: "white",
       },
     },
-    '& label.Mui-disabled': {
-      color: 'red',
+    "& label.Mui-disabled": {
+      color: "red",
     },
   },
-  formBtn:{
-    fontFamily:"Poppins",
-    marginBottom:"20px",
-    marginTop:"10px"
+  formBtn: {
+    fontFamily: "Poppins",
+    marginBottom: "20px",
+    marginTop: "10px",
   },
 }));

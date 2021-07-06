@@ -1,15 +1,19 @@
-
-import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom"
-import { useState } from "react"
-import Login from "./components/Login/Login"
-import Meeting from "./components/Meeting/Meeting"
-import Header from "./components/Header/Header"
-import { CssBaseline } from "@material-ui/core"
-import SignUp from "./components/Register/Register"
-import Calendar from "./components/Calendar/Calendar"
-import Home from "./components/Home/Home"
-import Chat from "./components/Chat/Chat"
-import YourMeet from "./components/YourMeet/YourMeet"
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import { useState } from "react";
+import Login from "./components/Login/Login";
+import Meeting from "./components/Meeting/Meeting";
+import Header from "./components/Header/Header";
+import { CssBaseline } from "@material-ui/core";
+import SignUp from "./components/Register/Register";
+import Calendar from "./components/Calendar/Calendar";
+import Home from "./components/Home/Home";
+import Chat from "./components/Chat/Chat";
+import YourMeet from "./components/YourMeet/YourMeet";
 
 function App() {
   const [Auth, setAuth] = useState(
@@ -24,43 +28,90 @@ function App() {
       <CssBaseline />
       <Router>
         <Switch>
-
-        <Route exact path = '/'>
-            {Auth === "Yes" ? <Header Auth = {Auth} Authenticate={Authenticate}/> 
-            : <Redirect to = "/login"/>}
+          <Route exact path="/">
+            {Auth === "Yes" ? (
+              <Header Auth={Auth} Authenticate={Authenticate} />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
-          <Route exact path = '/login'>
-            {Auth === "Yes" ? <Redirect to = "/"/> 
-            : <Login Auth = {Auth} Authenticate={Authenticate} />}
+          <Route exact path="/login">
+            {Auth === "Yes" ? (
+              <Redirect to="/" />
+            ) : (
+              <Login Auth={Auth} Authenticate={Authenticate} />
+            )}
           </Route>
-          <Route exact path = '/calendar'>
-            {Auth === "Yes" ? <Calendar Auth = {Auth} Authenticate={Authenticate}/>
-            : <Redirect to = "/login"/>}
+          <Route exact path="/calendar">
+            {Auth === "Yes" ? (
+              <Calendar Auth={Auth} Authenticate={Authenticate} />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
-          <Route exact path = '/meeting/:roomID/:roomName'>
-            {Auth === "Yes" ? <Route exact path = "/meeting/:roomID/:roomName" Auth = {Auth} Authenticate={Authenticate} component={Meeting}/>
-            : <Redirect to = "/login" />}
+          <Route exact path="/meeting/:roomID/:roomName">
+            {Auth === "Yes" ? (
+              <Route
+                exact
+                path="/meeting/:roomID/:roomName"
+                Auth={Auth}
+                Authenticate={Authenticate}
+                component={Meeting}
+              />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
-          <Route exact path = "/register">
-            {Auth === "Yes" ? <Redirect to = "/"/> 
-            : <SignUp Auth = {Auth} Authenticate={Authenticate} />}
+          <Route exact path="/register">
+            {Auth === "Yes" ? (
+              <Redirect to="/" />
+            ) : (
+              <SignUp Auth={Auth} Authenticate={Authenticate} />
+            )}
           </Route>
-          <Route exact path = '/home'>
-            {Auth === "Yes" ? <Route exact path = "/home" Auth = {Auth} Authenticate={Authenticate} component={Home}/>
-            : <Redirect to = "/login"/>}
+          <Route exact path="/home">
+            {Auth === "Yes" ? (
+              <Route
+                exact
+                path="/home"
+                Auth={Auth}
+                Authenticate={Authenticate}
+                component={Home}
+              />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
-          <Route exact path = '/yourmeet'>
-            {Auth === "Yes" ? <Route exact path = "/yourmeet" Auth = {Auth} Authenticate={Authenticate} component={YourMeet}/>
-            : <Redirect to = "/login"/>}
+          <Route exact path="/yourmeet">
+            {Auth === "Yes" ? (
+              <Route
+                exact
+                path="/yourmeet"
+                Auth={Auth}
+                Authenticate={Authenticate}
+                component={YourMeet}
+              />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
-          <Route exact path = '/chat'>
-            {Auth === "Yes" ? <Route exact path = "/chat" Auth = {Auth} Authenticate={Authenticate} component={Chat}/>
-            : <Redirect to = "/login"/>}
+          <Route exact path="/chat">
+            {Auth === "Yes" ? (
+              <Route
+                exact
+                path="/chat"
+                Auth={Auth}
+                Authenticate={Authenticate}
+                component={Chat}
+              />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
         </Switch>
-      </ Router>
+      </Router>
     </div>
-	)
+  );
 }
 
 export default App;

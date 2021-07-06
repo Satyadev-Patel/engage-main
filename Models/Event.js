@@ -1,4 +1,3 @@
-  
 const mongoose = require("mongoose");
 const timestamp = require("mongoose-timestamp");
 
@@ -13,10 +12,10 @@ const EventSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  meetTime:{
-      type: String,
-      required: true,
-      trim: true,
+  meetTime: {
+    type: String,
+    required: true,
+    trim: true,
   },
   day: {
     type: String,

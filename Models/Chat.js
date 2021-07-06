@@ -1,4 +1,3 @@
-  
 const mongoose = require("mongoose");
 const timestamp = require("mongoose-timestamp");
 
@@ -13,11 +12,11 @@ const ChatSchema = new mongoose.Schema({
     required: false,
     trim: true,
   },
-  handle:{
+  handle: {
     type: String,
     required: true,
     trim: true,
-  }
+  },
 });
 
 ChatSchema.plugin(timestamp);

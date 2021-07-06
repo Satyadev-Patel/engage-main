@@ -12,11 +12,11 @@ const MeetingSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  meetID:{
-    type:String,
+  meetID: {
+    type: String,
     required: true,
-    trim: true
-  }
+    trim: true,
+  },
 });
 
 MeetingSchema.plugin(timestamp);

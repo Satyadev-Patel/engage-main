@@ -1,20 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { AppBar, ListItem, Toolbar, SwipeableDrawer,List,Slide } from '@material-ui/core';
-import { useStyles } from './styles';
-import Grow from '@material-ui/core/Grow';
-import { Button } from '@material-ui/core';
-
+import React, { useEffect, useState } from "react";
+import {
+  AppBar,
+  ListItem,
+  Toolbar,
+  SwipeableDrawer,
+  List,
+  Slide,
+} from "@material-ui/core";
+import { useStyles } from "./styles";
+import { Button } from "@material-ui/core";
 
 export default function Header(props) {
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const classes = useStyles();
   const [checked, setChecked] = useState(false);
   const [state, setState] = React.useState({
-    right: false
+    right: false,
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
-    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    if (
+      event &&
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
       return;
     }
 
@@ -49,7 +58,7 @@ export default function Header(props) {
   const Logout = () => {
     window.sessionStorage.clear();
     props.Authenticate();
-  }
+  };
   useEffect(() => {
     setChecked(true);
   }, []);
@@ -57,11 +66,17 @@ export default function Header(props) {
     <div className={classes.root} id="header">
       <AppBar className={classes.appbar} elevation={0}>
         <Toolbar className={classes.appbarWrapper}>
-          <h1 className={classes.appbarTitle}>
-              Microsoft Teams
-          </h1>
+          <h1 className={classes.appbarTitle}>Microsoft Teams</h1>
           <React.Fragment key="right">
-            <Button className={classes.menu} onClick={toggleDrawer("right", true)} size="large" color = "primary" align = "center">Menu</Button>
+            <Button
+              className={classes.menu}
+              onClick={toggleDrawer("right", true)}
+              size="large"
+              color="primary"
+              align="center"
+            >
+              Menu
+            </Button>
             <SwipeableDrawer
               anchor="right"
               open={state["right"]}
@@ -74,17 +89,31 @@ export default function Header(props) {
         </Toolbar>
       </AppBar>
 
-      
-        <div className={classes.container}>
-          <Slide direction="left" in={checked} {...(checked ? { timeout: 1500 } : {})} mountOnEnter unmountOnExit>
-            <h1 className={classes.title}>
-              Welcome to Teams,<br/> {user["firstName"]}
-            </h1>
-          </Slide>
-          <Slide direction="right" in={checked} {...(checked ? { timeout: 1500 } : {})} mountOnEnter unmountOnExit>
-              <h4 style={{margin:"0px", color:"red"}}>Click Menu for more options</h4>
-          </Slide>
-        </div>
+      <div className={classes.container}>
+        <Slide
+          direction="up"
+          in={checked}
+          {...(checked ? { timeout: 1000 } : {})}
+          mountOnEnter
+          unmountOnExit
+        >
+          <h1 className={classes.title}>
+            Welcome to Teams,
+            <br /> {user["firstName"]}
+          </h1>
+        </Slide>
+        <Slide
+          direction="up"
+          in={checked}
+          {...(checked ? { timeout: 1000 } : {})}
+          mountOnEnter
+          unmountOnExit
+        >
+          <h4 style={{ margin: "0px", color: "red" }}>
+            Click Menu for more options
+          </h4>
+        </Slide>
+      </div>
     </div>
   );
 }

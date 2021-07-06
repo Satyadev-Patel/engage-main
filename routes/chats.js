@@ -1,4 +1,3 @@
-  
 const express = require("express");
 const Chat = require("../Models/Chat");
 const errors = require("restify-errors");
@@ -10,13 +9,13 @@ router.post("/chat_data/", (req, res, next) => {
   }
   try {
     const data = req.body;
-    Chat.find({ meetID: data["roomID"]}).then((chat) => {
-         const obj = {
-             msg: "success",
-             allChats: chat,
-         };
-        res.send(obj);
-        next();
+    Chat.find({ meetID: data["roomID"] }).then((chat) => {
+      const obj = {
+        msg: "success",
+        allChats: chat,
+      };
+      res.send(obj);
+      next();
     });
   } catch (err) {
     res.render("error/500");
