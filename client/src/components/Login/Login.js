@@ -113,11 +113,6 @@ export default function Login(props) {
               autoComplete="current-password"
               onChange={handleChange}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" style={{ color: "#fff" }} />}
-              label="Remember me"
-              style={{ color: "#fff", fontFamily: "Poppins" }}
-            />
             <br />
             <Button
               type="submit"
@@ -130,15 +125,6 @@ export default function Login(props) {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link
-                  style={{ color: "#fff", fontFamily: "Poppins" }}
-                  href="#"
-                  variant="body2"
-                >
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
                 <Link
                   style={{ color: "#fff", fontFamily: "Poppins" }}
