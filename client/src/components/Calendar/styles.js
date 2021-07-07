@@ -11,16 +11,18 @@ export const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${process.env.PUBLIC_URL + "/assets/2.jpg"})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    overflow: "auto",
   },
   container: {
     maxWidth: "800px",
     height: "400px",
-    overflow: "auto",
+    overflow: "scroll",
     marginTop: "100px",
     marginRight: "300px",
   },
   appbar: {
     background: "none",
+    overflow: "auto",
   },
   appbarWrapper: {
     width: "80%",
@@ -29,7 +31,7 @@ export const useStyles = makeStyles((theme) => ({
   appbarTitle: {
     flexGrow: "4",
     color: "#fff",
-    fontSize: "4rem",
+    fontSize: "2rem",
   },
   form: {
     paddingBottom: "10px",

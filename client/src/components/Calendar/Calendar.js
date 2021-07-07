@@ -129,14 +129,14 @@ const Calendar = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.appbar} elevation={0}>
+      <AppBar className={classes.appbar}>
         <Toolbar className={classes.appbarWrapper}>
           <h1 className={classes.appbarTitle}>
             {user["firstName"]}'s Meetings
           </h1>
         </Toolbar>
       </AppBar>
-      <Container>
+      <Container style={{ width: "100%" }}>
         <Slide
           direction="right"
           in={checked}
@@ -157,7 +157,7 @@ const Calendar = () => {
       {open && (
         // Loading all the events
 
-        <Container className={classes.container}>
+        <Container className={classes.container} style={{ overflow: "auto" }}>
           <List>
             {tasks.length > 0 ? (
               tasks.map((task) => (
@@ -174,13 +174,19 @@ const Calendar = () => {
       )}
       {!open && (
         <div style={{ alignItems: "center" }}>
-          <h1 style={{ color: "white", width: "700px" }}>
+          <h1
+            style={{
+              color: "white",
+              width: "400px",
+              overflow: "auto",
+            }}
+          >
             Please select a day to view your meetings
           </h1>
         </div>
       )}
-      <Container className={classes.addContainer}>
-        {showTask ? (
+      <Container className={classes.addContainer} style={{ overflow: "auto" }}>
+        {showTask && open && (
           <form className={classes.form} noValidate>
             <TextField
               className={classes.outfield}
@@ -227,7 +233,8 @@ const Calendar = () => {
               <h3 className={classes.head}>Close</h3>
             </Button>
           </form>
-        ) : (
+        )}
+        {!showTask && open && (
           <Button
             variant="contained"
             onClick={onTaskClick}

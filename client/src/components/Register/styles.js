@@ -10,8 +10,8 @@ export const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
     backgroundImage: `url(${process.env.PUBLIC_URL + "/assets/2.jpg"})`,
     backgroundRepeat: "no-repeat",
-    backgroundAttachment: "scroll",
     backgroundSize: "cover",
+    overflow: "auto",
   },
   paper: {
     display: "flex",

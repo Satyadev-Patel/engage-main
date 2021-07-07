@@ -11,6 +11,7 @@ export const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${process.env.PUBLIC_URL + "/assets/2.jpg"})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    overflow: "auto",
   },
   glogin: {
     paddingRight: "10 px",
@@ -18,6 +19,7 @@ export const useStyles = makeStyles((theme) => ({
   txtfield: {
     color: "#fff!important",
     fontFamily: "Poppins",
+    width: "auto",
   },
   outfield: {
     marginBottom: "10px",

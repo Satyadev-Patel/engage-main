@@ -3,7 +3,14 @@ import Message from "./Message";
 import { useState, useEffect } from "react";
 import { useStyles } from "./style";
 import axios from "axios";
-import { Button, TextField, Container } from "@material-ui/core";
+import {
+  Button,
+  TextField,
+  Container,
+  IconButton,
+  InputAdornment,
+} from "@material-ui/core";
+import SendIcon from "@material-ui/icons/Send";
 const Chat = (props) => {
   const classes = useStyles();
   const user = JSON.parse(window.sessionStorage.getItem("user"));
@@ -85,17 +92,21 @@ const Chat = (props) => {
         }}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        style={{ marginTop: "30px", width: "300px" }}
+        style={{ marginTop: "30px", width: "auto" }}
       />
-      <br />
       <Button
         variant="contained"
         color="white"
         className={classes.btn}
         onClick={onSend}
-        style={{ width: "20%", marginBottom: "10px", marginTop: "0px" }}
+        style={{
+          width: "auto",
+          padding: "15px",
+          marginLeft: "10px",
+          marginTop: "30px",
+        }}
       >
-        <h3 style={{ marginBottom: "0px", marginTop: "0px" }}>Send</h3>
+        <SendIcon />
       </Button>
     </div>
   );

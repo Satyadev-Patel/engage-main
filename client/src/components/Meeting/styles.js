@@ -18,6 +18,7 @@ export const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    overflow: "auto",
   },
   title: {
     paddingBottom: "40px",
@@ -27,7 +28,7 @@ export const useStyles = makeStyles((theme) => ({
   videoStyle: {
     borderRadius: "5px",
     padding: "2px",
-    width: "300px",
+    width: "350px",
     border: "1px solid #fff",
     transform: "rotateY(180deg)",
   },
@@ -53,7 +54,6 @@ export const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: "2fr 2fr",
     justifyContent: "center",
     alignContent: "center",
-    marginLeft: "50px",
     height: "20rem",
   },
   gridList: {
@@ -65,7 +65,7 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: "10px",
     marginBottom: "10px",
     marginLeft: "10px",
-    width: "50%",
+    width: "auto",
     alignItems: "right",
     fontFamily: "Poppins",
   },

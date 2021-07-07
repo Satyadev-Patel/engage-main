@@ -3,7 +3,13 @@ import Peer from "simple-peer";
 import io from "socket.io-client";
 import { Container, Grid } from "@material-ui/core";
 import { useStyles } from "./styles";
+import MicIcon from "@material-ui/icons/Mic";
 import React, { useEffect, useRef, useState } from "react";
+import MicOffIcon from "@material-ui/icons/MicOff";
+import CallEndIcon from "@material-ui/icons/CallEnd";
+import SendIcon from "@material-ui/icons/Send";
+import VideocamOffIcon from "@material-ui/icons/VideocamOff";
+import VideocamIcon from "@material-ui/icons/Videocam";
 import { List, Typography, TextField } from "@material-ui/core";
 import axios from "axios";
 import Chat from "../Chat/Chat";
@@ -28,7 +34,7 @@ const Video = (props) => {
         style={{
           borderRadius: "5px",
           padding: "2px",
-          width: "300px",
+          width: "350px",
           border: "1px solid #fff",
           transform: "rotateY(180deg)",
         }}
@@ -264,79 +270,9 @@ const Meeting = (props) => {
       ) : (
         <>
           <List style={{ width: "40%" }}>
-            {isJoin && (
-              <Button
-                variant="contained"
-                style={{ backgroundColor: "#FF2E2E", color: "white" }}
-                onClick={HandleAudio}
-                className={classes.btn}
-              >
-                <h3 className={classes.head}>Leave Stream</h3>
-              </Button>
-            )}
             <br />
-            {isJoin && (
-              <>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={muteAudio}
-                  className={classes.btn}
-                >
-                  <h3 className={classes.head}>
-                    {!muteMic ? "Mute" : "Unmute"}
-                  </h3>
-                </Button>
-                <br />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={muteVideo}
-                  className={classes.btn}
-                >
-                  <h3 className={classes.head}>
-                    {!muteVid ? "Disable Video" : "Enable Video"}
-                  </h3>
-                </Button>
-                <br />
-                {isJoin && (
-                  <>
-                    <TextField
-                      id="outlined-basic"
-                      label="Email"
-                      type="email"
-                      variant="outlined"
-                      className={classes.outfield}
-                      InputProps={{
-                        className: classes.txtfield,
-                      }}
-                      InputLabelProps={{
-                        className: classes.txtfield,
-                      }}
-                      onChange={(e) => setInviteEmail(e.target.value)}
-                      style={{
-                        marginTop: "20px",
-                        marginLeft: "10px",
-                        width: "300px",
-                      }}
-                    />
-                    <br />
-                    <Button
-                      variant="contained"
-                      color="white"
-                      className={classes.btn}
-                      style={{ width: "50%" }}
-                      onClick={sendMail}
-                    >
-                      <h3 style={{ marginBottom: "0px", marginTop: "0px" }}>
-                        Send an Invite
-                      </h3>
-                    </Button>
-                  </>
-                )}
-                <br />
-              </>
-            )}
+            {isJoin && <></>}
+            <br />
           </List>
           <Container className={classes.videoContainer}>
             {isJoin ? (
@@ -349,9 +285,34 @@ const Meeting = (props) => {
                     muted
                     className={classes.videoStyle}
                   />
-                  <Typography style={{ color: "#fff", fontFamily: "Poppins" }}>
+                  <div style={{ color: "white" }}>
                     You
-                  </Typography>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={muteAudio}
+                      style={{ width: "20%" }}
+                      className={classes.btn}
+                    >
+                      {!muteMic ? <MicIcon /> : <MicOffIcon />}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      style={{ backgroundColor: "#FF2E2E", color: "white" }}
+                      onClick={HandleAudio}
+                      className={classes.btn}
+                    >
+                      <CallEndIcon />
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={muteVideo}
+                      className={classes.btn}
+                    >
+                      {!muteVid ? <VideocamIcon /> : <VideocamOffIcon />}
+                    </Button>
+                  </div>
                 </Grid>
 
                 {peersRef.current.map((peer, index) => {
@@ -380,13 +341,50 @@ const Meeting = (props) => {
             // It is completely independent of whether the user is present in video call or not.
             <Container>
               {joinChat ? (
-                <Chat
-                  room={roomID}
-                  onSend={onSend}
-                  output={output}
-                  socketRef={chatsocketRef}
-                  roomName={roomName}
-                />
+                <>
+                  <Chat
+                    room={roomID}
+                    onSend={onSend}
+                    output={output}
+                    socketRef={chatsocketRef}
+                    roomName={roomName}
+                  />
+
+                  <TextField
+                    id="outlined-basic"
+                    label="Email"
+                    type="email"
+                    variant="outlined"
+                    className={classes.outfield}
+                    InputProps={{
+                      className: classes.txtfield,
+                    }}
+                    InputLabelProps={{
+                      className: classes.txtfield,
+                    }}
+                    onChange={(e) => setInviteEmail(e.target.value)}
+                    style={{
+                      marginTop: "10px",
+                      width: "auto",
+                    }}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.btn}
+                    onClick={sendMail}
+                    style={{
+                      width: "auto",
+                      padding: "15px",
+                      marginLeft: "10px",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <h3 style={{ margin: "0px", padding: "0px" }}>
+                      Invite to Room
+                    </h3>
+                  </Button>
+                </>
               ) : (
                 <Button
                   variant="contained"

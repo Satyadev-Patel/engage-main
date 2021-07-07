@@ -64,7 +64,7 @@ export default function Header(props) {
     setChecked(true);
   }, []);
   return (
-    <div className={classes.root} id="header">
+    <div className={classes.root}>
       <AppBar className={classes.appbar} elevation={0}>
         <Toolbar className={classes.appbarWrapper}>
           <h1 className={classes.appbarTitle}>Microsoft Teams</h1>
@@ -92,7 +92,7 @@ export default function Header(props) {
 
       <div className={classes.container}>
         <Slide
-          direction="up"
+          direction="right"
           in={checked}
           {...(checked ? { timeout: 1000 } : {})}
           mountOnEnter
@@ -104,7 +104,7 @@ export default function Header(props) {
           </h1>
         </Slide>
         <Slide
-          direction="up"
+          direction="left"
           in={checked}
           {...(checked ? { timeout: 1000 } : {})}
           mountOnEnter

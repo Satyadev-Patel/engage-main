@@ -2,16 +2,16 @@ import { makeStyles } from "@material-ui/styles";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display: "grid",
     justifyContent: "center",
     alignItems: "center",
     height: "100vh",
     fontFamily: "Poppins",
     backgroundImage: `url(${process.env.PUBLIC_URL + "/assets/2.jpg"})`,
     minHeight: "100vh",
-    backgroundColor: "#aaa",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    overflow: "auto",
   },
   list: {
     width: 250,
