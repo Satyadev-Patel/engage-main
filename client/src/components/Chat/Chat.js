@@ -22,7 +22,10 @@ const Chat = (props) => {
     // Loading the previous chat data
 
     axios
-      .post("http://localhost:5000/chats/chat_data", requestObj)
+      .post(
+        "https://polar-journey-62609.herokuapp.com/chats/chat_data",
+        requestObj
+      )
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let allChats = response["data"]["allChats"];

@@ -92,7 +92,10 @@ const Meeting = (props) => {
       name: user["firstName"],
     };
     axios
-      .post("http://localhost:5000/users/send_mail", requestObj)
+      .post(
+        "https://polar-journey-62609.herokuapp.com/users/send_mail",
+        requestObj
+      )
       .then(function (response) {
         console.log(response["data"]["msg"]);
       })
@@ -106,7 +109,9 @@ const Meeting = (props) => {
 
   const onSend = (message) => {
     if (!socketRef.current)
-      socketRef.current = io.connect("http://localhost:5000/");
+      socketRef.current = io.connect(
+        "https://polar-journey-62609.herokuapp.com/"
+      );
     const obj = {
       handle: userDetail.name,
       message: message,
@@ -121,7 +126,9 @@ const Meeting = (props) => {
   };
   const wantsToJoin = () => {
     if (!socketRef.current)
-      socketRef.current = io.connect("http://localhost:5000/"); // WebSocket connection
+      socketRef.current = io.connect(
+        "https://polar-journey-62609.herokuapp.com/"
+      ); // WebSocket connection
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
@@ -234,7 +241,9 @@ const Meeting = (props) => {
   // Joining the chat window through WebSocket
 
   const joinchat = () => {
-    chatsocketRef.current = io.connect("http://localhost:5000/");
+    chatsocketRef.current = io.connect(
+      "https://polar-journey-62609.herokuapp.com/"
+    );
     setJoinChat(true);
     chatsocketRef.current.emit("join chat room", userDetail);
   };

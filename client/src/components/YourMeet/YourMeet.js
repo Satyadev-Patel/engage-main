@@ -19,7 +19,10 @@ const YourMeet = () => {
     // API call to load the meetings from database
 
     axios
-      .post("http://localhost:5000/users/meetings", requestObj)
+      .post(
+        "https://polar-journey-62609.herokuapp.com/users/meetings",
+        requestObj
+      )
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let meets = response["data"]["meetings"];
@@ -44,7 +47,10 @@ const YourMeet = () => {
   const onDelete = (id) => {
     setAllMeets(allMeets.filter((meet) => meet.meetID !== id));
     const requestObj = { meetID: id, email: user["email"] };
-    axios.post("http://localhost:5000/users/delete_meet", requestObj);
+    axios.post(
+      "https://polar-journey-62609.herokuapp.com/users/delete_meet",
+      requestObj
+    );
   };
 
   // Display the details of the selected meeting

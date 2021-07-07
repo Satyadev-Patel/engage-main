@@ -36,7 +36,10 @@ const Calendar = () => {
     //Extracting the event data for all the days at the start
 
     axios
-      .post("http://localhost:5000/event/events", requestObj)
+      .post(
+        "https://polar-journey-62609.herokuapp.com/event/events",
+        requestObj
+      )
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let events = response["data"]["event"];
@@ -98,7 +101,7 @@ const Calendar = () => {
     const obj = { meetName: meetName, meetTime: meetTime };
     const email = user["email"];
     axios
-      .post("http://localhost:5000/event/add", {
+      .post("https://polar-journey-62609.herokuapp.com/event/add", {
         email,
         meetName,
         meetTime,
@@ -122,7 +125,10 @@ const Calendar = () => {
   const onTaskDelete = (name) => {
     setTasks(tasks.filter((task) => task.meetTime !== name));
     const requestObj = { meetTime: name, day: day, email: user["email"] };
-    axios.post("http://localhost:5000/event/delete", requestObj);
+    axios.post(
+      "https://polar-journey-62609.herokuapp.com/event/delete",
+      requestObj
+    );
     allEvents[day] = allEvents[day].filter((task) => task.meetTime !== name);
     setAllEvents(allEvents);
   };

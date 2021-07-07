@@ -18,7 +18,7 @@ const Home = (props) => {
 
     //Checking whether the user is already present in a room with the same name
     axios
-      .post("http://localhost:5000/users/find_id", values)
+      .post("https://polar-journey-62609.herokuapp.com/users/find_id", values)
       .then(function (response) {
         if (response["data"]["msg"] == "fail") {
           window.alert(
@@ -41,7 +41,10 @@ const Home = (props) => {
 
     //Checking whether the ID exists or not
     axios
-      .post("http://localhost:5000/users/find_join_id", values)
+      .post(
+        "https://polar-journey-62609.herokuapp.com/users/find_join_id",
+        values
+      )
       .then(function (response) {
         if (response["data"]["msg"] == "fail") {
           window.alert("Id not found");
