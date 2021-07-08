@@ -62,6 +62,7 @@ export default function Header(props) {
   const Logout = () => {
     window.sessionStorage.clear();
     props.Authenticate();
+    props.history.push("/");
   };
   useEffect(() => {
     setChecked(true);
