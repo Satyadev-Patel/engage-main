@@ -7,7 +7,7 @@ import { Button, TextField, Container } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 const Chat = (props) => {
   const classes = useStyles();
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const user = JSON.parse(window.localStorage.getItem("user"));
   const [output, setOutput] = useState([]); // Storing all the current chats
   const [message, setMessage] = useState("");
   useEffect(() => {
@@ -16,7 +16,7 @@ const Chat = (props) => {
     // Loading the previous chat data
 
     axios
-      .post("http://localhost:5000/chats/chat_data", requestObj)
+      .post("https://nanosoft-teams.herokuapp.com/chats/chat_data", requestObj)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let allChats = response["data"]["allChats"];

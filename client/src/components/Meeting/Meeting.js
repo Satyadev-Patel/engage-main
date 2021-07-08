@@ -47,7 +47,7 @@ const Video = (props) => {
 
 const Meeting = (props) => {
   const classes = useStyles();
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const user = JSON.parse(window.localStorage.getItem("user"));
   const userVideo = useRef();
   const [joinChat, setJoinChat] = useState(false); // flag for joining the chat without joining the stream
   const [muteVid, setMuteVid] = useState(false);
@@ -91,7 +91,7 @@ const Meeting = (props) => {
       name: user["firstName"],
     };
     axios
-      .post("http://localhost:5000/users/send_mail", requestObj)
+      .post("https://nanosoft-teams.herokuapp.com/users/send_mail", requestObj)
       .then(function (response) {
         window.alert(response["data"]["msg"]);
         setInviteEmail("");
@@ -105,7 +105,7 @@ const Meeting = (props) => {
 
   const onSend = (message) => {
     if (!socketRef.current)
-      socketRef.current = io.connect("http://localhost:5000/");
+      socketRef.current = io.connect("https://nanosoft-teams.herokuapp.com/");
     const obj = {
       handle: userDetail.name,
       message: message,
@@ -120,7 +120,7 @@ const Meeting = (props) => {
   };
   const wantsToJoin = () => {
     if (!socketRef.current)
-      socketRef.current = io.connect("http://localhost:5000/"); // WebSocket connection
+      socketRef.current = io.connect("https://nanosoft-teams.herokuapp.com/"); // WebSocket connection
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
@@ -233,7 +233,7 @@ const Meeting = (props) => {
   // Joining the chat window through WebSocket
 
   const joinchat = () => {
-    chatsocketRef.current = io.connect("http://localhost:5000/");
+    chatsocketRef.current = io.connect("https://nanosoft-teams.herokuapp.com/");
     setJoinChat(true);
     chatsocketRef.current.emit("join chat room", userDetail);
   };
@@ -273,7 +273,7 @@ const Meeting = (props) => {
       {!isJoin && !fullRoom && (
         <AppBar className={classes.appbar}>
           <Toolbar className={classes.appbarWrapper}>
-            <h1 className={classes.appbarTitle}>Microsoft Teams</h1>
+            <h1 className={classes.appbarTitle}>Nanosoft Teams</h1>
             <Button
               className={classes.menu}
               size="large"

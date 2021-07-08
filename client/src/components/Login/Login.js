@@ -18,11 +18,7 @@ const Copyright = () => {
       color="textSecondary"
       align="center"
     >
-      {"Copyright © "}
-      <Link color="inherit" href="#">
-        Microsoft Teams
-      </Link>{" "}
-      {new Date().getFullYear()}
+      {"Copyright © "}Nanosoft Teams {new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -50,11 +46,11 @@ const Login = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/users/login", values)
+      .post("https://nanosoft-teams.herokuapp.com/users/login", values)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
-          window.sessionStorage.setItem("isAuthenticate", "Yes");
-          window.sessionStorage.setItem(
+          window.localStorage.setItem("isAuthenticate", "Yes");
+          window.localStorage.setItem(
             "user",
             JSON.stringify(response["data"]["user"])
           );

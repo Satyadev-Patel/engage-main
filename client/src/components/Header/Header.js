@@ -12,7 +12,7 @@ import { Button } from "@material-ui/core";
 
 //Home Page
 export default function Header(props) {
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const user = JSON.parse(window.localStorage.getItem("user"));
   const classes = useStyles();
   const [checked, setChecked] = useState(false); // For transition of title
   const [state, setState] = useState({
@@ -60,7 +60,7 @@ export default function Header(props) {
     </div>
   );
   const Logout = () => {
-    window.sessionStorage.clear();
+    window.localStorage.clear();
     props.Authenticate();
   };
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function Header(props) {
     <div className={classes.root}>
       <AppBar className={classes.appbar} elevation={0}>
         <Toolbar className={classes.appbarWrapper}>
-          <h1 className={classes.appbarTitle}>Microsoft Teams</h1>
+          <h1 className={classes.appbarTitle}>Nanosoft Teams</h1>
           <React.Fragment key="right">
             <Button
               className={classes.menu}

@@ -20,7 +20,7 @@ const Calendar = (props) => {
   const [tasks, setTasks] = useState([]); // Tasks specific to a day
   const [showTask, setShowTask] = useState(false); // Toggle task add container
   const [day, setDay] = useState(""); // Which day is currently selected
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const user = JSON.parse(window.localStorage.getItem("user"));
   const eventData = {
     Monday: [],
     Tuesday: [],
@@ -36,7 +36,7 @@ const Calendar = (props) => {
     //Extracting the event data for all the days at the start
 
     axios
-      .post("http://localhost:5000/event/events", requestObj)
+      .post("https://nanosoft-teams.herokuapp.com/event/events", requestObj)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let events = response["data"]["event"];
@@ -96,7 +96,7 @@ const Calendar = (props) => {
     const { meetName, meetTime } = values;
     const obj = { meetName: meetName, meetTime: meetTime };
     const email = user["email"];
-    axios.post("http://localhost:5000/event/add", {
+    axios.post("https://nanosoft-teams.herokuapp.com/event/add", {
       email,
       meetName,
       meetTime,
@@ -117,7 +117,7 @@ const Calendar = (props) => {
   const onTaskDelete = (name) => {
     setTasks(tasks.filter((task) => task.meetTime !== name));
     const requestObj = { meetTime: name, day: day, email: user["email"] };
-    axios.post("http://localhost:5000/event/delete", requestObj);
+    axios.post("https://nanosoft-teams.herokuapp.com/event/delete", requestObj);
     allEvents[day] = allEvents[day].filter((task) => task.meetTime !== name);
     setAllEvents(allEvents);
   };

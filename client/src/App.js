@@ -18,10 +18,10 @@ import YourMeet from "./components/YourMeet/YourMeet";
 const App = () => {
   // User authentication parameters.
   const [Auth, setAuth] = useState(
-    window.sessionStorage.getItem("isAuthenticate")
+    window.localStorage.getItem("isAuthenticate")
   );
   const Authenticate = () => {
-    setAuth(window.sessionStorage.getItem("isAuthenticate"));
+    setAuth(window.localStorage.getItem("isAuthenticate"));
   };
 
   // Routing using react-router-dom

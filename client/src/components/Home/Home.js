@@ -7,7 +7,7 @@ import { v1 as uuid } from "uuid";
 const Home = (props) => {
   const classes = useStyles();
   const [id, setId] = useState("");
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const user = JSON.parse(window.localStorage.getItem("user"));
   const [name, setName] = useState("");
 
   //Creating a room
@@ -18,7 +18,7 @@ const Home = (props) => {
 
     //Checking whether the user is already present in a room with the same name
     axios
-      .post("http://localhost:5000/users/find_id", values)
+      .post("https://nanosoft-teams.herokuapp.com/users/find_id", values)
       .then(function (response) {
         if (response["data"]["msg"] == "fail") {
           window.alert(
@@ -41,7 +41,7 @@ const Home = (props) => {
 
     //Checking whether the ID exists or not
     axios
-      .post("http://localhost:5000/users/find_join_id", values)
+      .post("https://nanosoft-teams.herokuapp.com/users/find_join_id", values)
       .then(function (response) {
         if (response["data"]["msg"] == "fail") {
           window.alert("Id not found");
@@ -62,7 +62,7 @@ const Home = (props) => {
     <div className={classes.root}>
       <AppBar className={classes.appbar}>
         <Toolbar className={classes.appbarWrapper}>
-          <h1 className={classes.appbarTitle}>Microsoft Teams</h1>
+          <h1 className={classes.appbarTitle}>Nanosoft Teams</h1>
           <Button
             className={classes.menu}
             size="large"

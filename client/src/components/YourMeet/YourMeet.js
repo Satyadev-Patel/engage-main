@@ -9,7 +9,7 @@ import { AppBar, Toolbar, Container, List, Button } from "@material-ui/core";
 
 const YourMeet = (props) => {
   const classes = useStyles();
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const user = JSON.parse(window.localStorage.getItem("user"));
   const [allMeets, setAllMeets] = useState([]); // Data of all the meets of the current user
   const [open, setOpen] = useState(false); // Flag to toggle the Meet Data container
   const [curMeet, setCurMeet] = useState(); // To store which meet is currently selected
@@ -19,7 +19,7 @@ const YourMeet = (props) => {
     // API call to load the meetings from database
 
     axios
-      .post("http://localhost:5000/users/meetings", requestObj)
+      .post("https://nanosoft-teams.herokuapp.com/users/meetings", requestObj)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let meets = response["data"]["meetings"];
@@ -44,7 +44,10 @@ const YourMeet = (props) => {
   const onDelete = (id) => {
     setAllMeets(allMeets.filter((meet) => meet.meetID !== id));
     const requestObj = { meetID: id, email: user["email"] };
-    axios.post("http://localhost:5000/users/delete_meet", requestObj);
+    axios.post(
+      "https://nanosoft-teams.herokuapp.com/users/delete_meet",
+      requestObj
+    );
   };
 
   // Display the details of the selected meeting
