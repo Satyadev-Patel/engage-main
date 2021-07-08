@@ -58,7 +58,7 @@ router.post("/send_mail", (req, res, next) => {
       to: data["email"],
       subject: "Room Invitation",
       text: `You have been invited to ${data["name"]}'s room.\n Room id : ${data["text"]}\n 
-            App link: https://polar-journey-62609.herokuapp.com/ \n You will need to login first and then Enter this ID in JOIN or CREATE MEETING`,
+            App link: https://nanosoft-teams.herokuapp.com/ \n You will need to login first and then Enter this ID in JOIN or CREATE MEETING`,
     })
       .then((result, full) => {
         const obj = {

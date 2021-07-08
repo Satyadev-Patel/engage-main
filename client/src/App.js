@@ -33,13 +33,7 @@ const App = () => {
         <Switch>
           <Route exact path="/">
             {Auth === "Yes" ? (
-              <Route
-                exact
-                path="/"
-                Auth={Auth}
-                Authenticate={Authenticate}
-                component={Header}
-              />
+              <Header Auth={Auth} Authenticate={Authenticate} />
             ) : (
               <Redirect to="/login" />
             )}
@@ -53,13 +47,7 @@ const App = () => {
           </Route>
           <Route exact path="/calendar">
             {Auth === "Yes" ? (
-              <Route
-                exact
-                path="/calendar"
-                Auth={Auth}
-                Authenticate={Authenticate}
-                component={Calendar}
-              />
+              <Route exact path="/calendar" component={Calendar} />
             ) : (
               <Redirect to="/login" />
             )}
@@ -69,8 +57,6 @@ const App = () => {
               <Route
                 exact
                 path="/meeting/:roomID/:roomName"
-                Auth={Auth}
-                Authenticate={Authenticate}
                 component={Meeting}
               />
             ) : (
@@ -86,39 +72,21 @@ const App = () => {
           </Route>
           <Route exact path="/home">
             {Auth === "Yes" ? (
-              <Route
-                exact
-                path="/home"
-                Auth={Auth}
-                Authenticate={Authenticate}
-                component={Home}
-              />
+              <Route exact path="/home" component={Home} />
             ) : (
               <Redirect to="/login" />
             )}
           </Route>
           <Route exact path="/yourmeet">
             {Auth === "Yes" ? (
-              <Route
-                exact
-                path="/yourmeet"
-                Auth={Auth}
-                Authenticate={Authenticate}
-                component={YourMeet}
-              />
+              <Route exact path="/yourmeet" component={YourMeet} />
             ) : (
               <Redirect to="/login" />
             )}
           </Route>
           <Route exact path="/chat">
             {Auth === "Yes" ? (
-              <Route
-                exact
-                path="/chat"
-                Auth={Auth}
-                Authenticate={Authenticate}
-                component={Chat}
-              />
+              <Route exact path="/chat" component={Chat} />
             ) : (
               <Redirect to="/login" />
             )}
