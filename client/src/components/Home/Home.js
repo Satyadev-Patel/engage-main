@@ -7,7 +7,7 @@ import { v1 as uuid } from "uuid";
 const Home = (props) => {
   const classes = useStyles();
   const [id, setId] = useState("");
-  const user = JSON.parse(window.localStorage.getItem("user"));
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const [name, setName] = useState("");
 
   //Creating a room

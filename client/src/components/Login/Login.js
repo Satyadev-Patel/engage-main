@@ -49,8 +49,8 @@ const Login = (props) => {
       .post("https://nanosoft-teams.herokuapp.com/users/login", values)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
-          window.localStorage.setItem("isAuthenticate", "Yes");
-          window.localStorage.setItem(
+          window.sessionStorage.setItem("isAuthenticate", "Yes");
+          window.sessionStorage.setItem(
             "user",
             JSON.stringify(response["data"]["user"])
           );

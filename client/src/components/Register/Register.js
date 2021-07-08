@@ -110,8 +110,8 @@ export default function SignUp(props) {
             window.alert(response["data"]);
           } else {
             window.alert(response["data"]);
-            window.localStorage.setItem("isAuthenticate", "Yes");
-            window.localStorage.setItem("user", JSON.stringify(values));
+            window.sessionStorage.setItem("isAuthenticate", "Yes");
+            window.sessionStorage.setItem("user", JSON.stringify(values));
             props.Authenticate();
             setValue({});
           }

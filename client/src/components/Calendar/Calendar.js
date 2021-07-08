@@ -20,7 +20,7 @@ const Calendar = (props) => {
   const [tasks, setTasks] = useState([]); // Tasks specific to a day
   const [showTask, setShowTask] = useState(false); // Toggle task add container
   const [day, setDay] = useState(""); // Which day is currently selected
-  const user = JSON.parse(window.localStorage.getItem("user"));
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const eventData = {
     Monday: [],
     Tuesday: [],

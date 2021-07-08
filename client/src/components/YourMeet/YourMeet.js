@@ -9,7 +9,7 @@ import { AppBar, Toolbar, Container, List, Button } from "@material-ui/core";
 
 const YourMeet = (props) => {
   const classes = useStyles();
-  const user = JSON.parse(window.localStorage.getItem("user"));
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const [allMeets, setAllMeets] = useState([]); // Data of all the meets of the current user
   const [open, setOpen] = useState(false); // Flag to toggle the Meet Data container
   const [curMeet, setCurMeet] = useState(); // To store which meet is currently selected

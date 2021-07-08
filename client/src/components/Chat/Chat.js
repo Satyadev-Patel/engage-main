@@ -7,7 +7,7 @@ import { Button, TextField, Container } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 const Chat = (props) => {
   const classes = useStyles();
-  const user = JSON.parse(window.localStorage.getItem("user"));
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const [output, setOutput] = useState([]); // Storing all the current chats
   const [message, setMessage] = useState("");
   useEffect(() => {

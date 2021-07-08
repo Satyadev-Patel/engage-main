@@ -12,7 +12,7 @@ import { Button } from "@material-ui/core";
 
 //Home Page
 export default function Header(props) {
-  const user = JSON.parse(window.localStorage.getItem("user"));
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const classes = useStyles();
   const [checked, setChecked] = useState(false); // For transition of title
   const [state, setState] = useState({
@@ -60,7 +60,7 @@ export default function Header(props) {
     </div>
   );
   const Logout = () => {
-    window.localStorage.clear();
+    window.sessionStorage.clear();
     props.Authenticate();
   };
   useEffect(() => {

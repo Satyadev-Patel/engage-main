@@ -47,7 +47,7 @@ const Video = (props) => {
 
 const Meeting = (props) => {
   const classes = useStyles();
-  const user = JSON.parse(window.localStorage.getItem("user"));
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const userVideo = useRef();
   const [joinChat, setJoinChat] = useState(false); // flag for joining the chat without joining the stream
   const [muteVid, setMuteVid] = useState(false);
