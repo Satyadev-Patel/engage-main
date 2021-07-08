@@ -28,6 +28,7 @@ const Single = (props) => {
         <Grid item className={classes.task}>
           <Button
             variant="contained"
+            color="secondary"
             className={classes.taskBtn}
             onClick={() => props.onDelete(props.meetID)}
           >
@@ -39,6 +40,7 @@ const Single = (props) => {
         <Grid item className={classes.task}>
           <Button
             variant="contained"
+            color="primary"
             className={classes.taskBtn}
             style={{ marginLeft: "70px" }}
             onClick={() => props.onDetails(props.meetID)}

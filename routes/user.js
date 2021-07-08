@@ -5,11 +5,15 @@ const errors = require("restify-errors");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
-const credentials = { user: "dsemo1122@gmail.com", pass: "guru@3003" };
+const dotnev = require("dotenv");
+
+// Load Config
+dotnev.config({ path: "../config/config.env" });
+
 // for sending email
 const send = require("gmail-send")({
-  user: credentials.user,
-  pass: credentials.pass,
+  user: process.env.MAIL_USER,
+  pass: process.env.MAIL_PASS,
 });
 
 // for request of registering a user
@@ -55,7 +59,7 @@ router.post("/send_mail", (req, res, next) => {
         to: data["email"],
         subject: "Room Invitation",
         text: `You have been invited to ${data["name"]}'s room.\n Room id : ${data["text"]}\n 
-            App link: http://localhost:3000/`,
+            App link: https://polar-journey-62609.herokuapp.com/ \n You will need to login first and then Enter this ID in JOIN or CREATE MEETING`,
       },
       (err, res, full) => {
         if (err) return console.log("send() callback returned: err:", err);

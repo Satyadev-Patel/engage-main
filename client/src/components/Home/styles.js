@@ -18,6 +18,17 @@ export const useStyles = makeStyles((theme) => ({
     color: "#fff!important",
     fontFamily: "Poppins",
   },
+  appbar: {
+    background: "none",
+  },
+  appbarWrapper: {
+    width: "80%",
+    margin: "0 auto",
+  },
+  appbarTitle: {
+    flexGrow: "4",
+    color: "#fff",
+  },
   outfield: {
     marginBottom: "10px",
     "& label.Mui-focused": {
@@ -59,5 +70,11 @@ export const useStyles = makeStyles((theme) => ({
     padding: "0px",
     marginTop: "0px",
     color: "#fff",
+  },
+  menu: {
+    color: "#fff",
+    fontFamily: "Poppins",
+    fontSize: "1.5rem",
+    fontWeight: "bold",
   },
 }));

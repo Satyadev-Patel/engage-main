@@ -3,18 +3,12 @@ import Message from "./Message";
 import { useState, useEffect } from "react";
 import { useStyles } from "./style";
 import axios from "axios";
-import {
-  Button,
-  TextField,
-  Container,
-  IconButton,
-  InputAdornment,
-} from "@material-ui/core";
+import { Button, TextField, Container } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 const Chat = (props) => {
   const classes = useStyles();
   const user = JSON.parse(window.sessionStorage.getItem("user"));
-  const [output, setOutput] = useState([]);
+  const [output, setOutput] = useState([]); // Storing all the current chats
   const [message, setMessage] = useState("");
   useEffect(() => {
     const requestObj = { roomID: props.room };
@@ -22,10 +16,7 @@ const Chat = (props) => {
     // Loading the previous chat data
 
     axios
-      .post(
-        "https://polar-journey-62609.herokuapp.com/chats/chat_data",
-        requestObj
-      )
+      .post("http://localhost:5000/chats/chat_data", requestObj)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let allChats = response["data"]["allChats"];
@@ -42,7 +33,7 @@ const Chat = (props) => {
       })
       .catch(function (error) {
         console.log(error);
-        window.alert("Invalid Credenital!!");
+        window.alert("Some error occured");
       });
 
     // Receiving message from the user present in room through WebSockets

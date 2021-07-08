@@ -43,6 +43,9 @@ io.on("connection", (socket) => {
       io.to(element.socketID).emit("recevied msg", data);
     });
   });
+
+  // For event when user wants to join only the chat room
+
   socket.on("join chat room", (userDetail) => {
     roomID = userDetail.room;
     const info = {
@@ -173,6 +176,8 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+// using the routes
 
 app.use("/users", require("./routes/user"));
 app.use("/chats", require("./routes/chats"));

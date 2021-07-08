@@ -20,6 +20,17 @@ export const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     overflow: "auto",
   },
+  appbar: {
+    background: "none",
+  },
+  appbarWrapper: {
+    width: "80%",
+    margin: "0 auto",
+  },
+  appbarTitle: {
+    flexGrow: "4",
+    color: "#fff",
+  },
   title: {
     paddingBottom: "40px",
     color: "#fff",
@@ -72,6 +83,12 @@ export const useStyles = makeStyles((theme) => ({
   callButton: {
     textAlign: "center",
     marginTop: "2rem",
+  },
+  menu: {
+    color: "#fff",
+    fontFamily: "Poppins",
+    fontSize: "1.5rem",
+    fontWeight: "bold",
   },
   caller: {
     textAlign: "center",

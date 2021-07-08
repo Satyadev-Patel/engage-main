@@ -14,9 +14,9 @@ import { Button } from "@material-ui/core";
 export default function Header(props) {
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const classes = useStyles();
-  const [checked, setChecked] = useState(false);
-  const [state, setState] = React.useState({
-    right: false,
+  const [checked, setChecked] = useState(false); // For transition of title
+  const [state, setState] = useState({
+    right: false, // For transition of Menu Drawer
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -33,6 +33,9 @@ export default function Header(props) {
   function ListItemLink(props) {
     return <ListItem button component="a" {...props} />;
   }
+
+  // Menu drawer
+
   const list = (anchor) => (
     <div
       className={classes.list}

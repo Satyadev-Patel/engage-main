@@ -11,7 +11,7 @@ export const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    overflow: "auto",
+    overflowX: "hidden",
   },
   list: {
     width: 250,

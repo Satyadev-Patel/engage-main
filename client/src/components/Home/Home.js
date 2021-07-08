@@ -1,5 +1,5 @@
 import Button from "@material-ui/core/Button";
-import { TextField, Grid, Container } from "@material-ui/core";
+import { TextField, Grid, Container, AppBar, Toolbar } from "@material-ui/core";
 import { useState } from "react";
 import { useStyles } from "./styles";
 import axios from "axios";
@@ -18,7 +18,7 @@ const Home = (props) => {
 
     //Checking whether the user is already present in a room with the same name
     axios
-      .post("https://polar-journey-62609.herokuapp.com/users/find_id", values)
+      .post("http://localhost:5000/users/find_id", values)
       .then(function (response) {
         if (response["data"]["msg"] == "fail") {
           window.alert(
@@ -41,10 +41,7 @@ const Home = (props) => {
 
     //Checking whether the ID exists or not
     axios
-      .post(
-        "https://polar-journey-62609.herokuapp.com/users/find_join_id",
-        values
-      )
+      .post("http://localhost:5000/users/find_join_id", values)
       .then(function (response) {
         if (response["data"]["msg"] == "fail") {
           window.alert("Id not found");
@@ -54,11 +51,29 @@ const Home = (props) => {
       })
       .catch(function (error) {
         console.log(error);
-        window.alert("Invalid Credenital!!");
+        window.alert("Some error occured");
       });
+  };
+
+  const goHome = () => {
+    props.history.push("/");
   };
   return (
     <div className={classes.root}>
+      <AppBar className={classes.appbar}>
+        <Toolbar className={classes.appbarWrapper}>
+          <h1 className={classes.appbarTitle}>Microsoft Teams</h1>
+          <Button
+            className={classes.menu}
+            size="large"
+            color="primary"
+            onClick={goHome}
+            align="center"
+          >
+            Home
+          </Button>
+        </Toolbar>
+      </AppBar>
       <Container className={classes.container}>
         <Grid container>
           <Grid item xs={12}>

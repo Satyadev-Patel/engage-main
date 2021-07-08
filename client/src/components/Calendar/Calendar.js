@@ -8,18 +8,18 @@ import { Toolbar } from "@material-ui/core";
 import Task from "./Task";
 import Day from "./Day";
 
-const Calendar = () => {
+const Calendar = (props) => {
   const classes = useStyles();
   const InitialValues = {
     meetName: "",
     meetTime: "",
   };
-  const [open, setOpen] = useState(false);
-  const [checked, setChecked] = useState(false);
-  const [values, setValue] = useState(InitialValues);
-  const [tasks, setTasks] = useState([]);
-  const [showTask, setShowTask] = useState(false);
-  const [day, setDay] = useState("");
+  const [open, setOpen] = useState(false); // for checking whether a Day is selected or not
+  const [checked, setChecked] = useState(false); // for transition purpose
+  const [values, setValue] = useState(InitialValues); // Data of the new Meeting
+  const [tasks, setTasks] = useState([]); // Tasks specific to a day
+  const [showTask, setShowTask] = useState(false); // Toggle task add container
+  const [day, setDay] = useState(""); // Which day is currently selected
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const eventData = {
     Monday: [],
@@ -36,10 +36,7 @@ const Calendar = () => {
     //Extracting the event data for all the days at the start
 
     axios
-      .post(
-        "https://polar-journey-62609.herokuapp.com/event/events",
-        requestObj
-      )
+      .post("http://localhost:5000/event/events", requestObj)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let events = response["data"]["event"];
@@ -67,7 +64,7 @@ const Calendar = () => {
       })
       .catch(function (error) {
         console.log(error);
-        window.alert("Invalid Credenital!!");
+        window.alert("Some error occured");
       });
   }, []);
   const handleChange = (e) => {
@@ -87,7 +84,6 @@ const Calendar = () => {
     } else {
       setOpen(true);
       setDay(newDay);
-      console.log(allEvents);
       setTasks(allEvents[newDay]);
     }
     setShowTask(false);
@@ -100,22 +96,18 @@ const Calendar = () => {
     const { meetName, meetTime } = values;
     const obj = { meetName: meetName, meetTime: meetTime };
     const email = user["email"];
-    axios
-      .post("https://polar-journey-62609.herokuapp.com/event/add", {
-        email,
-        meetName,
-        meetTime,
-        day,
-      })
-      .then(function (response) {
-        console.log("Success");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    axios.post("http://localhost:5000/event/add", {
+      email,
+      meetName,
+      meetTime,
+      day,
+    });
     allEvents[day].push(obj);
     setAllEvents(allEvents);
   };
+
+  // Toggle for task view
+
   const onTaskClick = () => {
     setShowTask(!showTask);
   };
@@ -125,12 +117,13 @@ const Calendar = () => {
   const onTaskDelete = (name) => {
     setTasks(tasks.filter((task) => task.meetTime !== name));
     const requestObj = { meetTime: name, day: day, email: user["email"] };
-    axios.post(
-      "https://polar-journey-62609.herokuapp.com/event/delete",
-      requestObj
-    );
+    axios.post("http://localhost:5000/event/delete", requestObj);
     allEvents[day] = allEvents[day].filter((task) => task.meetTime !== name);
     setAllEvents(allEvents);
+  };
+
+  const goHome = () => {
+    props.history.push("/");
   };
 
   return (
@@ -140,9 +133,18 @@ const Calendar = () => {
           <h1 className={classes.appbarTitle}>
             {user["firstName"]}'s Meetings
           </h1>
+          <Button
+            className={classes.menu}
+            size="large"
+            color="primary"
+            onClick={goHome}
+            align="center"
+          >
+            Home
+          </Button>
         </Toolbar>
       </AppBar>
-      <Container style={{ width: "100%" }}>
+      <Container style={{ width: "300px", marginTop: "100px" }}>
         <Slide
           direction="right"
           in={checked}
@@ -179,11 +181,10 @@ const Calendar = () => {
         </Container>
       )}
       {!open && (
-        <div style={{ alignItems: "center" }}>
+        <div style={{ overflow: "auto", width: "400px", marginLeft: "100px" }}>
           <h1
             style={{
               color: "white",
-              width: "400px",
               overflow: "auto",
             }}
           >

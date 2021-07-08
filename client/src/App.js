@@ -33,7 +33,13 @@ const App = () => {
         <Switch>
           <Route exact path="/">
             {Auth === "Yes" ? (
-              <Header Auth={Auth} Authenticate={Authenticate} />
+              <Route
+                exact
+                path="/"
+                Auth={Auth}
+                Authenticate={Authenticate}
+                component={Header}
+              />
             ) : (
               <Redirect to="/login" />
             )}
@@ -47,7 +53,13 @@ const App = () => {
           </Route>
           <Route exact path="/calendar">
             {Auth === "Yes" ? (
-              <Calendar Auth={Auth} Authenticate={Authenticate} />
+              <Route
+                exact
+                path="/calendar"
+                Auth={Auth}
+                Authenticate={Authenticate}
+                component={Calendar}
+              />
             ) : (
               <Redirect to="/login" />
             )}

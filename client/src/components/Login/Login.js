@@ -10,7 +10,7 @@ import { useStyles } from "./styles";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 
-function Copyright() {
+const Copyright = () => {
   return (
     <Typography
       style={{ color: "#fff", fontFamily: "Poppins" }}
@@ -26,7 +26,7 @@ function Copyright() {
       {"."}
     </Typography>
   );
-}
+};
 
 const Login = (props) => {
   const classes = useStyles();
@@ -50,7 +50,7 @@ const Login = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://polar-journey-62609.herokuapp.com/users/login", values)
+      .post("http://localhost:5000/users/login", values)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           window.sessionStorage.setItem("isAuthenticate", "Yes");

@@ -28,6 +28,12 @@ export const useStyles = makeStyles((theme) => ({
     width: "80%",
     margin: "0 auto",
   },
+  menu: {
+    color: "#fff",
+    fontFamily: "Poppins",
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+  },
   appbarTitle: {
     flexGrow: "4",
     color: "#fff",

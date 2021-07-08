@@ -3,26 +3,23 @@ import { useStyles } from "./styles";
 import { useEffect, useState } from "react";
 import Single from "./Single";
 import axios from "axios";
-import { AppBar, Toolbar, Container, List } from "@material-ui/core";
+import { AppBar, Toolbar, Container, List, Button } from "@material-ui/core";
 
 // Load all the past meetings of user
 
-const YourMeet = () => {
+const YourMeet = (props) => {
   const classes = useStyles();
   const user = JSON.parse(window.sessionStorage.getItem("user"));
-  const [allMeets, setAllMeets] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [curMeet, setCurMeet] = useState();
+  const [allMeets, setAllMeets] = useState([]); // Data of all the meets of the current user
+  const [open, setOpen] = useState(false); // Flag to toggle the Meet Data container
+  const [curMeet, setCurMeet] = useState(); // To store which meet is currently selected
   useEffect(() => {
     const requestObj = { email: user["email"] };
 
     // API call to load the meetings from database
 
     axios
-      .post(
-        "https://polar-journey-62609.herokuapp.com/users/meetings",
-        requestObj
-      )
+      .post("http://localhost:5000/users/meetings", requestObj)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let meets = response["data"]["meetings"];
@@ -47,10 +44,7 @@ const YourMeet = () => {
   const onDelete = (id) => {
     setAllMeets(allMeets.filter((meet) => meet.meetID !== id));
     const requestObj = { meetID: id, email: user["email"] };
-    axios.post(
-      "https://polar-journey-62609.herokuapp.com/users/delete_meet",
-      requestObj
-    );
+    axios.post("http://localhost:5000/users/delete_meet", requestObj);
   };
 
   // Display the details of the selected meeting
@@ -69,6 +63,10 @@ const YourMeet = () => {
     }
   };
 
+  const goHome = () => {
+    props.history.push("/");
+  };
+
   // UI
 
   return (
@@ -78,6 +76,15 @@ const YourMeet = () => {
           <h1 className={classes.appbarTitle}>
             {user["firstName"]}'s Saved Meetings
           </h1>
+          <Button
+            className={classes.menu}
+            size="large"
+            color="primary"
+            onClick={goHome}
+            align="center"
+          >
+            Home
+          </Button>
         </Toolbar>
       </AppBar>
       <Container className={classes.container}>
@@ -92,7 +99,9 @@ const YourMeet = () => {
               />
             ))
           ) : (
-            <h1 style={{ color: "#fff", marginLeft: "100px" }}>
+            <h1
+              style={{ color: "#fff", marginLeft: "100px", marginTop: "100px" }}
+            >
               No meetings to Show
             </h1>
           )}

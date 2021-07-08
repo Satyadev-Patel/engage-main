@@ -1,7 +1,7 @@
 import Button from "@material-ui/core/Button";
 import Peer from "simple-peer";
 import io from "socket.io-client";
-import { Container, Grid } from "@material-ui/core";
+import { Container, Grid, AppBar, Toolbar } from "@material-ui/core";
 import { useStyles } from "./styles";
 import MicIcon from "@material-ui/icons/Mic";
 import React, { useEffect, useRef, useState } from "react";
@@ -36,7 +36,6 @@ const Video = (props) => {
           padding: "2px",
           width: "350px",
           border: "1px solid #fff",
-          transform: "rotateY(180deg)",
         }}
       />
       <Typography style={{ color: "#fff", fontFamily: "Poppins" }}>
@@ -50,17 +49,17 @@ const Meeting = (props) => {
   const classes = useStyles();
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const userVideo = useRef();
-  const [joinChat, setJoinChat] = useState(false);
+  const [joinChat, setJoinChat] = useState(false); // flag for joining the chat without joining the stream
   const [muteVid, setMuteVid] = useState(false);
   const [muteMic, setMuteMic] = useState(false);
-  const [isJoin, setJoin] = useState(false);
-  const [peers, setPeers] = useState([]);
-  const [output, setOutput] = useState([]);
-  const [fullRoom, setFullRoom] = useState(false);
-  const socketRef = useRef();
-  const chatsocketRef = useRef();
+  const [isJoin, setJoin] = useState(false); // flag for joining the video stream
+  const [peers, setPeers] = useState([]); // Peers present in the room
+  const [output, setOutput] = useState([]); // Output on Chat window
+  const [fullRoom, setFullRoom] = useState(false); // Flag for full Room
+  const socketRef = useRef(); // Websocket for video stream
+  const chatsocketRef = useRef(); // Websocket for chat
   const peersRef = useRef([]);
-  const [stream, setStream] = useState();
+  const [stream, setStream] = useState(); // Video of the current user
   const [inviteEmail, setInviteEmail] = useState("");
 
   // Extracting the parameters from the URL
@@ -92,16 +91,12 @@ const Meeting = (props) => {
       name: user["firstName"],
     };
     axios
-      .post(
-        "https://polar-journey-62609.herokuapp.com/users/send_mail",
-        requestObj
-      )
+      .post("http://localhost:5000/users/send_mail", requestObj)
       .then(function (response) {
         console.log(response["data"]["msg"]);
       })
       .catch(function (error) {
-        console.log(error);
-        window.alert("Invalid Credenital!!");
+        window.alert("Some Error occured");
       });
   };
 
@@ -109,9 +104,7 @@ const Meeting = (props) => {
 
   const onSend = (message) => {
     if (!socketRef.current)
-      socketRef.current = io.connect(
-        "https://polar-journey-62609.herokuapp.com/"
-      );
+      socketRef.current = io.connect("http://localhost:5000/");
     const obj = {
       handle: userDetail.name,
       message: message,
@@ -126,9 +119,7 @@ const Meeting = (props) => {
   };
   const wantsToJoin = () => {
     if (!socketRef.current)
-      socketRef.current = io.connect(
-        "https://polar-journey-62609.herokuapp.com/"
-      ); // WebSocket connection
+      socketRef.current = io.connect("http://localhost:5000/"); // WebSocket connection
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
@@ -241,13 +232,12 @@ const Meeting = (props) => {
   // Joining the chat window through WebSocket
 
   const joinchat = () => {
-    chatsocketRef.current = io.connect(
-      "https://polar-journey-62609.herokuapp.com/"
-    );
+    chatsocketRef.current = io.connect("http://localhost:5000/");
     setJoinChat(true);
     chatsocketRef.current.emit("join chat room", userDetail);
   };
-  const HandleAudio = () => {
+
+  const HandleJoin = () => {
     //Wants To Leave
     if (isJoin) {
       window.location.reload();
@@ -272,8 +262,29 @@ const Meeting = (props) => {
       .getAudioTracks()
       .forEach((track) => (track.enabled = !track.enabled));
   };
+
+  const goHome = () => {
+    props.history.push("/");
+  };
+
   return (
     <Grid className={classes.root}>
+      {!isJoin && !fullRoom && (
+        <AppBar className={classes.appbar}>
+          <Toolbar className={classes.appbarWrapper}>
+            <h1 className={classes.appbarTitle}>Microsoft Teams</h1>
+            <Button
+              className={classes.menu}
+              size="large"
+              color="primary"
+              onClick={goHome}
+              align="center"
+            >
+              Home
+            </Button>
+          </Toolbar>
+        </AppBar>
+      )}
       {fullRoom ? (
         <h1 style={{ color: "#fff" }}>Room is full</h1>
       ) : (
@@ -308,7 +319,7 @@ const Meeting = (props) => {
                     <Button
                       variant="contained"
                       style={{ backgroundColor: "#FF2E2E", color: "white" }}
-                      onClick={HandleAudio}
+                      onClick={HandleJoin}
                       className={classes.btn}
                     >
                       <CallEndIcon />
@@ -334,7 +345,7 @@ const Meeting = (props) => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={HandleAudio}
+                  onClick={HandleJoin}
                   className={classes.btn}
                   style={{ width: "40%" }}
                 >
@@ -351,14 +362,34 @@ const Meeting = (props) => {
             <Container>
               {joinChat ? (
                 <>
-                  <Chat
-                    room={roomID}
-                    onSend={onSend}
-                    output={output}
-                    socketRef={chatsocketRef}
-                    roomName={roomName}
-                  />
-
+                  {joinChat && (
+                    <Chat
+                      room={roomID}
+                      onSend={onSend}
+                      output={output}
+                      socketRef={chatsocketRef}
+                      roomName={roomName}
+                    />
+                  )}
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={joinchat}
+                    className={classes.btn}
+                    style={{ width: "40%", marginLeft: "0px" }}
+                  >
+                    <h3 style={{ marginBottom: "0px", marginTop: "0px" }}>
+                      Join Chat
+                    </h3>
+                  </Button>
+                  <br />
+                </>
+              )}
+              {isJoin && (
+                <>
                   <TextField
                     id="outlined-basic"
                     label="Email"
@@ -384,7 +415,7 @@ const Meeting = (props) => {
                     onClick={sendMail}
                     style={{
                       width: "auto",
-                      padding: "15px",
+                      padding: "13px",
                       marginLeft: "10px",
                       marginTop: "10px",
                     }}
@@ -394,18 +425,6 @@ const Meeting = (props) => {
                     </h3>
                   </Button>
                 </>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={joinchat}
-                  className={classes.btn}
-                  style={{ width: "40%" }}
-                >
-                  <h3 style={{ marginBottom: "0px", marginTop: "0px" }}>
-                    Join Chat
-                  </h3>
-                </Button>
               )}
             </Container>
           }

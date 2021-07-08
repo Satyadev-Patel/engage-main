@@ -18,6 +18,12 @@ export const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     marginTop: "100px",
   },
+  menu: {
+    color: "#fff",
+    fontFamily: "Poppins",
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+  },
   appbar: {
     background: "none",
   },
