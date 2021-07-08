@@ -53,24 +53,27 @@ router.post("/send_mail", (req, res, next) => {
 
   try {
     const data = req.body;
-    send(
-      {
-        // Overriding default parameters
-        to: data["email"],
-        subject: "Room Invitation",
-        text: `You have been invited to ${data["name"]}'s room.\n Room id : ${data["text"]}\n 
+    send({
+      // Overriding default parameters
+      to: data["email"],
+      subject: "Room Invitation",
+      text: `You have been invited to ${data["name"]}'s room.\n Room id : ${data["text"]}\n 
             App link: https://polar-journey-62609.herokuapp.com/ \n You will need to login first and then Enter this ID in JOIN or CREATE MEETING`,
-      },
-      (err, res, full) => {
-        if (err) return console.log("send() callback returned: err:", err);
-        console.log("send() callback returned: res:", res);
-      }
-    );
-    const obj = {
-      msg: "success",
-    };
-    res.send(obj);
-    next();
+    })
+      .then((result, full) => {
+        const obj = {
+          msg: "Email Sent",
+        };
+        res.send(obj);
+        next();
+      })
+      .catch((error) => {
+        const obj = {
+          msg: "Invalid Email Address",
+        };
+        res.send(obj);
+        next();
+      });
   } catch (err) {
     res.render("error/500");
   }

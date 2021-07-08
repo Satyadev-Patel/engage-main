@@ -93,7 +93,8 @@ const Meeting = (props) => {
     axios
       .post("http://localhost:5000/users/send_mail", requestObj)
       .then(function (response) {
-        console.log(response["data"]["msg"]);
+        window.alert(response["data"]["msg"]);
+        setInviteEmail("");
       })
       .catch(function (error) {
         window.alert("Some Error occured");
@@ -394,6 +395,7 @@ const Meeting = (props) => {
                     id="outlined-basic"
                     label="Email"
                     type="email"
+                    value={inviteEmail}
                     variant="outlined"
                     className={classes.outfield}
                     InputProps={{
