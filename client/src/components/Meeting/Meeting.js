@@ -13,6 +13,8 @@ import VideocamIcon from "@material-ui/icons/Videocam";
 import { List, Typography, TextField } from "@material-ui/core";
 import axios from "axios";
 import Chat from "../Chat/Chat";
+require("dotenv").config();
+const URL = process.env.REACT_APP_LOCAL_URL;
 
 //General function for video rendering of USERS in the current room
 
@@ -63,7 +65,7 @@ const Meeting = (props) => {
   const [inviteEmail, setInviteEmail] = useState("");
 
   // Extracting the parameters from the URL
-
+  const date = new Date().toISOString();
   const roomID = props.match.params.roomID;
   const roomName = props.match.params.roomName;
   const userDetail = {
@@ -71,6 +73,7 @@ const Meeting = (props) => {
     email: user["email"],
     room: roomID,
     name: user["firstName"],
+    date: date,
   };
   useEffect(() => {
     window.onbeforeunload = () => {
@@ -91,7 +94,7 @@ const Meeting = (props) => {
       name: user["firstName"],
     };
     axios
-      .post("https://nanosoft-teams.herokuapp.com/users/send_mail", requestObj)
+      .post(`${URL}/users/send_mail`, requestObj)
       .then(function (response) {
         window.alert(response["data"]["msg"]);
         setInviteEmail("");
@@ -104,23 +107,20 @@ const Meeting = (props) => {
   // Sending a text message through WebSocket
 
   const onSend = (message) => {
-    if (!socketRef.current)
-      socketRef.current = io.connect("https://nanosoft-teams.herokuapp.com/");
+    if (!chatsocketRef.current) chatsocketRef.current = io.connect(`${URL}/`);
     const obj = {
       handle: userDetail.name,
       message: message,
       room: userDetail.room,
     };
-    socketRef.current.emit("send msg", obj); // Sending the message
-    socketRef.current.on("recevied msg", (data) => {
+    chatsocketRef.current.emit("send msg", obj); // Sending the message
+    chatsocketRef.current.on("recevied msg", (data) => {
       // Receiving the message and updating the chat window
-      console.log(data);
       setOutput((msgs) => [...msgs, data]);
     });
   };
   const wantsToJoin = () => {
-    if (!socketRef.current)
-      socketRef.current = io.connect("https://nanosoft-teams.herokuapp.com/"); // WebSocket connection
+    if (!socketRef.current) socketRef.current = io.connect(`${URL}/`); // WebSocket connection
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
@@ -233,7 +233,7 @@ const Meeting = (props) => {
   // Joining the chat window through WebSocket
 
   const joinchat = () => {
-    chatsocketRef.current = io.connect("https://nanosoft-teams.herokuapp.com/");
+    chatsocketRef.current = io.connect(`${URL}/`);
     setJoinChat(true);
     chatsocketRef.current.emit("join chat room", userDetail);
   };

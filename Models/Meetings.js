@@ -19,6 +19,11 @@ const MeetingSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  date: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 });
 
 MeetingSchema.plugin(timestamp);

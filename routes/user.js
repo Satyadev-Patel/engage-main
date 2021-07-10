@@ -8,8 +8,7 @@ const passport = require("passport");
 const dotnev = require("dotenv");
 
 // Load Config
-dotnev.config({ path: "../config/config.env" });
-
+dotnev.config({ path: "./config/config.env" });
 // for sending email
 const send = require("gmail-send")({
   user: process.env.MAIL_USER,

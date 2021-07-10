@@ -7,7 +7,10 @@ import { Grid } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { useStyles } from "./styles";
 import { Container } from "@material-ui/core";
+
 import axios from "axios";
+require("dotenv").config();
+const URL = process.env.REACT_APP_LOCAL_URL;
 
 function Copyright() {
   return (
@@ -95,10 +98,10 @@ export default function SignUp(props) {
 
   const onSubmit = () => {
     if (validate()) {
-      console.log(values);
+      console.log(URL);
       const { firstName, lastName, email, password, mobile } = values;
       axios
-        .post("https://nanosoft-teams.herokuapp.com/users/register", {
+        .post(`${URL}/users/register`, {
           firstName,
           lastName,
           email,

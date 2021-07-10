@@ -36,7 +36,7 @@ router.post("/add/", (req, res, next) => {
     const data = req.body;
     // console.log(data);
     Event.create(data).then(() => {
-      res.send(201);
+      res.sendStatus(201);
     });
   } catch (err) {
     res.render("error/500");
@@ -53,7 +53,7 @@ router.post("/delete/", (req, res, next) => {
   try {
     const data = req.body;
     Event.remove(data).then(() => {
-      res.send(201);
+      res.sendStatus(201);
     });
   } catch (err) {
     res.render("error/500");

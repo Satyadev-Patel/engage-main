@@ -5,6 +5,8 @@ import { useStyles } from "./style";
 import axios from "axios";
 import { Button, TextField, Container } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
+require("dotenv").config();
+const URL = process.env.REACT_APP_LOCAL_URL;
 const Chat = (props) => {
   const classes = useStyles();
   const user = JSON.parse(window.sessionStorage.getItem("user"));
@@ -16,7 +18,7 @@ const Chat = (props) => {
     // Loading the previous chat data
 
     axios
-      .post("https://nanosoft-teams.herokuapp.com/chats/chat_data", requestObj)
+      .post(`${URL}/chats/chat_data`, requestObj)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let allChats = response["data"]["allChats"];
@@ -32,7 +34,6 @@ const Chat = (props) => {
         }
       })
       .catch(function (error) {
-        console.log(error);
         window.alert("Some error occured");
       });
 
@@ -43,7 +44,7 @@ const Chat = (props) => {
   }, []);
   const userDetail = {
     room: props.room,
-    name: user["firstName"],
+    name: user["firstName"] + " " + user["lastName"],
   };
   const onSend = () => {
     const obj = {

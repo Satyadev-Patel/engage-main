@@ -9,7 +9,9 @@ import Grid from "@material-ui/core/Grid";
 import { useStyles } from "./styles";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
-
+require("dotenv").config();
+const URL = process.env.REACT_APP_LOCAL_URL;
+console.log(process.env);
 const Copyright = () => {
   return (
     <Typography
@@ -46,7 +48,7 @@ const Login = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://nanosoft-teams.herokuapp.com/users/login", values)
+      .post(`${URL}/users/login`, values)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           window.sessionStorage.setItem("isAuthenticate", "Yes");

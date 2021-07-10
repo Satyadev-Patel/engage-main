@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Single from "./Single";
 import axios from "axios";
 import { AppBar, Toolbar, Container, List, Button } from "@material-ui/core";
+require("dotenv").config();
+const URL = process.env.REACT_APP_LOCAL_URL;
 
 // Load all the past meetings of user
 
@@ -19,7 +21,7 @@ const YourMeet = (props) => {
     // API call to load the meetings from database
 
     axios
-      .post("https://nanosoft-teams.herokuapp.com/users/meetings", requestObj)
+      .post(`${URL}/users/meetings`, requestObj)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let meets = response["data"]["meetings"];
@@ -44,10 +46,7 @@ const YourMeet = (props) => {
   const onDelete = (id) => {
     setAllMeets(allMeets.filter((meet) => meet.meetID !== id));
     const requestObj = { meetID: id, email: user["email"] };
-    axios.post(
-      "https://nanosoft-teams.herokuapp.com/users/delete_meet",
-      requestObj
-    );
+    axios.post(`${URL}/users/delete_meet`, requestObj);
   };
 
   // Display the details of the selected meeting
@@ -56,9 +55,8 @@ const YourMeet = (props) => {
     if (!open || id !== curMeet.meetID) {
       const meet = allMeets.filter((meet) => meet.meetID === id);
       const single = meet[0];
-      single.date = single.createdAt.substr(0, single.createdAt.length - 14);
-      single.time = single.createdAt.substr(11);
-      single.time = single.time.substr(0, single.time.length - 5);
+      const istDate = new Date(single.date).toString();
+      single.time = istDate;
       setCurMeet(single);
       setOpen(true);
     } else {
@@ -117,12 +115,10 @@ const YourMeet = (props) => {
               {curMeet.meetName}
             </h1>
             <h1 style={{ color: "#fff", fontSize: "1.5rem" }}>
-              Created At:
+              First Time Joined At:
               <br />
               <br />
-              Date: {curMeet.date}
-              <br />
-              Time: {curMeet.time}
+              {curMeet.time}
             </h1>
           </div>
         )}

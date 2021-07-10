@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useStyles } from "./styles";
 import axios from "axios";
 import { v1 as uuid } from "uuid";
+require("dotenv").config();
+const URL = process.env.REACT_APP_LOCAL_URL;
+
 const Home = (props) => {
   const classes = useStyles();
   const [id, setId] = useState("");
@@ -18,7 +21,7 @@ const Home = (props) => {
 
     //Checking whether the user is already present in a room with the same name
     axios
-      .post("https://nanosoft-teams.herokuapp.com/users/find_id", values)
+      .post(`${URL}/users/find_id`, values)
       .then(function (response) {
         if (response["data"]["msg"] == "fail") {
           window.alert(
@@ -41,7 +44,7 @@ const Home = (props) => {
 
     //Checking whether the ID exists or not
     axios
-      .post("https://nanosoft-teams.herokuapp.com/users/find_join_id", values)
+      .post(`${URL}/users/find_join_id`, values)
       .then(function (response) {
         if (response["data"]["msg"] == "fail") {
           window.alert("Id not found");

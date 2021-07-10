@@ -7,8 +7,10 @@ import { AppBar, Container, TextField } from "@material-ui/core";
 import { Toolbar } from "@material-ui/core";
 import Task from "./Task";
 import Day from "./Day";
+require("dotenv").config();
 
 const Calendar = (props) => {
+  const URL = process.env.REACT_APP_LOCAL_URL;
   const classes = useStyles();
   const InitialValues = {
     meetName: "",
@@ -27,7 +29,18 @@ const Calendar = (props) => {
     Wednesday: [],
     Thursday: [],
     Friday: [],
+    Saturday: [],
+    Sunday: [],
   };
+  const allDays = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
   const [allEvents, setAllEvents] = useState(eventData);
   useEffect(() => {
     setChecked(true);
@@ -36,7 +49,7 @@ const Calendar = (props) => {
     //Extracting the event data for all the days at the start
 
     axios
-      .post("https://nanosoft-teams.herokuapp.com/event/events", requestObj)
+      .post(`${URL}/event/events`, requestObj)
       .then(function (response) {
         if (response["data"]["msg"] === "success") {
           let events = response["data"]["event"];
@@ -96,7 +109,7 @@ const Calendar = (props) => {
     const { meetName, meetTime } = values;
     const obj = { meetName: meetName, meetTime: meetTime };
     const email = user["email"];
-    axios.post("https://nanosoft-teams.herokuapp.com/event/add", {
+    axios.post(`${URL}/event/add`, {
       email,
       meetName,
       meetTime,
@@ -117,7 +130,7 @@ const Calendar = (props) => {
   const onTaskDelete = (name) => {
     setTasks(tasks.filter((task) => task.meetTime !== name));
     const requestObj = { meetTime: name, day: day, email: user["email"] };
-    axios.post("https://nanosoft-teams.herokuapp.com/event/delete", requestObj);
+    axios.post(`${URL}/event/delete`, requestObj);
     allEvents[day] = allEvents[day].filter((task) => task.meetTime !== name);
     setAllEvents(allEvents);
   };
@@ -131,7 +144,7 @@ const Calendar = (props) => {
       <AppBar className={classes.appbar}>
         <Toolbar className={classes.appbarWrapper}>
           <h1 className={classes.appbarTitle}>
-            {user["firstName"]}'s Meetings
+            {user["firstName"]}'s Calendar
           </h1>
           <Button
             className={classes.menu}
@@ -153,11 +166,9 @@ const Calendar = (props) => {
           unmountOnExit
         >
           <List>
-            <Day day={day} onCalendarClick={onCalendarClick} name="Monday" />
-            <Day day={day} onCalendarClick={onCalendarClick} name="Tuesday" />
-            <Day day={day} onCalendarClick={onCalendarClick} name="Wednesday" />
-            <Day day={day} onCalendarClick={onCalendarClick} name="Thursday" />
-            <Day day={day} onCalendarClick={onCalendarClick} name="Friday" />
+            {allDays.map((curDay) => (
+              <Day day={day} onCalendarClick={onCalendarClick} name={curDay} />
+            ))}
           </List>
         </Slide>
       </Container>
@@ -192,7 +203,7 @@ const Calendar = (props) => {
           </h1>
         </div>
       )}
-      <Container className={classes.addContainer} style={{ overflow: "auto" }}>
+      <Container style={{ overflow: "auto", padding: "20px" }}>
         {showTask && open && (
           <form className={classes.form} noValidate>
             <TextField
