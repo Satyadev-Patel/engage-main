@@ -1,5 +1,8 @@
 const monogoose = require("mongoose");
+const dotnev = require("dotenv");
 
+// Load Config
+dotnev.config({ path: "./config/config.env" });
 const connectDB = async () => {
   try {
     const conn = await monogoose.connect(process.env.MONGO_URI, {
