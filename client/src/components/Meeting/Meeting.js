@@ -14,7 +14,7 @@ import { List, Typography, TextField } from "@material-ui/core";
 import axios from "axios";
 import Chat from "../Chat/Chat";
 require("dotenv").config();
-const URL = process.env.REACT_APP_LOCAL_URL;
+const URL = "https://nanosoft-teams.herokuapp.com";
 
 //General function for video rendering of USERS in the current room
 
