@@ -5,7 +5,7 @@ import Single from "./Single";
 import axios from "axios";
 import { AppBar, Toolbar, Container, List, Button } from "@material-ui/core";
 require("dotenv").config();
-const URL = process.env.REACT_APP_LOCAL_URL;
+const URL = "https://nanosoft-teams.herokuapp.com";
 
 // Load all the past meetings of user
 

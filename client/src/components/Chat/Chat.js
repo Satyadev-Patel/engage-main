@@ -6,7 +6,7 @@ import axios from "axios";
 import { Button, TextField, Container } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 require("dotenv").config();
-const URL = process.env.REACT_APP_LOCAL_URL;
+const URL = "https://nanosoft-teams.herokuapp.com";
 const Chat = (props) => {
   const classes = useStyles();
   const user = JSON.parse(window.sessionStorage.getItem("user"));
@@ -58,6 +58,13 @@ const Chat = (props) => {
     props.socketRef.current.emit("send msg", obj);
     setMessage("");
   };
+
+  const handleKeyPress = (e) => {
+    if (e.which === 13) {
+      onSend();
+    }
+  };
+
   return (
     <div style={{ color: "#fff" }}>
       <Container style={{ borderRadius: "5px", border: "1px solid #fff" }}>
@@ -87,10 +94,12 @@ const Chat = (props) => {
         }}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onKeyPress={handleKeyPress}
         style={{ marginTop: "30px", width: "auto" }}
       />
       <Button
         variant="contained"
+        type="submit"
         color="white"
         className={classes.btn}
         onClick={onSend}

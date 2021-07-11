@@ -10,7 +10,7 @@ import Day from "./Day";
 require("dotenv").config();
 
 const Calendar = (props) => {
-  const URL = process.env.REACT_APP_LOCAL_URL;
+  const URL = "https://nanosoft-teams.herokuapp.com";
   const classes = useStyles();
   const InitialValues = {
     meetName: "",

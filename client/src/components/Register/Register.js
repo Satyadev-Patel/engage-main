@@ -10,7 +10,7 @@ import { Container } from "@material-ui/core";
 
 import axios from "axios";
 require("dotenv").config();
-const URL = process.env.REACT_APP_LOCAL_URL;
+const URL = "https://nanosoft-teams.herokuapp.com";
 
 function Copyright() {
   return (
