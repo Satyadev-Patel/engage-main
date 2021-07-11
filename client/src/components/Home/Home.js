@@ -5,7 +5,7 @@ import { useStyles } from "./styles";
 import axios from "axios";
 import { v1 as uuid } from "uuid";
 require("dotenv").config();
-const URL = "https://nanosoft-teams.herokuapp.com";
+const URL = process.env.REACT_APP_LOCAL_URL;
 
 const Home = (props) => {
   const classes = useStyles();
