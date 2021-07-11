@@ -6,7 +6,7 @@ import axios from "axios";
 import { Button, TextField, Container } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 require("dotenv").config();
-const URL = "https://nanosoft-teams.herokuapp.com";
+const URL = process.env.REACT_APP_LOCAL_URL;
 const Chat = (props) => {
   const classes = useStyles();
   const user = JSON.parse(window.sessionStorage.getItem("user"));

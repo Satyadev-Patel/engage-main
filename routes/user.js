@@ -11,8 +11,8 @@ const dotnev = require("dotenv");
 dotnev.config({ path: "./config/config.env" });
 // for sending email
 const send = require("gmail-send")({
-  user: "dsemo1122@gmail.com",
-  pass: "guru@3003",
+  user: process.env.MAIL_USER,
+  pass: process.env.MAIL_PASS,
 });
 
 // for request of registering a user
