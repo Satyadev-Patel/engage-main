@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 require("dotenv").config();
 const URL = process.env.REACT_APP_LOCAL_URL;
-console.log(process.env);
+console.log(URL);
 const Copyright = () => {
   return (
     <Typography

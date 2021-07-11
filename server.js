@@ -76,6 +76,7 @@ io.on("connection", (socket) => {
             email: userDetail.email,
             meetName: userDetail.roomName,
             meetID: userDetail.room,
+            date: userDetail.date,
           });
         }
       }
@@ -109,6 +110,7 @@ io.on("connection", (socket) => {
             email: userDetail.email,
             meetName: userDetail.roomName,
             meetID: userDetail.room,
+            date: userDetail.date,
           });
         }
       }
