@@ -43,7 +43,7 @@ Runs the server on [http://localhost:5000](http://localhost:5000)
 
 ### `npm start`
 
-Runs the whole app(client + server) in the development mode.<br />
+Runs the app(client) in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
