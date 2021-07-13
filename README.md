@@ -4,7 +4,7 @@
 
 ---
 
-##### Deployed app link : https://nanosoft-teams.herokuapp.com/
+##### Deployed app link : https://nanosoft-teams.herokuapp.com/ - Open it in desktop for better experience
 
 ## Features
 
