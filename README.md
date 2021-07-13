@@ -4,6 +4,8 @@
 
 ---
 
+##### Deployed app link : https://nanosoft-teams.herokuapp.com/
+
 ## Features
 
 - Video Calling
